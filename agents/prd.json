@@ -1,0 +1,60 @@
+{
+  "project": "MiniPulseV2",
+  "branchName": "feature/theme-system",
+  "description": "重构主题系统支持多主题切换，深浅跟随系统，深色+浅色组合命名为 Ocean Blue，并新增 8-bit 主题",
+  "userStories": [
+    {
+      "id": "THEME-001",
+      "title": "重构 AppTheme 支持多主题",
+      "description": "将当前硬编码的 Ocean Blue 配色抽象为可切换的主题，支持未来扩展更多主题",
+      "acceptanceCriteria": [
+        "AppTheme 支持主题枚举（OceanBlue, Bit8）",
+        "主题选择保存到 UserDefaults（key: themeName）",
+        "深浅跟随系统自动切换，主题名称持久化"
+      ],
+      "priority": 1,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "THEME-002",
+      "title": "Header 添加主题切换按钮",
+      "description": "在编辑顺序按钮旁边加主题切换按钮，点击弹出主题选择面板",
+      "acceptanceCriteria": [
+        "按钮显示当前主题名称或图标",
+        "弹出面板列出所有可用主题",
+        "选中后立即应用并持久化"
+      ],
+      "priority": 2,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "THEME-003",
+      "title": "实现 8-bit 主题",
+      "description": "设计并实现 8-bit 像素风格主题，深浅两套配色",
+      "acceptanceCriteria": [
+        "深色 8-bit：深色背景，低饱和度像素感配色",
+        "浅色 8-bit：浅色背景，暖调复古像素感配色",
+        "accent 颜色使用高饱和度像素风色彩（如荧光绿、品红、青色）",
+        "字体使用等宽像素风（如 Menlo 或 SF Mono）"
+      ],
+      "priority": 3,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "THEME-004",
+      "title": "8-bit 主题下卡片装饰像素化",
+      "description": "8-bit 主题下卡片的边框、装饰元素采用像素风格",
+      "acceptanceCriteria": [
+        "卡片边框粗细适中，有像素锯齿感",
+        "图标使用像素风格 SF Symbols 或等效方案",
+        "整体风格统一，像素游戏 UI 感"
+      ],
+      "priority": 4,
+      "passes": false,
+      "notes": ""
+    }
+  ]
+}

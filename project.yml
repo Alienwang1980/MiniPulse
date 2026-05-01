@@ -1,0 +1,60 @@
+name: MiniPulseV2
+options:
+  bundleIdPrefix: ai.hermes
+  deploymentTarget:
+    macOS: "14.0"
+  xcodeVersion: "15.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    PRODUCT_NAME: MiniPulse
+    PRODUCT_BUNDLE_IDENTIFIER: ai.hermes.minipulse
+    MARKETING_VERSION: "2.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.9"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+    INFOPLIST_KEY_LSApplicationCategoryType: "public.app-category.utilities"
+    INFOPLIST_KEY_NSHumanReadableCopyright: "Copyright 2024"
+    INFOPLIST_KEY_CFBundleDisplayName: MiniPulse
+    CODE_SIGN_IDENTITY: "-"
+    CODE_SIGN_STYLE: Manual
+    ENABLE_HARDENED_RUNTIME: NO
+
+targets:
+  MiniPulseV2:
+    type: application
+    platform: macOS
+    sources:
+      - path: Sources
+        excludes:
+          - "**/.DS_Store"
+          - "**/Assets.xcassets"
+      - path: Resources
+        excludes:
+          - "**/.DS_Store"
+    dependencies:
+      - sdk: libIOReport.tbd
+      - sdk: IOKit.framework
+      - sdk: CoreFoundation.framework
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: ai.hermes.minipulse
+        INFOPLIST_KEY_NSPrincipalClass: NSApplication
+        SWIFT_OBJC_BRIDGING_HEADER: Sources/App/MiniPulse-Bridging-Header.h
+        LD_RUNPATH_SEARCH_PATHS: "@executable_path/../Frameworks"
+        COMBINE_HIDPI_IMAGES: YES
+        OTHER_LDFLAGS: "-framework IOKit -framework CoreFoundation"
+    info:
+      path: Sources/App/Info.plist
+      properties:
+        CFBundleName: MiniPulse
+        CFBundleDisplayName: MiniPulse
+        CFBundleIdentifier: ai.hermes.minipulse
+        CFBundleVersion: "1"
+        CFBundleShortVersionString: "2.0.0"
+        CFBundlePackageType: APPL
+        CFBundleExecutable: MiniPulse
+        LSMinimumSystemVersion: "14.0"
+        NSHighResolutionCapable: true
+        NSPrincipalClass: NSApplication

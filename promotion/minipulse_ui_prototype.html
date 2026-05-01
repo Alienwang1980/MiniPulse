@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MiniPulse V2 UI Prototype</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #1C1C1E;
+    --card-bg: #2C2C2E;
+    --card-radius: 16px;
+    --card-padding: 16px;
+    --card-width: 320px;
+    --card-spacing: 16px;
+    --blue: #0088FE;
+    --green: #34C759;
+    --orange: #FF9F0A;
+    --red: #FF3B30;
+    --text-primary: #FFFFFF;
+    --text-secondary: #8E8E93;
+    --text-tertiary: #636366;
+    --border: #3A3A3C;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    min-height: 100vh;
+    padding: 40px;
+  }
+
+  /* ===== Header ===== */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo {
+    width: 40px;
+    height: 40px;
+    background: var(--blue);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+
+  .header-title {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+
+  .header-subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .header-stat {
+    text-align: right;
+  }
+
+  .header-stat-value {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .header-stat-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ===== Card Grid ===== */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--card-spacing);
+  }
+
+  /* ===== Base Card ===== */
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--card-radius);
+    padding: var(--card-padding);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .card-title {
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-title-icon {
+    font-size: 18px;
+    opacity: 0.9;
+  }
+
+  .card-badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+
+  .card-badge-blue { background: rgba(0,136,254,0.2); color: var(--blue); }
+  .card-badge-green { background: rgba(52,199,89,0.2); color: var(--green); }
+  .card-badge-orange { background: rgba(255,159,10,0.2); color: var(--orange); }
+  .card-badge-red { background: rgba(255,59,48,0.2); color: var(--red); }
+
+  /* ===== Big Number ===== */
+  .big-number {
+    font-size: 26pt;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 4px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -1px;
+  }
+
+  .big-number-unit {
+    font-size: 14pt;
+    font-weight: 400;
+    margin-left: 4px;
+    opacity: 0.7;
+  }
+
+  .big-number-sub {
+    font-size: 12pt;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+  }
+
+  /* ===== Progress Bar ===== */
+  .progress-bar {
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.5s ease;
+  }
+
+  .progress-fill-blue { background: var(--blue); }
+  .progress-fill-green { background: var(--green); }
+  .progress-fill-orange { background: var(--orange); }
+  .progress-fill-red { background: var(--red); }
+
+  /* ===== Detail Row ===== */
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .detail-item {
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+
+  .detail-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 2px;
+  }
+
+  .detail-value {
+    font-size: 14px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .detail-value.small {
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  /* ===== CPU Card ===== */
+  .cpu-card .temp-badge {
+    position: absolute;
+    top: var(--card-padding);
+    right: var(--card-padding);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  .cpu-card .temp-badge span {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .cpu-cores {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 8px;
+  }
+
+  .cpu-core {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    background: rgba(255,255,255,0.06);
+    color: var(--text-secondary);
+  }
+
+  .cpu-core.active {
+    background: rgba(0,136,254,0.25);
+    color: var(--blue);
+  }
+
+  /* ===== Memory Card ===== */
+  .mem-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .mem-bar-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    width: 50px;
+  }
+
+  .mem-bar-track {
+    flex: 1;
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .mem-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+
+  .mem-bar-value {
+    font-size: 11px;
+    color: var(--text-secondary);
+    width: 60px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ===== Disk Card ===== */
+  .disk-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .disk-item:last-child { border-bottom: none; }
+
+  .disk-name {
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .disk-icon { opacity: 0.6; }
+
+  .disk-info {
+    text-align: right;
+  }
+
+  .disk-size {
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .disk-used {
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+
+  /* ===== Network Card ===== */
+  .net-iface {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .net-iface:last-child { border-bottom: none; }
+
+  .net-iface-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .net-iface-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  .net-iface-icon.wifi { background: rgba(0,136,254,0.2); }
+  .net-iface-icon.eth { background: rgba(52,199,89,0.2); }
+  .net-iface-icon.vpn { background: rgba(255,159,10,0.2); }
+
+  .net-iface-name {
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .net-iface-status {
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+
+  .net-iface-right {
+    text-align: right;
+  }
+
+  .net-iface-speed {
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .net-iface-data {
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+
+  /* ===== Battery Card ===== */
+  .battery-visual {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .battery-icon {
+    position: relative;
+    width: 48px;
+    height: 24px;
+  }
+
+  .battery-body {
+    width: 44px;
+    height: 22px;
+    border: 2px solid var(--text-secondary);
+    border-radius: 4px;
+    padding: 2px;
+    position: relative;
+  }
+
+  .battery-cap {
+    position: absolute;
+    right: -5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 10px;
+    background: var(--text-secondary);
+    border-radius: 0 2px 2px 0;
+  }
+
+  .battery-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  .battery-fill.green { background: var(--green); }
+  .battery-fill.orange { background: var(--orange); }
+  .battery-fill.red { background: var(--red); }
+
+  .battery-percent {
+    font-size: 26pt;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .battery-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .battery-meta-item {
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    padding: 8px;
+    text-align: center;
+  }
+
+  .battery-meta-value {
+    font-size: 16px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .battery-meta-label {
+    font-size: 10px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* ===== Overview Card ===== */
+  .overview-chart {
+    height: 80px;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    margin-bottom: 12px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .overview-bar {
+    flex: 1;
+    background: var(--blue);
+    border-radius: 2px 2px 0 0;
+    min-height: 4px;
+    opacity: 0.8;
+    transition: height 0.3s ease;
+  }
+
+  .overview-bar.cpu { background: var(--blue); }
+  .overview-bar.mem { background: rgba(0,136,254,0.5); }
+  .overview-bar.disk { background: rgba(52,199,89,0.8); }
+  .overview-bar.net { background: rgba(255,159,10,0.8); }
+
+  .overview-legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .overview-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  .overview-legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .overview-legend-dot.cpu { background: var(--blue); }
+  .overview-legend-dot.mem { background: rgba(0,136,254,0.5); }
+  .overview-legend-dot.disk { background: rgba(52,199,89,0.8); }
+  .overview-legend-dot.net { background: rgba(255,159,10,0.8); }
+
+  /* ===== Footer ===== */
+  .footer {
+    margin-top: 32px;
+    text-align: center;
+    color: var(--text-tertiary);
+    font-size: 12px;
+    padding-bottom: 20px;
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 720px) {
+    body { padding: 20px; }
+    .card-grid { grid-template-columns: 1fr; }
+    .header { flex-direction: column; gap: 16px; align-items: flex-start; }
+    .header-right { width: 100%; justify-content: space-between; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo">⚡</div>
+    <div>
+      <div class="header-title">MiniPulse</div>
+      <div class="header-subtitle">Mac mini M4 · 实时监控</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="header-stat">
+      <div class="header-stat-value" style="color: var(--blue);">51.8°C</div>
+      <div class="header-stat-label">CPU 温度</div>
+    </div>
+    <div class="header-stat">
+      <div class="header-stat-value">22:41</div>
+      <div class="header-stat-label">最后更新</div>
+    </div>
+  </div>
+</div>
+
+<!-- Card Grid -->
+<div class="card-grid">
+
+  <!-- CPU Card -->
+  <div class="card cpu-card">
+    <div class="card-header">
+      <div class="card-title">
+        <span class="card-title-icon">🖥️</span>
+        CPU
+      </div>
+      <div class="card-badge card-badge-blue">M4 · 10 核</div>
+    </div>
+    <div class="temp-badge"><span>51</span>°C</div>
+    <div class="big-number">18<span class="big-number-unit">%</span></div>
+    <div class="big-number-sub">3.1 GHz · 7W / 20W</div>
+    <div class="progress-bar">
+      <div class="progress-fill progress-fill-blue" style="width: 18%"></div>
+    </div>
+    <div class="detail-grid">
+      <div class="detail-item">
+        <div class="detail-label">User</div>
+        <div class="detail-value">8%</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">System</div>
+        <div class="detail-value">7%</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Idle</div>
+        <div class="detail-value" style="color: var(--green);">82%</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Power</div>
+        <div class="detail-value">7.2 W</div>
+      </div>
+    </div>
+    <div class="cpu-cores">
+      <div class="cpu-core active">P1</div>
+      <div class="cpu-core active">P2</div>
+      <div class="cpu-core">P3</div>
+      <div class="cpu-core">E1</div>
+      <div class="cpu-core">E2</div>
+      <div class="cpu-core">E3</div>
+      <div class="cpu-core">E4</div>
+    </div>
+  </div>
+
+  <!-- Memory Card -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">
+        <span class="card-title-icon">🧠</span>
+        Memory
+      </div>
+      <div class="card-badge card-badge-blue">16 GB</div>
+    </div>
+    <div class="big-number">8.24<span class="big-number-unit">GB</span></div>
+    <div class="big-number-sub">51.5% · 7.76 GB 可用</div>
+    <div class="progress-bar">
+      <div class="progress-fill progress-fill-blue" style="width: 51.5%"></div>
+    </div>
+    <div class="mem-bar-row">
+      <div class="mem-bar-label">App</div>
+      <div class="mem-bar-track"><div class="mem-bar-fill" style="width: 35%; background: var(--blue);"></div></div>
+      <div class="mem-bar-value">5.6 GB</div>
+    </div>
+    <div class="mem-bar-row">
+      <div class="mem-bar-label">Cached</div>
+      <div class="mem-bar-track"><div class="mem-bar-fill" style="width: 16%; background: rgba(0,136,254,0.4);"></div></div>
+      <div class="mem-bar-value">2.6 GB</div>
+    </div>
+    <div class="detail-grid">
+      <div class="detail-item">
+        <div class="detail-label">Swap</div>
+        <div class="detail-value small">0 GB / 2 GB</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Pressure</div>
+        <div class="detail-value" style="color: var(--green);">Low</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Disk Card -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">
+        <span class="card-title-icon">💾</span>
+        Disk
+      </div>
+      <div class="card-badge card-badge-green">512 GB</div>
+    </div>
+    <div class="big-number" style="color: var(--green);">68<span class="big-number-unit">%</span></div>
+    <div class="big-number-sub">327 GB 已用 · 153 GB 可用</div>
+    <div class="progress-bar">
+      <div class="progress-fill progress-fill-green" style="width: 68%"></div>
+    </div>
+    <div class="disk-item">
+      <div class="disk-name">
+        <span class="disk-icon">🍎</span>
+        Macintosh HD
+      </div>
+      <div class="disk-info">
+        <div class="disk-size">327 GB</div>
+        <div class="disk-used">68%</div>
+      </div>
+    </div>
+    <div class="disk-item">
+      <div class="disk-name">
+        <span class="disk-icon">📀</span>
+        Media
+      </div>
+      <div class="disk-info">
+        <div class="disk-size">1.8 TB</div>
+        <div class="disk-used">42%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Network Card -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">
+        <span class="card-title-icon">📶</span>
+        Network
+      </div>
+      <div class="card-badge card-badge-blue">Wi-Fi</div>
+    </div>
+    <div class="big-number">↓ 2.4<span class="big-number-unit">MB/s</span></div>
+    <div class="big-number-sub" style="margin-bottom: 12px;">↑ 0.18 MB/s · 延迟 3ms</div>
+    <div class="net-iface">
+      <div class="net-iface-left">
+        <div class="net-iface-icon wifi">📡</div>
+        <div>
+          <div class="net-iface-name">Wi-Fi</div>
+          <div class="net-iface-status">192.168.3.14</div>
+        </div>
+      </div>
+      <div class="net-iface-right">
+        <div class="net-iface-speed">2.4 MB/s</div>
+        <div class="net-iface-data">↓ 1.2 GB · ↑ 82 MB</div>
+      </div>
+    </div>
+    <div class="net-iface">
+      <div class="net-iface-left">
+        <div class="net-iface-icon eth">🌐</div>
+        <div>
+          <div class="net-iface-name">Bridge</div>
+          <div class="net-iface-status">192.168.4.1</div>
+        </div>
+      </div>
+      <div class="net-iface-right">
+        <div class="net-iface-speed">0 KB/s</div>
+        <div class="net-iface-data">↓ 0 · ↑ 0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Battery Card -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">
+        <span class="card-title-icon">🔋</span>
+        Battery
+      </div>
+      <div class="card-badge card-badge-green">MacBook Pro</div>
+    </div>
+    <div class="battery-visual">
+      <div class="battery-icon">
+        <div class="battery-body">
+          <div class="battery-fill green" style="width: 87%;"></div>
+          <div class="battery-cap"></div>
+        </div>
+      </div>
+      <div class="battery-percent">87%</div>
+    </div>
+    <div class="big-number-sub">供电中 · 剩余 5:42</div>
+    <div class="progress-bar">
+      <div class="progress-fill progress-fill-green" style="width: 87%"></div>
+    </div>
+    <div class="battery-meta">
+      <div class="battery-meta-item">
+        <div class="battery-meta-value" style="color: var(--green);">供电</div>
+        <div class="battery-meta-label">状态</div>
+      </div>
+      <div class="battery-meta-item">
+        <div class="battery-meta-value">49 W</div>
+        <div class="battery-meta-label">功率</div>
+      </div>
+      <div class="battery-meta-item">
+        <div class="battery-meta-value">342 次</div>
+        <div class="battery-meta-label">循环</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overview Card -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">
+        <span class="card-title-icon">📊</span>
+        Overview
+      </div>
+      <div class="card-badge card-badge-blue">实时</div>
+    </div>
+    <div class="overview-chart">
+      <!-- CPU bars -->
+      <div class="overview-bar cpu" style="height: 18%;"></div>
+      <div class="overview-bar cpu" style="height: 22%;"></div>
+      <div class="overview-bar cpu" style="height: 15%;"></div>
+      <div class="overview-bar cpu" style="height: 20%;"></div>
+      <div class="overview-bar cpu" style="height: 25%;"></div>
+      <div class="overview-bar cpu" style="height: 18%;"></div>
+      <div class="overview-bar cpu" style="height: 30%;"></div>
+      <div class="overview-bar cpu" style="height: 16%;"></div>
+      <!-- Memory bars -->
+      <div class="overview-bar mem" style="height: 52%;"></div>
+      <div class="overview-bar mem" style="height: 51%;"></div>
+      <div class="overview-bar mem" style="height: 53%;"></div>
+      <div class="overview-bar mem" style="height: 51%;"></div>
+      <div class="overview-bar mem" style="height: 52%;"></div>
+      <div class="overview-bar mem" style="height: 51%;"></div>
+      <!-- Disk bars -->
+      <div class="overview-bar disk" style="height: 68%;"></div>
+      <div class="overview-bar disk" style="height: 68%;"></div>
+      <div class="overview-bar disk" style="height: 68%;"></div>
+      <div class="overview-bar disk" style="height: 68%;"></div>
+      <!-- Net bars -->
+      <div class="overview-bar net" style="height: 12%;"></div>
+      <div class="overview-bar net" style="height: 45%;"></div>
+      <div class="overview-bar net" style="height: 8%;"></div>
+      <div class="overview-bar net" style="height: 25%;"></div>
+      <div class="overview-bar net" style="height: 60%;"></div>
+      <div class="overview-bar net" style="height: 18%;"></div>
+      <div class="overview-bar net" style="height: 5%;"></div>
+      <div class="overview-bar net" style="height: 30%;"></div>
+    </div>
+    <div class="overview-legend">
+      <div class="overview-legend-item"><div class="overview-legend-dot cpu"></div>CPU 18%</div>
+      <div class="overview-legend-item"><div class="overview-legend-dot mem"></div>Memory 52%</div>
+      <div class="overview-legend-item"><div class="overview-legend-dot disk"></div>Disk 68%</div>
+      <div class="overview-legend-item"><div class="overview-legend-dot net"></div>Network 2.4 MB/s</div>
+    </div>
+    <div class="detail-grid" style="margin-top: 14px;">
+      <div class="detail-item">
+        <div class="detail-label">总功率</div>
+        <div class="detail-value">38 W</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">温度</div>
+        <div class="detail-value" style="color: var(--blue);">51.8°C</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">运行时间</div>
+        <div class="detail-value small">3 天 14 小时</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">GPU</div>
+        <div class="detail-value">5 W</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  MiniPulse V2 · 基于真实 SwiftUI 源码参数构建 · 2026-04-29
+</div>
+
+</body>
+</html>
