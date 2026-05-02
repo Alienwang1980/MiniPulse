@@ -6,6 +6,35 @@ import SwiftUI
 // Each pattern takes a foreground color and renders at low opacity.
 
 // ============================================================
+// HERO PATTERN TYPE ENUM — standalone, used by both CardHeroPattern and HeroPatternBackground
+// ============================================================
+enum HeroPatternType: CaseIterable {
+    case graphPaper
+    case diagonalLines
+    case polkaDots
+    case waves
+    case piazza
+    case pixelDots  // from PixelDotsBackground.swift
+
+    static func random() -> HeroPatternType {
+        allCases.randomElement()!
+    }
+}
+
+// ============================================================
+// CARD PATTERN ASSIGNMENTS — Fixed per card for 8-bit theme
+// ============================================================
+enum CardHeroPattern {
+    static let cpu     = HeroPatternType.graphPaper
+    static let memory  = HeroPatternType.diagonalLines
+    static let gpu     = HeroPatternType.polkaDots
+    static let network = HeroPatternType.waves
+    static let power   = HeroPatternType.piazza
+    static let battery = HeroPatternType.pixelDots
+    static let disk    = HeroPatternType.diagonalLines
+}
+
+// ============================================================
 // 1. GRAPH PAPER — pixel grid
 // ============================================================
 struct GraphPaperPattern: Shape {
@@ -14,23 +43,18 @@ struct GraphPaperPattern: Shape {
 
     func path(in rect: CGRect) -> Path {
         var path = Path()
-
-        // Vertical lines
         var x: CGFloat = 0
         while x <= rect.width {
             path.move(to: CGPoint(x: x, y: 0))
             path.addLine(to: CGPoint(x: x, y: rect.height))
             x += gridSize
         }
-
-        // Horizontal lines
         var y: CGFloat = 0
         while y <= rect.height {
             path.move(to: CGPoint(x: 0, y: y))
             path.addLine(to: CGPoint(x: rect.width, y: y))
             y += gridSize
         }
-
         return path
     }
 }
@@ -54,7 +78,6 @@ struct DiagonalLinesPattern: Shape {
             path.addLine(to: CGPoint(x: x + rect.height, y: rect.height))
             x += d
         }
-
         return path.strokedPath(StrokeStyle(lineWidth: w, lineCap: .butt))
     }
 }
@@ -117,7 +140,7 @@ struct WavesPattern: Shape {
 }
 
 // ============================================================
-// 5. PIAZZA — square grid dots (like a piazza pattern)
+// 5. PIAZZA — square grid dots
 // ============================================================
 struct PiazzaPattern: Shape {
     let dotSize: CGFloat
@@ -148,19 +171,6 @@ struct HeroPatternBackground: View {
     let color: Color
     let opacity: Double
 
-    enum HeroPatternType: CaseIterable {
-        case graphPaper
-        case diagonalLines
-        case polkaDots
-        case waves
-        case piazza
-        case pixelDots  // from PixelDotsBackground.swift
-
-        static func random() -> HeroPatternType {
-            allCases.randomElement()!
-        }
-    }
-
     var body: some View {
         Group {
             switch pattern {
@@ -180,8 +190,8 @@ struct HeroPatternBackground: View {
                 PiazzaPattern(dotSize: 2, spacing: 8)
                     .fill(color)
             case .pixelDots:
-                PixelDotsBackground.cardDots
-                    .fill(color)
+                PixelDotsBackground.cardDots(isEightBit: true, isDark: true)
+                    .opacity(0.3)
             }
         }
         .opacity(opacity)

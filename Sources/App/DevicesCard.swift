@@ -11,26 +11,22 @@ struct BluetoothCard: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 9.6) {
                 Image(systemName: "dot.radiowaves.left.and.right")
-                    .font(.system(size: 16.8))
-                    .foregroundColor(theme.bluetoothAccent)
+                    .font(PixelFont.eightBit(size: 16.8))                    .foregroundColor(theme.bluetoothAccent)
                     .frame(width: 40.3, height: 40.3)
                     .background(theme.bluetoothAccent.opacity(0.20))
                     .cornerRadius(9.6)
                 VStack(alignment: .leading, spacing: 1.2) {
                     Text("蓝牙")
-                        .font(.system(size: 14.4, weight: .semibold))
-                        .foregroundColor(theme.text)
+                        .font(PixelFont.eightBit(size: 14.4, weight: Font.Weight.semibold))                        .foregroundColor(theme.text)
                     Text("已配对设备")
-                        .font(.system(size: 12))
-                        .foregroundColor(theme.muted)
+                        .font(PixelFont.eightBit(size: 12))                        .foregroundColor(theme.muted)
                 }
                 Spacer()
             }
 
             if devices.bluetooth.isEmpty {
                 Text("无已配对设备")
-                    .font(.system(size: 13.2))
-                    .foregroundColor(theme.muted)
+                    .font(PixelFont.eightBit(size: 13.2))                    .foregroundColor(theme.muted)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.vertical, 24)
             } else {
@@ -41,13 +37,11 @@ struct BluetoothCard: View {
                                 .fill(device.status == "connected" ? theme.green : theme.muted)
                                 .frame(width: 8.6, height: 8.6)
                             Text(device.name)
-                                .font(.system(size: 13.2))
-                                .foregroundColor(theme.text)
+                                .font(PixelFont.eightBit(size: 13.2))                                .foregroundColor(theme.text)
                                 .lineLimit(1)
                             Spacer()
                             Text(device.type)
-                                .font(.system(size: 10.8))
-                                .foregroundColor(theme.muted)
+                                .font(PixelFont.eightBit(size: 10.8))                                .foregroundColor(theme.muted)
                         }
                     }
                 }
@@ -70,26 +64,22 @@ struct UsbCard: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 9.6) {
                 Image(systemName: "cable.connector")
-                    .font(.system(size: 16.8))
-                    .foregroundColor(theme.usbAccent)
+                    .font(PixelFont.eightBit(size: 16.8))                    .foregroundColor(theme.usbAccent)
                     .frame(width: 40.3, height: 40.3)
                     .background(theme.usbAccent.opacity(0.20))
                     .cornerRadius(9.6)
                 VStack(alignment: .leading, spacing: 1.2) {
                     Text("USB")
-                        .font(.system(size: 14.4, weight: .semibold))
-                        .foregroundColor(theme.text)
+                        .font(PixelFont.eightBit(size: 14.4, weight: Font.Weight.semibold))                        .foregroundColor(theme.text)
                     Text("已连接设备")
-                        .font(.system(size: 12))
-                        .foregroundColor(theme.muted)
+                        .font(PixelFont.eightBit(size: 12))                        .foregroundColor(theme.muted)
                 }
                 Spacer()
             }
 
             if devices.usb.isEmpty {
                 Text("无设备")
-                    .font(.system(size: 13.2))
-                    .foregroundColor(theme.muted)
+                    .font(PixelFont.eightBit(size: 13.2))                    .foregroundColor(theme.muted)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.vertical, 24)
             } else {
@@ -100,14 +90,12 @@ struct UsbCard: View {
                                 .fill(theme.green)
                                 .frame(width: 8.6, height: 8.6)
                             Text(device.name)
-                                .font(.system(size: 13.2))
-                                .foregroundColor(theme.text)
+                                .font(PixelFont.eightBit(size: 13.2))                                .foregroundColor(theme.text)
                                 .lineLimit(1)
                             Spacer()
                             if !device.speed.isEmpty {
                                 Text(device.speed)
-                                    .font(.system(size: 10.8))
-                                    .foregroundColor(theme.muted)
+                                    .font(PixelFont.eightBit(size: 10.8))                                    .foregroundColor(theme.muted)
                             }
                         }
                     }

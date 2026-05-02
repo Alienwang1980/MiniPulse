@@ -18,53 +18,51 @@ struct NetworkCard: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 9.6) {
                 Image(systemName: "network")
-                    .font(.system(size: 16.8))
-                    .foregroundColor(theme.netAccent)
+                    .font(PixelFont.eightBit(size: 16.8))                    .foregroundColor(theme.netAccent)
                     .frame(width: 40.3, height: 40.3)
                     .background(theme.netAccent.opacity(0.20))
                     .cornerRadius(9.6)
                 VStack(alignment: .leading, spacing: 1.2) {
                     Text("网络 I/O")
-                        .font(.system(size: 14.4, weight: .semibold))
-                        .foregroundColor(theme.text)
+                        .font(PixelFont.eightBit(size: 14.4, weight: Font.Weight.semibold))                        .foregroundColor(theme.text)
                     Text("实时速度")
-                        .font(.system(size: 12))
-                        .foregroundColor(theme.muted)
+                        .font(PixelFont.eightBit(size: 12))                        .foregroundColor(theme.muted)
                 }
                 Spacer()
             }
 
             // Real-time speed
-            HStack(spacing: 19.2) {
-                VStack(alignment: .leading, spacing: 2.4) {
-                    Text("↓ 接收")
-                        .font(.system(size: 10.8))
-                        .foregroundColor(theme.muted)
-                    HStack(alignment: .lastTextBaseline, spacing: 2.4) {
-                        Text(formatSpeed(displayedRecv).value)
-                            .font(.system(size: 26.4, weight: .bold, design: .monospaced))
-                            .foregroundColor(theme.green)
-                            .contentTransition(.numericText())
-                        Text(formatSpeed(displayedRecv).unit)
-                            .font(.system(size: 12))
-                            .foregroundColor(theme.muted)
-                    }
+            ZStack(alignment: .leading) {
+                if theme.isEightBit {
+                    HeroPatternBackground(pattern: CardHeroPattern.network, color: theme.netAccent, opacity: 0.12)
                 }
-                VStack(alignment: .leading, spacing: 2.4) {
-                    Text("↑ 发送")
-                        .font(.system(size: 10.8))
-                        .foregroundColor(theme.muted)
-                    HStack(alignment: .lastTextBaseline, spacing: 2.4) {
-                        Text(formatSpeed(displayedSent).value)
-                            .font(.system(size: 26.4, weight: .bold, design: .monospaced))
-                            .foregroundColor(theme.accent)
-                            .contentTransition(.numericText())
-                        Text(formatSpeed(displayedSent).unit)
-                            .font(.system(size: 12))
-                            .foregroundColor(theme.muted)
+                HStack(spacing: 19.2) {
+                    VStack(alignment: .leading, spacing: 2.4) {
+                        Text("↓ 接收")
+                            .font(PixelFont.eightBit(size: 10.8))                            .foregroundColor(theme.muted)
+                        HStack(alignment: .lastTextBaseline, spacing: 2.4) {
+                            Text(formatSpeed(displayedRecv).value)
+                                .font(PixelFont.eightBit(size: 36, weight: Font.Weight.bold, design: .monospaced))
+                                .foregroundColor(theme.green)
+                                .contentTransition(.numericText())
+                            Text(formatSpeed(displayedRecv).unit)
+                                .font(PixelFont.eightBit(size: 12))                                .foregroundColor(theme.muted)
+                        }
                     }
+                    VStack(alignment: .leading, spacing: 2.4) {
+                        Text("↑ 发送")
+                            .font(PixelFont.eightBit(size: 10.8))                            .foregroundColor(theme.muted)
+                        HStack(alignment: .lastTextBaseline, spacing: 2.4) {
+                            Text(formatSpeed(displayedSent).value)
+                                .font(PixelFont.eightBit(size: 36, weight: Font.Weight.bold, design: .monospaced))
+                                .foregroundColor(theme.accent)
+                                .contentTransition(.numericText())
+                            Text(formatSpeed(displayedSent).unit)
+                                .font(PixelFont.eightBit(size: 12))                                .foregroundColor(theme.muted)
+                        }
+                    }
+                    Spacer()
                 }
-                Spacer()
             }
 
             Divider().background(theme.isEightBit ? theme.netAccent.opacity(0.20) : theme.border)
@@ -77,21 +75,17 @@ struct NetworkCard: View {
                     HStack {
                         VStack(alignment: .leading, spacing: 2.4) {
                             Text(stats.label)
-                                .font(.system(size: 12, weight: .medium))
-                                .foregroundColor(theme.muted)
+                                .font(PixelFont.eightBit(size: 12, weight: Font.Weight.medium))                                .foregroundColor(theme.muted)
                             if !ifaceIP.isEmpty {
                                 Text(ifaceIP)
-                                    .font(.system(size: 10.8, weight: .bold, design: .monospaced))
-                                    .foregroundColor(theme.accent2)
+                                    .font(PixelFont.eightBit(size: 10.8, weight: Font.Weight.bold, design: .monospaced))                                    .foregroundColor(theme.accent2)
                             }
                         }
                         Spacer()
                         Text("↓ \(formatSpeed(stats.recvMBs).value) \(formatSpeed(stats.recvMBs).unit)")
-                            .font(.system(size: 12, weight: .medium, design: .monospaced))
-                            .foregroundColor(theme.green)
+                            .font(PixelFont.eightBit(size: 12, weight: Font.Weight.medium, design: .monospaced))                            .foregroundColor(theme.green)
                         Text("↑ \(formatSpeed(stats.sentMBs).value) \(formatSpeed(stats.sentMBs).unit)")
-                            .font(.system(size: 12, weight: .medium, design: .monospaced))
-                            .foregroundColor(theme.accent)
+                            .font(PixelFont.eightBit(size: 12, weight: Font.Weight.medium, design: .monospaced))                            .foregroundColor(theme.accent)
                     }
                 }
             }
@@ -100,21 +94,17 @@ struct NetworkCard: View {
             Divider().background(theme.isEightBit ? theme.netAccent.opacity(0.20) : theme.border)
             HStack {
                 Text("总发送")
-                    .font(.system(size: 13.2, weight: .medium))
-                    .foregroundColor(theme.muted)
+                    .font(PixelFont.eightBit(size: 13.2, weight: Font.Weight.medium))                    .foregroundColor(theme.muted)
                 Spacer()
                 Text(formatBytes(net.totalSentMB * 1024 * 1024))
-                    .font(.system(size: 13.2, weight: .bold, design: .monospaced))
-                    .foregroundColor(theme.accent2)
+                    .font(PixelFont.eightBit(size: 13.2, weight: Font.Weight.bold, design: .monospaced))                    .foregroundColor(theme.accent2)
             }
             HStack {
                 Text("总接收")
-                    .font(.system(size: 13.2, weight: .medium))
-                    .foregroundColor(theme.muted)
+                    .font(PixelFont.eightBit(size: 13.2, weight: Font.Weight.medium))                    .foregroundColor(theme.muted)
                 Spacer()
                 Text(formatBytes(net.totalRecvMB * 1024 * 1024))
-                    .font(.system(size: 13.2, weight: .bold, design: .monospaced))
-                    .foregroundColor(theme.green)
+                    .font(PixelFont.eightBit(size: 13.2, weight: Font.Weight.bold, design: .monospaced))                    .foregroundColor(theme.green)
             }
         }
         .padding(19.2)

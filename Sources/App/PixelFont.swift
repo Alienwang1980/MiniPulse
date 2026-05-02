@@ -1,38 +1,99 @@
 import SwiftUI
 
 // MARK: - Pixel Font Manager
-// Fonts pre-installed via Homebrew Cask to ~/Library/Fonts/
-// No manual registration needed - macOS auto-scans ~/Library/Fonts/
+// Fonts loaded via Homebrew Cask — macOS auto-scans ~/Library/Fonts/
+// Share Tech Mono, VT323, Orbitron installed there
 
 enum PixelFont {
-    static let pressStart2P = "PressStart2P-Regular"
-    static let vt323 = "VT323"
+    // Three 8-bit font families — configurable
+    static let mainFont   = "Silkscreen"      // 大数字（CPU % / GPU %）
+    static let bodyFont   = "Silkscreen"      // 正文字体（标签、说明）
+    static let displayFont = "Silkscreen"     // 展示字体（卡片标题）
 
     /// Returns pixel font in 8-bit theme, system font otherwise.
-    /// weight: .body = VT323 (readable), .title/.label = Press Start 2P (pixelated)
-    static func eightBit(size: CGFloat, weight: PixelFontWeight) -> Font {
-        isEightBit ? pixelFont(size: size, weight: weight) : .system(size: size)
+    /// - Parameters:
+    ///   - size: The original size (no scaling applied)
+    ///   - weight: Font weight — PixelFontWeight for 8-bit theme, Font.Weight for Ocean
+    ///   - design: Font design (.default/.rounded/.monospaced) — ignored in 8-bit theme
+    static func eightBit(size: CGFloat, weight: PixelFontWeight = .regular, design: Font.Design = .default) -> Font {
+        if isEightBit {
+            return pixelFont(size: size, weight: weight)
+        } else {
+            return .system(size: size, weight: weight.systemWeight, design: design)
+        }
+    }
+
+    /// Overload with Font.Weight for cleaner call sites
+    static func eightBit(size: CGFloat, weight: Font.Weight, design: Font.Design = .default) -> Font {
+        if isEightBit {
+            return pixelFont(size: size, weight: weight.pixelWeight)
+        } else {
+            return .system(size: size, weight: weight, design: design)
+        }
     }
 
     static var isEightBit: Bool { AppTheme.shared.isEightBit }
 
-    /// Press Start 2P has large x-height and wide glyphs — needs downscale to match
-    /// the visual size of system font in Ocean Blue theme.
+    // MARK: - Private
+
+    /// Maps PixelFontWeight → correct 8-bit font family
     private static func pixelFont(size: CGFloat, weight: PixelFontWeight) -> Font {
-        let scaled: CGFloat
-        if size >= 40 {
-            scaled = size * 0.35
-        } else if size >= 20 {
-            scaled = size * 0.43
-        } else {
-            scaled = size * 0.62
+        let family: String
+        switch weight {
+        case .main, .title, .bold, .heavy, .black:
+            family = mainFont
+        case .display:
+            family = displayFont
+        case .semibold, .caption, .regular, .medium:
+            family = bodyFont
         }
-        return .custom(pressStart2P, size: max(scaled, 6))
+        print("[PixelFont] size=\(size) weight=\(weight) -> family=\(family)")
+        return .custom(family, size: size)
     }
 
+    // MARK: - Font Weight
+
     enum PixelFontWeight {
-        case label   // Press Start 2P - small labels
-        case body    // Press Start 2P - body text
-        case title   // Press Start 2P - medium titles
+        case main     // VT323 — 超大数字（CPU/GPU % 数字）
+        case title    // VT323 — 大标题
+        case display  // Orbitron — 卡片标题 / Section 标题
+        case bold     // VT323 — 大数字强调
+        case semibold // Share Tech Mono — 副标题
+        case regular  // Share Tech Mono — 正文
+        case medium   // Share Tech Mono — 中等
+        case caption  // Share Tech Mono — 小字
+        case heavy    // VT323 — 超大强调
+        case black    // VT323 — 最粗
+
+        fileprivate var systemWeight: Font.Weight {
+            switch self {
+            case .main, .title, .display, .bold, .heavy, .black: return .bold
+            case .semibold: return .semibold
+            case .regular, .caption: return .regular
+            case .medium:  return .medium
+            }
+        }
+    }
+}
+
+// MARK: - Font.Weight Extension
+
+extension Font.Weight {
+    /// Maps Font.Weight → PixelFontWeight for 8-bit theme
+    var pixelWeight: PixelFont.PixelFontWeight {
+        switch self {
+        case .ultraLight, .thin, .light:
+            return .regular
+        case .regular:
+            return .regular
+        case .medium:
+            return .medium
+        case .semibold:
+            return .semibold
+        case .bold, .heavy, .black:
+            return .main  // 大数字用 VT323
+        default:
+            return .regular
+        }
     }
 }

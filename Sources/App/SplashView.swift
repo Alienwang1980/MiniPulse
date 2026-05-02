@@ -22,8 +22,7 @@ struct SplashView: View {
                     .frame(width: 250)
 
                 Text("Shining Like a Neutron Star")
-                    .font(.system(size: 18, weight: .bold, design: .rounded))
-                    .foregroundColor(theme.accent)
+                    .font(PixelFont.eightBit(size: 18, weight: Font.Weight.bold, design: .rounded))                    .foregroundColor(theme.accent)
                     .shadow(color: theme.accent.opacity(0.4), radius: 8)
                     .padding(.horizontal, 24)
             }

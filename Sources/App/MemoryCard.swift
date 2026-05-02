@@ -12,35 +12,37 @@ struct MemoryCard: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 9.6) {
                 Image(systemName: "memorychip")
-                    .font(.system(size: 16.8))
-                    .foregroundColor(theme.memAccent)
+                    .font(PixelFont.eightBit(size: 16.8))                    .foregroundColor(theme.memAccent)
                     .frame(width: 40.3, height: 40.3)
                     .background(theme.memAccent.opacity(0.20))
                     .cornerRadius(9.6)
                 VStack(alignment: .leading, spacing: 1.2) {
                     Text("内存 (RAM)")
-                        .font(.system(size: 14.4, weight: .semibold))
-                        .foregroundColor(theme.text)
+                        .font(PixelFont.eightBit(size: 14.4, weight: Font.Weight.semibold))                        .foregroundColor(theme.text)
                     Text(String(format: "%.1f GB", mem.totalGB))
-                        .font(.system(size: 12))
-                        .foregroundColor(theme.muted)
+                        .font(PixelFont.eightBit(size: 12))                        .foregroundColor(theme.muted)
                 }
                 Spacer()
             }
 
-            HStack(alignment: .lastTextBaseline, spacing: 2.4) {
-                Text("\(Int(displayed))")
-                    .font(.system(size: 57.6, weight: .bold, design: .rounded))
-                    .foregroundColor(theme.memAccent)
-                    .contentTransition(.numericText())
-                Text("%")
-                    .font(.system(size: 28.8, weight: .medium))
-                    .foregroundColor(theme.muted)
+            // Big stat
+            ZStack(alignment: .leading) {
+                if theme.isEightBit {
+                    HeroPatternBackground(pattern: CardHeroPattern.memory, color: theme.memAccent, opacity: 0.12)
+                }
+                HStack(alignment: .lastTextBaseline, spacing: 2.4) {
+                    Text("\(Int(displayed))")
+                        .font(PixelFont.eightBit(size: 70, weight: Font.Weight.bold, design: .rounded))
+                        .foregroundColor(theme.memAccent)
+                        .contentTransition(.numericText())
+                    Text("%")
+                        .font(PixelFont.eightBit(size: 28.8, weight: Font.Weight.medium))
+                        .foregroundColor(theme.muted)
+                }
             }
 
             Text(String(format: "%.1f / %.1f GB", mem.usedGB, mem.totalGB))
-                .font(.system(size: 12, weight: .medium, design: .monospaced))
-                .foregroundColor(theme.muted)
+                .font(PixelFont.eightBit(size: 12, weight: Font.Weight.medium, design: .monospaced))                .foregroundColor(theme.muted)
 
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
@@ -62,24 +64,20 @@ struct MemoryCard: View {
 
             // Swap
             Text("Swap")
-                .font(.system(size: 10.8, weight: .semibold))
-                .foregroundColor(theme.muted)
+                .font(PixelFont.eightBit(size: 10.8, weight: Font.Weight.semibold))                .foregroundColor(theme.muted)
                 .textCase(.uppercase)
                 .padding(.top, 4.8)
 
             HStack(spacing: 7.2) {
                 Text(String(format: "%.1f GB", mem.swapUsedGB))
-                    .font(.system(size: 12, weight: .bold, design: .monospaced))
-                    .foregroundColor(theme.orange)
+                    .font(PixelFont.eightBit(size: 12, weight: Font.Weight.bold, design: .monospaced))                    .foregroundColor(theme.orange)
                 Text("/")
                     .foregroundColor(theme.muted)
                 Text(String(format: "%.1f GB", mem.swapTotalGB))
-                    .font(.system(size: 12, design: .monospaced))
-                    .foregroundColor(theme.muted)
+                    .font(PixelFont.eightBit(size: 12, design: .monospaced))                    .foregroundColor(theme.muted)
                 Spacer()
                 Text(String(format: "%.0f%%", mem.swapPercent))
-                    .font(.system(size: 12, weight: .bold))
-                    .foregroundColor(theme.orange)
+                    .font(PixelFont.eightBit(size: 12, weight: Font.Weight.bold))                    .foregroundColor(theme.orange)
             }
 
             GeometryReader { geo in

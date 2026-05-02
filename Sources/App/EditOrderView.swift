@@ -20,8 +20,7 @@ struct EditOrderView: View {
             // Header
             HStack {
                 Text("编辑卡片顺序")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(AppTheme.shared.text)
+                    .font(PixelFont.eightBit(size: 18, weight: Font.Weight.semibold))                    .foregroundColor(AppTheme.shared.text)
                 Spacer()
                 Button("恢复默认") {
                     showResetConfirm = true
@@ -39,18 +38,15 @@ struct EditOrderView: View {
                 ForEach(visibleOrder, id: \.self) { card in
                     HStack(spacing: 12) {
                         Image(systemName: "line.3.horizontal")
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(AppTheme.shared.muted)
+                            .font(PixelFont.eightBit(size: 14, weight: Font.Weight.medium))                            .foregroundColor(AppTheme.shared.muted)
                             .frame(width: 20)
 
                         Image(systemName: card.iconName)
-                            .font(.system(size: 16, weight: .regular))
-                            .foregroundColor(AppTheme.shared.accent)
+                            .font(PixelFont.eightBit(size: 16, weight: Font.Weight.regular))                            .foregroundColor(AppTheme.shared.accent)
                             .frame(width: 24)
 
                         Text(card.displayName)
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(AppTheme.shared.text)
+                            .font(PixelFont.eightBit(size: 14, weight: Font.Weight.medium))                            .foregroundColor(AppTheme.shared.text)
 
                         Spacer()
                     }

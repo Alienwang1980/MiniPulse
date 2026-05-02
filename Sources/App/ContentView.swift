@@ -42,14 +42,6 @@ struct ContentView: View {
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
-
-                // Multi-color pixel dots at 10% opacity (6-color scatter)
-                PixelDotsBackground(
-                    dotSize: 2,
-                    spacing: 14,
-                    isEightBit: true,
-                    isDark: AppTheme.shared.isDark
-                )
             }
 
             if showSplash {
@@ -73,7 +65,7 @@ struct ContentView: View {
                         Color.clear.frame(height: 72)
                     }
                 }
-                .background(AppTheme.shared.surface)
+                .background(AppTheme.shared.surface.opacity(0.0))
 
                 VStack {
                     Spacer()

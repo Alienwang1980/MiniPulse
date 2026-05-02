@@ -12,18 +12,15 @@ struct MachineInfoCard: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 9.6) {
                 Image(systemName: "desktopcomputer")
-                    .font(.system(size: 16.8))
-                    .foregroundColor(theme.machineAccent)
+                    .font(PixelFont.eightBit(size: 16.8))                    .foregroundColor(theme.machineAccent)
                     .frame(width: 40.3, height: 40.3)
                     .background(theme.machineAccent.opacity(0.20))
                     .cornerRadius(9.6)
                 VStack(alignment: .leading, spacing: 1.2) {
                     Text("本机信息")
-                        .font(.system(size: 14.4, weight: .semibold))
-                        .foregroundColor(theme.text)
+                        .font(PixelFont.eightBit(size: 14.4, weight: Font.Weight.semibold))                        .foregroundColor(theme.text)
                     Text("\(sysInfo.machineModelName) · 系统信息")
-                        .font(.system(size: 12))
-                        .foregroundColor(theme.muted)
+                        .font(PixelFont.eightBit(size: 12))                        .foregroundColor(theme.muted)
                 }
                 Spacer()
             }

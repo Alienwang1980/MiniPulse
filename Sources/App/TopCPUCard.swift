@@ -11,14 +11,12 @@ struct TopCPUCard: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 9.6) {
                 Image(systemName: "chart.bar.fill")
-                    .font(.system(size: 16.8))
-                    .foregroundColor(theme.topAccent)
+                    .font(PixelFont.eightBit(size: 16.8))                    .foregroundColor(theme.topAccent)
                     .frame(width: 37.4, height: 37.4)
                     .background(theme.topAccent.opacity(0.20))
                     .cornerRadius(7.2)
                 Text("Top CPU 进程")
-                    .font(.system(size: 15.6, weight: .semibold))
-                    .foregroundColor(theme.text)
+                    .font(PixelFont.eightBit(size: 15.6, weight: Font.Weight.semibold))                    .foregroundColor(theme.text)
                 Spacer()
             }
 
@@ -26,17 +24,13 @@ struct TopCPUCard: View {
                 ForEach(topCPU.prefix(6)) { proc in
                     HStack(spacing: 9.6) {
                         Text(proc.name)
-                            .font(.system(size: 13.2))
+                            .font(PixelFont.eightBit(size: 13.2))
                             .foregroundColor(theme.text)
                             .lineLimit(1)
-                            .frame(maxWidth: 216, alignment: .leading)
-                        Text("\(proc.pid)")
-                            .font(.system(size: 10.8, design: .monospaced))
-                            .foregroundColor(theme.muted)
-                            .frame(width: 43.2, alignment: .leading)
+                            .frame(maxWidth: 240, alignment: .leading)
                         Spacer()
                         Text(String(format: "%.1f%%", proc.cpuPercent))
-                            .font(.system(size: 13.2, weight: .bold, design: .monospaced))
+                            .font(PixelFont.eightBit(size: 13.2, weight: Font.Weight.bold, design: .monospaced))
                             .foregroundColor(theme.topAccent)
                     }
                 }

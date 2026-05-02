@@ -16,65 +16,59 @@ struct PowerCard: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 9.6) {
                 Image(systemName: "bolt.fill")
-                    .font(.system(size: 16.8))
-                    .foregroundColor(theme.batteryAccent)
+                    .font(PixelFont.eightBit(size: 16.8))                    .foregroundColor(theme.batteryAccent)
                     .frame(width: 40.3, height: 40.3)
                     .background(theme.batteryAccent.opacity(0.20))
                     .cornerRadius(9.6)
                 VStack(alignment: .leading, spacing: 1.2) {
                     Text("功率")
-                        .font(.system(size: 14.4, weight: .semibold))
-                        .foregroundColor(theme.text)
+                        .font(PixelFont.eightBit(size: 14.4, weight: Font.Weight.semibold))                        .foregroundColor(theme.text)
                     Text(subtitleText)
-                        .font(.system(size: 12))
-                        .foregroundColor(theme.muted)
+                        .font(PixelFont.eightBit(size: 12))                        .foregroundColor(theme.muted)
                 }
                 Spacer()
             }
 
             // Total power in W
-            HStack(alignment: .lastTextBaseline, spacing: 2.4) {
-                Text(String(format: "%.1f", displayedTotal))
-                    .font(.system(size: 48, weight: .bold, design: .rounded))
-                    .foregroundColor(theme.orange)
-                    .contentTransition(.numericText())
-                Text("W")
-                    .font(.system(size: 24, weight: .medium))
-                    .foregroundColor(theme.muted)
-                Spacer()
-                Text("总功耗")
-                    .font(.system(size: 13.2))
-                    .foregroundColor(theme.muted)
+            ZStack(alignment: .leading) {
+                if theme.isEightBit {
+                    HeroPatternBackground(pattern: CardHeroPattern.power, color: theme.orange, opacity: 0.12)
+                }
+                HStack(alignment: .lastTextBaseline, spacing: 2.4) {
+                    Text(String(format: "%.1f", displayedTotal))
+                        .font(PixelFont.eightBit(size: 48, weight: Font.Weight.bold, design: .rounded))
+                        .foregroundColor(theme.orange)
+                        .contentTransition(.numericText())
+                    Text("W")
+                        .font(PixelFont.eightBit(size: 24, weight: Font.Weight.medium))                        .foregroundColor(theme.muted)
+                    Spacer()
+                    Text("总功耗")
+                        .font(PixelFont.eightBit(size: 13.2))                        .foregroundColor(theme.muted)
+                }
             }
 
             // Power breakdown in W
             VStack(spacing: 7.2) {
                 HStack {
                     Text("CPU 功耗")
-                        .font(.system(size: 13.2, weight: .medium))
-                        .foregroundColor(theme.muted)
+                        .font(PixelFont.eightBit(size: 13.2, weight: Font.Weight.medium))                        .foregroundColor(theme.muted)
                     Spacer()
                     Text(String(format: "%.2f W", displayedCpu / 1000.0))
-                        .font(.system(size: 13.2, weight: .bold, design: .monospaced))
-                        .foregroundColor(theme.accent)
+                        .font(PixelFont.eightBit(size: 13.2, weight: Font.Weight.bold, design: .monospaced))                        .foregroundColor(theme.accent)
                 }
                 HStack {
                     Text("GPU 功耗")
-                        .font(.system(size: 13.2, weight: .medium))
-                        .foregroundColor(theme.muted)
+                        .font(PixelFont.eightBit(size: 13.2, weight: Font.Weight.medium))                        .foregroundColor(theme.muted)
                     Spacer()
                     Text(String(format: "%.2f W", displayedGpu / 1000.0))
-                        .font(.system(size: 13.2, weight: .bold, design: .monospaced))
-                        .foregroundColor(theme.accent2)
+                        .font(PixelFont.eightBit(size: 13.2, weight: Font.Weight.bold, design: .monospaced))                        .foregroundColor(theme.accent2)
                 }
                 HStack {
                     Text("板载功耗")
-                        .font(.system(size: 13.2, weight: .medium))
-                        .foregroundColor(theme.muted)
+                        .font(PixelFont.eightBit(size: 13.2, weight: Font.Weight.medium))                        .foregroundColor(theme.muted)
                     Spacer()
                     Text(String(format: "%.2f W", Double(temps.boardPowerMw) / 1000.0))
-                        .font(.system(size: 13.2, weight: .bold, design: .monospaced))
-                        .foregroundColor(theme.muted)
+                        .font(PixelFont.eightBit(size: 13.2, weight: Font.Weight.bold, design: .monospaced))                        .foregroundColor(theme.muted)
                 }
             }
         }

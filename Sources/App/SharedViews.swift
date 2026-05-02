@@ -59,12 +59,10 @@ struct DetailRow: View {
     var body: some View {
         HStack {
             Text(label)
-                .font(.system(size: 13.2, weight: .medium))
-                .foregroundColor(color.opacity(0.7))
+                .font(PixelFont.eightBit(size: 13.2, weight: Font.Weight.medium))                .foregroundColor(color.opacity(0.7))
             Spacer()
             Text(value)
-                .font(.system(size: 13.2, weight: .bold, design: .monospaced))
-                .foregroundColor(color)
+                .font(PixelFont.eightBit(size: 13.2, weight: Font.Weight.bold, design: .monospaced))                .foregroundColor(color)
         }
     }
 }
@@ -80,11 +78,9 @@ struct InfoCell: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 2.4) {
             Text(label)
-                .font(.system(size: 12, weight: .medium))
-                .foregroundColor(theme.muted)
+                .font(PixelFont.eightBit(size: 12, weight: Font.Weight.medium))                .foregroundColor(theme.muted)
             Text(value)
-                .font(.system(size: 14.4, weight: accent ? .bold : .medium))
-                .foregroundColor(accent ? theme.accent : theme.text)
+                .font(PixelFont.eightBit(size: 14.4, weight: accent ? Font.Weight.bold : Font.Weight.medium))                .foregroundColor(accent ? theme.accent : theme.text)
                 .lineLimit(1)
         }
     }
@@ -112,6 +108,9 @@ struct SparklineView: View {
                 }
 
                 ZStack {
+                    (backgroundColor ?? theme.sparklineBg)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+
                     FillWaveShape(points: points, count: count, height: geo.size.height)
                         .fill(
                             LinearGradient(
@@ -120,6 +119,7 @@ struct SparklineView: View {
                                 endPoint: .bottom
                             )
                         )
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
 
                     WaveLineShape(points: points)
                         .stroke(
@@ -127,17 +127,17 @@ struct SparklineView: View {
                             style: StrokeStyle(lineWidth: 4, lineCap: .round, lineJoin: .round)
                         )
                         .blur(radius: 2)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
 
                     WaveLineShape(points: points)
                         .stroke(
                             theme.accent2,
                             style: StrokeStyle(lineWidth: 1.5, lineCap: .round, lineJoin: .round)
                         )
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
-                .clipShape(RoundedRectangle(cornerRadius: 4))
             }
         }
-        .background(backgroundColor ?? theme.sparklineBg)
     }
 }
 

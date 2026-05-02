@@ -33,6 +33,9 @@ struct PixelDotsBackground: View {
     let spacing: CGFloat
     let isEightBit: Bool
     let isDark: Bool
+    // Smaller, denser dots for card-level backgrounds
+    static let cardDotSize: CGFloat = 1
+    static let cardSpacing: CGFloat = 6
 
     // 6-color neon palette for dark mode, pastel for light mode
     private var darkColors: [Color] {
@@ -59,8 +62,41 @@ struct PixelDotsBackground: View {
     // Offset each color layer slightly to create a scattered multi-color effect
     private func dotLayer(color: Color, offsetX: CGFloat, offsetY: CGFloat) -> some View {
         PixelDotsShape(dotSize: dotSize, spacing: spacing)
-            .fill(color.opacity(0.10))
+            .fill(color.opacity(0.18))
             .offset(x: offsetX, y: offsetY)
+    }
+
+    // Convenience for card-level small dense dots
+    static func cardDots(isEightBit: Bool, isDark: Bool) -> some View {
+        if isEightBit {
+            let colors = isDark ? [
+                Color(hex: "E8A598"),
+                Color(hex: "8ED8BE"),
+                Color(hex: "F5D5A0"),
+                Color(hex: "9DD3E8"),
+                Color(hex: "C4B0E8"),
+                Color(hex: "C8C87A")
+            ] : [
+                Color(hex: "F5C4C4"),
+                Color(hex: "B8E8D8"),
+                Color(hex: "F0D890"),
+                Color(hex: "A0C8F0"),
+                Color(hex: "D0A8E8")
+            ]
+            let offsets: [(CGFloat, CGFloat)] = [
+                (0, 0), (3, 3), (6, 0), (9, 9), (12, 3), (15, 6)
+            ]
+            return AnyView(ZStack {
+                ForEach(Array(zip(colors.indices, colors)), id: \.0) { index, color in
+                    let offset = offsets[index % offsets.count]
+                    PixelDotsShape(dotSize: cardDotSize, spacing: cardSpacing)
+                        .fill(color.opacity(0.20))
+                        .offset(x: offset.0, y: offset.1)
+                }
+            })
+        } else {
+            return AnyView(EmptyView())
+        }
     }
 
     var body: some View {

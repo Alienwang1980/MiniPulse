@@ -16,29 +16,24 @@ struct DiskCard: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 9.6) {
                 Image(systemName: "internaldrive")
-                    .font(.system(size: 16.8))
-                    .foregroundColor(theme.diskAccent)
+                    .font(PixelFont.eightBit(size: 16.8))                    .foregroundColor(theme.diskAccent)
                     .frame(width: 40.3, height: 40.3)
                     .background(theme.diskAccent.opacity(0.20))
                     .cornerRadius(9.6)
                 VStack(alignment: .leading, spacing: 1.2) {
                     Text("磁盘存储")
-                        .font(.system(size: 14.4, weight: .semibold))
-                        .foregroundColor(theme.text)
+                        .font(PixelFont.eightBit(size: 14.4, weight: Font.Weight.semibold))                        .foregroundColor(theme.text)
                     Text("实时速度")
-                        .font(.system(size: 12))
-                        .foregroundColor(theme.muted)
+                        .font(PixelFont.eightBit(size: 12))                        .foregroundColor(theme.muted)
                 }
                 Spacer()
                 // SSD temperature in header (large, like CPU card)
                 if let ssd = ssdTempC, ssd > 0 {
                     HStack(spacing: 4.8) {
                         Image(systemName: "thermometer.medium")
-                            .font(.system(size: 19.2))
-                            .foregroundColor(theme.diskAccent)
+                            .font(PixelFont.eightBit(size: 19.2))                            .foregroundColor(theme.diskAccent)
                         Text(String(format: "%.0f°C", ssd))
-                            .font(.system(size: 26, weight: .bold, design: .rounded))
-                            .foregroundColor(theme.diskAccent)
+                            .font(PixelFont.eightBit(size: 36, weight: Font.Weight.bold, design: .rounded))                            .foregroundColor(theme.diskAccent)
                             .contentTransition(.numericText())
                     }
                 }
@@ -46,36 +41,37 @@ struct DiskCard: View {
             }
 
             // Real-time speed
-            HStack(spacing: 19.2) {
-                VStack(alignment: .leading, spacing: 2.4) {
-                    Text("↓ 读取")
-                        .font(.system(size: 10.8))
-                        .foregroundColor(theme.muted)
-                    HStack(alignment: .lastTextBaseline, spacing: 2.4) {
-                        Text(String(format: "%.1f", displayedRead))
-                            .font(.system(size: 26.4, weight: .bold, design: .monospaced))
-                            .foregroundColor(theme.green)
-                            .contentTransition(.numericText())
-                        Text("MB/s")
-                            .font(.system(size: 12))
-                            .foregroundColor(theme.muted)
-                    }
+            ZStack(alignment: .leading) {
+                if theme.isEightBit {
+                    HeroPatternBackground(pattern: CardHeroPattern.disk, color: theme.diskAccent, opacity: 0.12)
                 }
-                VStack(alignment: .leading, spacing: 2.4) {
-                    Text("↑ 写入")
-                        .font(.system(size: 10.8))
-                        .foregroundColor(theme.muted)
-                    HStack(alignment: .lastTextBaseline, spacing: 2.4) {
-                        Text(String(format: "%.1f", displayedWrite))
-                            .font(.system(size: 26.4, weight: .bold, design: .monospaced))
-                            .foregroundColor(theme.accent)
-                            .contentTransition(.numericText())
-                        Text("MB/s")
-                            .font(.system(size: 12))
-                            .foregroundColor(theme.muted)
+                HStack(spacing: 19.2) {
+                    VStack(alignment: .leading, spacing: 2.4) {
+                        Text("↓ 读取")
+                            .font(PixelFont.eightBit(size: 10.8))                            .foregroundColor(theme.muted)
+                        HStack(alignment: .lastTextBaseline, spacing: 2.4) {
+                            Text(String(format: "%.1f", displayedRead))
+                                .font(PixelFont.eightBit(size: 36, weight: Font.Weight.bold, design: .monospaced))
+                                .foregroundColor(theme.green)
+                                .contentTransition(.numericText())
+                            Text("MB/s")
+                                .font(PixelFont.eightBit(size: 12))                                .foregroundColor(theme.muted)
+                        }
                     }
+                    VStack(alignment: .leading, spacing: 2.4) {
+                        Text("↑ 写入")
+                            .font(PixelFont.eightBit(size: 10.8))                            .foregroundColor(theme.muted)
+                        HStack(alignment: .lastTextBaseline, spacing: 2.4) {
+                            Text(String(format: "%.1f", displayedWrite))
+                                .font(PixelFont.eightBit(size: 36, weight: Font.Weight.bold, design: .monospaced))
+                                .foregroundColor(theme.accent)
+                                .contentTransition(.numericText())
+                            Text("MB/s")
+                                .font(PixelFont.eightBit(size: 12))                                .foregroundColor(theme.muted)
+                        }
+                    }
+                    Spacer()
                 }
-                Spacer()
             }
 
             Divider().background(theme.isEightBit ? theme.diskAccent.opacity(0.20) : theme.border)
@@ -86,18 +82,14 @@ struct DiskCard: View {
                     VStack(alignment: .leading, spacing: 4.8) {
                         HStack {
                             Image(systemName: "internaldrive.fill")
-                                .font(.system(size: 14.4))
-                                .foregroundColor(theme.diskAccent)
+                                .font(PixelFont.eightBit(size: 14.4))                                .foregroundColor(theme.diskAccent)
                             Text(disk.name)
-                                .font(.system(size: 14.4, weight: .semibold))
-                                .foregroundColor(theme.text)
+                                .font(PixelFont.eightBit(size: 14.4, weight: Font.Weight.semibold))                                .foregroundColor(theme.text)
                             Spacer()
                             Text(String(format: "%.0f%%", disk.percent))
-                                .font(.system(size: 15.6, weight: .bold))
-                                .foregroundColor(diskColor(disk.percent))
+                                .font(PixelFont.eightBit(size: 15.6, weight: Font.Weight.bold))                                .foregroundColor(diskColor(disk.percent))
                             Text(String(format: "%.0f GB free", disk.freeGB))
-                                .font(.system(size: 12))
-                                .foregroundColor(theme.muted)
+                                .font(PixelFont.eightBit(size: 12))                                .foregroundColor(theme.muted)
                         }
 
                         GeometryReader { geo in
@@ -115,15 +107,12 @@ struct DiskCard: View {
                 } else {
                     HStack {
                         Image(systemName: "eject")
-                            .font(.system(size: 14.4))
-                            .foregroundColor(theme.muted)
+                            .font(PixelFont.eightBit(size: 14.4))                            .foregroundColor(theme.muted)
                         Text(disk.name)
-                            .font(.system(size: 14.4, weight: .semibold))
-                            .foregroundColor(theme.muted)
+                            .font(PixelFont.eightBit(size: 14.4, weight: Font.Weight.semibold))                            .foregroundColor(theme.muted)
                         Spacer()
                         Text("未挂载")
-                            .font(.system(size: 12))
-                            .foregroundColor(theme.muted)
+                            .font(PixelFont.eightBit(size: 12))                            .foregroundColor(theme.muted)
                     }
                 }
             }

@@ -10,13 +10,11 @@ struct SettingsPanel: View {
             // Header
             HStack {
                 Text("设置")
-                    .font(.system(size: 18, weight: .bold))
-                    .foregroundColor(AppTheme.shared.text)
+                    .font(PixelFont.eightBit(size: 18, weight: Font.Weight.bold))                    .foregroundColor(AppTheme.shared.text)
                 Spacer()
                 Button(action: { isPresented = false }) {
                     Image(systemName: "xmark.circle.fill")
-                        .font(.system(size: 20))
-                        .foregroundColor(AppTheme.shared.muted)
+                        .font(PixelFont.eightBit(size: 20))                        .foregroundColor(AppTheme.shared.muted)
                 }
                 .buttonStyle(.plain)
             }
@@ -27,8 +25,7 @@ struct SettingsPanel: View {
             // Theme section
             VStack(alignment: .leading, spacing: 16) {
                 Text("主题")
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundColor(AppTheme.shared.muted)
+                    .font(PixelFont.eightBit(size: 13, weight: Font.Weight.semibold))                    .foregroundColor(AppTheme.shared.muted)
                     .textCase(.uppercase)
 
                 HStack(spacing: 12) {
@@ -49,8 +46,7 @@ struct SettingsPanel: View {
             HStack {
                 Spacer()
                 Text("MiniPulse v2.0")
-                    .font(.system(size: 11))
-                    .foregroundColor(AppTheme.shared.muted.opacity(0.5))
+                    .font(PixelFont.eightBit(size: 11))                    .foregroundColor(AppTheme.shared.muted.opacity(0.5))
                 Spacer()
             }
             .padding(.bottom, 20)
@@ -83,8 +79,7 @@ struct ThemeButton: View {
                         )
                 }
                 Text(themeType.rawValue)
-                    .font(.system(size: 9, weight: .bold))
-                    .foregroundColor(textOnPreview)
+                    .font(PixelFont.eightBit(size: 9, weight: Font.Weight.bold))                    .foregroundColor(textOnPreview)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
                     .background(textOnPreview.opacity(0.15))

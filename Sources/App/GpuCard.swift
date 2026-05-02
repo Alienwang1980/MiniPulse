@@ -12,34 +12,36 @@ struct GpuCard: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 9.6) {
                 Image(systemName: "rectangle.3.group")
-                    .font(.system(size: 16.8))
-                    .foregroundColor(theme.gpuAccent)
+                    .font(PixelFont.eightBit(size: 16.8))                    .foregroundColor(theme.gpuAccent)
                     .frame(width: 40.3, height: 40.3)
                     .background(theme.gpuAccent.opacity(0.20))
                     .cornerRadius(9.6)
                 VStack(alignment: .leading, spacing: 1.2) {
                     Text("GPU")
-                        .font(.system(size: 14.4, weight: .semibold))
-                        .foregroundColor(theme.text)
+                        .font(PixelFont.eightBit(size: 14.4, weight: Font.Weight.semibold))                        .foregroundColor(theme.text)
                     Text(gpu.name.isEmpty ? "Apple Silicon" : gpu.name)
-                        .font(.system(size: 12))
-                        .foregroundColor(theme.muted)
+                        .font(PixelFont.eightBit(size: 12))                        .foregroundColor(theme.muted)
                 }
                 Spacer()
             }
 
-            HStack(alignment: .lastTextBaseline, spacing: 2.4) {
-                Text("\(gpuDisplay)")
-                    .font(.system(size: 57.6, weight: .bold, design: .rounded))
-                    .foregroundColor(theme.gpuAccent)
-                    .contentTransition(.numericText())
-                Text("%")
-                    .font(.system(size: 28.8, weight: .medium))
-                    .foregroundColor(theme.muted)
-                Spacer()
-                Text("GPU 占用")
-                    .font(.system(size: 13.2))
-                    .foregroundColor(theme.muted)
+            // Big stat
+            ZStack(alignment: .leading) {
+                if theme.isEightBit {
+                    HeroPatternBackground(pattern: CardHeroPattern.gpu, color: theme.gpuAccent, opacity: 0.12)
+                }
+                HStack(alignment: .lastTextBaseline, spacing: 2.4) {
+                    Text("\(gpuDisplay)")
+                        .font(PixelFont.eightBit(size: 70, weight: Font.Weight.bold, design: .rounded))
+                        .foregroundColor(theme.gpuAccent)
+                        .contentTransition(.numericText())
+                    Text("%")
+                        .font(PixelFont.eightBit(size: 28.8, weight: Font.Weight.medium))
+                        .foregroundColor(theme.muted)
+                    Spacer()
+                    Text("GPU 占用")
+                        .font(PixelFont.eightBit(size: 13.2))                        .foregroundColor(theme.muted)
+                }
             }
 
             // Sparkline
