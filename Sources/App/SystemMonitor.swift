@@ -8,13 +8,13 @@ import os.log
 
 /// Set to false to disable expensive data collections for stability testing
 private let ENABLE_GPU_INFO        = true   // ioreg + system_profiler SPDisplaysDataType
-private let ENABLE_BATTERY_INFO   = true   // IOServiceGetMatchingService (MacBook Pro: working, Mac mini: kIOReturnNotPermitted)
+private let ENABLE_BATTERY_INFO   = false  // IOServiceGetMatchingService (MacBook Pro: working, Mac mini: kIOReturnNotPermitted)
 private let ENABLE_DISK_INFO      = true   // system_profiler SPStorageDataType + diskutil per volume (startup only)
-private let ENABLE_USB_DEVICES    = true   // ioreg IOUSBHostDevice (startup + IOKit events)
-private let ENABLE_BT_DEVICES     = true   // system_profiler SPBluetoothDataType (startup only)
+private let ENABLE_USB_DEVICES    = false  // ioreg IOUSBHostDevice (startup + IOKit events) — DISABLED: causes resource leaks
+private let ENABLE_BT_DEVICES     = false  // system_profiler SPBluetoothDataType (startup only) — DISABLED: stability
 private let ENABLE_TOP_PROCESSES  = true   // ps command (background thread + manual refresh)
 private let ENABLE_DISPLAY_INFO   = true   // system_profiler SPDisplaysDataType (startup only)
-private let ENABLE_TEMPERATURES   = true   // DEBUG: enabled for testing
+private let ENABLE_TEMPERATURES   = false  // DISABLED: IOHIDEventSystemClientCreate called every 5s causes resource leaks
 
 /// Refresh interval: longer = less CPU overhead
 private let REFRESH_INTERVAL: TimeInterval = 5.0
@@ -394,6 +394,15 @@ class SystemMonitor: ObservableObject {
         timer = nil
         stopDiskIOAccumulator()
         stopIfconfigCache()
+        // Release USB IOKit iterators before destroying the notification port
+        if usbAddedIterator != 0 {
+            IOObjectRelease(usbAddedIterator)
+            usbAddedIterator = 0
+        }
+        if usbRemovedIterator != 0 {
+            IOObjectRelease(usbRemovedIterator)
+            usbRemovedIterator = 0
+        }
         usbNotificationPort.map { IONotificationPortDestroy($0) }
         usbNotificationPort = nil
     }

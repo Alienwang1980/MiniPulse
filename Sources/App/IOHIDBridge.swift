@@ -23,7 +23,14 @@ struct TemperatureData {
 final class IOHIDReader {
     static let shared = IOHIDReader()
 
-    private init() {}
+    // Cached IOHIDEventSystemClient to avoid creating a new one on every readTemperatures() call
+    // Creating a new client every 5s for 24h = 17,280 Core Foundation objects without release
+    private var cachedSystem: IOHIDEventSystemClient?
+
+    private init() {
+        // Create once at init
+        cachedSystem = IOHIDEventSystemClientCreate(kCFAllocatorDefault)?.takeUnretainedValue()
+    }
 
     /// Read temperature sensors via IOHIDEventSystemClient
     func readTemperatures() -> TemperatureData {
@@ -33,7 +40,7 @@ final class IOHIDReader {
     }
 
     private func readHIDTemperature(page: Int32, usage: Int32, eventType: Int32) -> TemperatureData {
-        guard let system = IOHIDEventSystemClientCreate(kCFAllocatorDefault) else {
+        guard let system = cachedSystem else {
             return TemperatureData()
         }
 

@@ -17,7 +17,15 @@ struct NetworkCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 9.6) {
-                Image(systemName: "network")
+                Group {
+                    if theme.isEightBit {
+                        Image("network")
+                            .resizable()
+                            .scaledToFit().frame(width: 22, height: 22)
+                    } else {
+                        Image(systemName: "network")
+                    }
+                }
                     .font(PixelFont.eightBit(size: 16.8))                    .foregroundColor(theme.netAccent)
                     .frame(width: 40.3, height: 40.3)
                     .background(theme.netAccent.opacity(0.20))

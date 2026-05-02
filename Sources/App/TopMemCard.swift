@@ -10,7 +10,15 @@ struct TopMemCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 9.6) {
-                Image(systemName: "memorychip.fill")
+                Group {
+                    if theme.isEightBit {
+                        Image("topMem")
+                            .resizable()
+                            .scaledToFit().frame(width: 20, height: 20)
+                    } else {
+                        Image(systemName: "memorychip.fill")
+                    }
+                }
                     .font(PixelFont.eightBit(size: 16.8))                    .foregroundColor(theme.topAccent)
                     .frame(width: 37.4, height: 37.4)
                     .background(theme.topAccent.opacity(0.20))

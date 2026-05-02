@@ -10,7 +10,15 @@ struct BluetoothCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 9.6) {
-                Image(systemName: "dot.radiowaves.left.and.right")
+                Group {
+                    if theme.isEightBit {
+                        Image("bluetooth")
+                            .resizable()
+                            .scaledToFit().frame(width: 22, height: 22)
+                    } else {
+                        Image(systemName: "dot.radiowaves.left.and.right")
+                    }
+                }
                     .font(PixelFont.eightBit(size: 16.8))                    .foregroundColor(theme.bluetoothAccent)
                     .frame(width: 40.3, height: 40.3)
                     .background(theme.bluetoothAccent.opacity(0.20))
@@ -63,7 +71,15 @@ struct UsbCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 9.6) {
-                Image(systemName: "cable.connector")
+                Group {
+                    if theme.isEightBit {
+                        Image("usb")
+                            .resizable()
+                            .scaledToFit().frame(width: 22, height: 22)
+                    } else {
+                        Image(systemName: "cable.connector")
+                    }
+                }
                     .font(PixelFont.eightBit(size: 16.8))                    .foregroundColor(theme.usbAccent)
                     .frame(width: 40.3, height: 40.3)
                     .background(theme.usbAccent.opacity(0.20))

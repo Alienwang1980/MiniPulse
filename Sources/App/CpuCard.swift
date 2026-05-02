@@ -14,8 +14,14 @@ struct CpuCard: View {
         VStack(alignment: .leading, spacing: 12) {
             // Card header
             HStack(spacing: 9.6) {
-                Image(systemName: "cpu")
-                    .font(PixelFont.eightBit(size: 16.8))                    .foregroundColor(theme.cpuAccent)
+                Group {
+                    if theme.isEightBit {
+                        Image("cpu").resizable().scaledToFit().frame(width: 22, height: 22)
+                    } else {
+                        Image(systemName: "cpu")
+                    }
+                }
+                    .font(PixelFont.eightBit(size: 16.8)).foregroundColor(theme.cpuAccent)
                     .frame(width: 40.3, height: 40.3)
                     .background(theme.cpuAccent.opacity(0.20))
                     .cornerRadius(9.6)

@@ -12,6 +12,7 @@
 		030A4D15B35AB50CE389818F /* libIOReport.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 74F1F3B55E8E871A620E54CF /* libIOReport.tbd */; };
 		0F5469FC3D1DFA51CCB1EC81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8452D5BB9B36BAE1C4A37809 /* Assets.xcassets */; };
 		19657C9BB4F4E9DF551A9A66 /* CpuCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4BAA32EE63199343008994 /* CpuCard.swift */; };
+		1C18DA30741D04E2E346A82F /* Silkscreen-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 58136055D86CFE9DBACE7D6B /* Silkscreen-Bold.ttf */; };
 		2433A314F48C170F9C880DEE /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016898DB5B8068EEA7ACCFB9 /* AppTheme.swift */; };
 		274593211FEA62B34B22A90F /* PowerCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66FD6174A741506E683CC2A7 /* PowerCard.swift */; };
 		2933A996ADB4AC5B4E27E930 /* SMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD32622D2C70FC1D6F8D123A /* SMC.swift */; };
@@ -36,6 +37,7 @@
 		B810D6C86BB4879BE4FB5F34 /* DiskCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD4DE51032E13CD2D71E6C7 /* DiskCard.swift */; };
 		BA6954678186A1CE0AD3E99E /* PixelDotsBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C72ABD349308A4C8AC3579B /* PixelDotsBackground.swift */; };
 		BA8A271EE3B87AA85ED39251 /* PixelFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38FBDBCCC84753070E49BF3D /* PixelFont.swift */; };
+		BBCFCFF91AD95D4EE2B11D98 /* Silkscreen-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F14970DB543A5E8274A3A0B8 /* Silkscreen-Regular.ttf */; };
 		C15EC9C2986CFE43A00CB148 /* BatteryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB1F1EB501AF3029C91B654 /* BatteryCard.swift */; };
 		C2BEF99C48E6D3AACCB1ABE9 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B65D362C8727C8AF71E90FD /* SplashView.swift */; };
 		CD8E0505D881517DAD2D414F /* MachineInfoCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43266CE4FC840249670DCA6C /* MachineInfoCard.swift */; };
@@ -62,6 +64,7 @@
 		448C044C38E46F87B144A54C /* TopCPUCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopCPUCard.swift; sourceTree = "<group>"; };
 		4BC91E2194E215EB68B88B74 /* CardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardType.swift; sourceTree = "<group>"; };
 		519F04233E27294360BFD311 /* IOReportBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IOReportBridge.h; sourceTree = "<group>"; };
+		58136055D86CFE9DBACE7D6B /* Silkscreen-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Silkscreen-Bold.ttf"; sourceTree = "<group>"; };
 		59A8C65B64680D24437FF1AC /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		5B9A60030BAE6C776B51C065 /* MiniPulse-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MiniPulse-Bridging-Header.h"; sourceTree = "<group>"; };
 		662A08BCAFB8B7174524AB14 /* VT323-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "VT323-Regular.ttf"; sourceTree = "<group>"; };
@@ -88,6 +91,7 @@
 		DBD4DE51032E13CD2D71E6C7 /* DiskCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskCard.swift; sourceTree = "<group>"; };
 		EE54DBE8242EB6D68A85A0DA /* SettingsPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPanel.swift; sourceTree = "<group>"; };
 		F095886E74DD4820ACBE2DB9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		F14970DB543A5E8274A3A0B8 /* Silkscreen-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Silkscreen-Regular.ttf"; sourceTree = "<group>"; };
 		F35BD28D657D972CDDBA187B /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -204,6 +208,8 @@
 			isa = PBXGroup;
 			children = (
 				82E8769DF1AF2C54630BC6FF /* PressStart2P-Regular.ttf */,
+				58136055D86CFE9DBACE7D6B /* Silkscreen-Bold.ttf */,
+				F14970DB543A5E8274A3A0B8 /* Silkscreen-Regular.ttf */,
 				662A08BCAFB8B7174524AB14 /* VT323-Regular.ttf */,
 			);
 			path = Fonts;
@@ -272,6 +278,8 @@
 				0F5469FC3D1DFA51CCB1EC81 /* Assets.xcassets in Resources */,
 				3840D63BD611FCE9B6681DC2 /* Info.plist in Resources */,
 				6528540C938DBA7C68F29246 /* PressStart2P-Regular.ttf in Resources */,
+				1C18DA30741D04E2E346A82F /* Silkscreen-Bold.ttf in Resources */,
+				BBCFCFF91AD95D4EE2B11D98 /* Silkscreen-Regular.ttf in Resources */,
 				6B40944CF51E6D072100629F /* VT323-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

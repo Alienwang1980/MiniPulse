@@ -11,10 +11,18 @@ struct GpuCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 9.6) {
-                Image(systemName: "rectangle.3.group")
+                Group {
+                    if theme.isEightBit {
+                        Image("gpu")
+                            .resizable()
+                            .scaledToFit().frame(width: 22, height: 22)
+                    } else {
+                        Image(systemName: "rectangle.3.group")
+                    }
+                }
                     .font(PixelFont.eightBit(size: 16.8))                    .foregroundColor(theme.gpuAccent)
                     .frame(width: 40.3, height: 40.3)
-                    .background(theme.gpuAccent.opacity(0.20))
+                    .background(theme.cpuAccent.opacity(0.20))
                     .cornerRadius(9.6)
                 VStack(alignment: .leading, spacing: 1.2) {
                     Text("GPU")

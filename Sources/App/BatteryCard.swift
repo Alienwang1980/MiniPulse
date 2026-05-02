@@ -91,25 +91,38 @@ struct BatteryCard: View {
         VStack(alignment: .leading, spacing: 14.4) {
             // Card header
             HStack(spacing: 9.6) {
-                Image(systemName: batteryIcon)
-                    .font(PixelFont.eightBit(size: 16.8))                    .foregroundColor(theme.green)
+                Group {
+                    if theme.isEightBit {
+                        Image("battery")
+                            .resizable()
+                            .scaledToFit().frame(width: 22, height: 22)
+                    } else {
+                        Image(systemName: batteryIcon)
+                    }
+                }
+                    .font(.system(size: 16.8))
+                    .foregroundColor(theme.green)
                     .frame(width: 40.3, height: 40.3)
                     .background(theme.green.opacity(0.20))
                     .cornerRadius(9.6)
                 VStack(alignment: .leading, spacing: 1.2) {
                     Text("电池")
-                        .font(PixelFont.eightBit(size: 14.4, weight: Font.Weight.semibold))                        .foregroundColor(theme.text)
+                        .font(.system(size: 14.4, weight: .semibold))
+                        .foregroundColor(theme.text)
                     Text(statusText)
-                        .font(PixelFont.eightBit(size: 12))                        .foregroundColor(theme.muted)
+                        .font(.system(size: 12))
+                        .foregroundColor(theme.muted)
                 }
                 Spacer()
                 // Temperature in header (same size as CPU card)
                 if displayedTemp > 0 {
                     HStack(spacing: 4.8) {
                         Image(systemName: "thermometer.medium")
-                            .font(PixelFont.eightBit(size: 19.2))                            .foregroundColor(theme.batteryAccent)
+                            .font(.system(size: 19.2))
+                            .foregroundColor(theme.batteryAccent)
                         Text(String(format: "%.0f°C", displayedTemp))
-                            .font(PixelFont.eightBit(size: 26, weight: Font.Weight.bold, design: .rounded))                            .foregroundColor(theme.batteryAccent)
+                            .font(.system(size: 26, weight: .bold, design: .rounded))
+                            .foregroundColor(theme.batteryAccent)
                             .contentTransition(.numericText())
                     }
                 }
@@ -118,33 +131,33 @@ struct BatteryCard: View {
 
             if let bat = battery {
                 // Main: large percent + gauge bar
-                ZStack(alignment: .leading) {
-                    if theme.isEightBit {
-                        HeroPatternBackground(pattern: CardHeroPattern.battery, color: percentColor, opacity: 0.15)
-                    }
-                    HStack(alignment: .lastTextBaseline, spacing: 2.4) {
-                        Text("\(displayedPercent)")
-                            .font(PixelFont.eightBit(size: 52.8, weight: Font.Weight.bold, design: .rounded))
-                            .foregroundColor(percentColor)
-                            .contentTransition(.numericText())
-                        Text("%")
-                            .font(PixelFont.eightBit(size: 26.4, weight: Font.Weight.medium))                            .foregroundColor(theme.muted)
-                        Spacer()
-                        VStack(alignment: .trailing, spacing: 2.4) {
-                            if displayedCharging {
-                                Text("⚡ 充电中")
-                                    .font(PixelFont.eightBit(size: 13.2, weight: Font.Weight.bold))                                    .foregroundColor(theme.green)
-                            } else if displayedOnBattery {
-                                Text("🔋 使用中")
-                                    .font(PixelFont.eightBit(size: 13.2, weight: Font.Weight.bold))                                    .foregroundColor(theme.yellow)
-                            }
-                            if displayedTotalHours > 0 {
-                                Text(formattedBatteryRuntime(displayedTotalHours))
-                                    .font(PixelFont.eightBit(size: 12, weight: Font.Weight.medium, design: .monospaced))                                    .foregroundColor(theme.muted)
-                            } else {
-                                Text("--")
-                                    .font(PixelFont.eightBit(size: 12, weight: Font.Weight.medium, design: .monospaced))                                    .foregroundColor(theme.muted)
-                            }
+                HStack(alignment: .lastTextBaseline, spacing: 2.4) {
+                    Text("\(displayedPercent)")
+                        .font(.system(size: 52.8, weight: .bold, design: .rounded))
+                        .foregroundColor(percentColor)
+                        .contentTransition(.numericText())
+                    Text("%")
+                        .font(.system(size: 26.4, weight: .medium))
+                        .foregroundColor(theme.muted)
+                    Spacer()
+                    VStack(alignment: .trailing, spacing: 2.4) {
+                        if displayedCharging {
+                            Text("⚡ 充电中")
+                                .font(.system(size: 13.2, weight: .bold))
+                                .foregroundColor(theme.green)
+                        } else if displayedOnBattery {
+                            Text("🔋 使用中")
+                                .font(.system(size: 13.2, weight: .bold))
+                                .foregroundColor(theme.yellow)
+                        }
+                        if displayedTotalHours > 0 {
+                            Text(formattedBatteryRuntime(displayedTotalHours))
+                                .font(.system(size: 12, weight: .medium, design: .monospaced))
+                                .foregroundColor(theme.muted)
+                        } else {
+                            Text("--")
+                                .font(.system(size: 12, weight: .medium, design: .monospaced))
+                                .foregroundColor(theme.muted)
                         }
                     }
                 }
@@ -176,7 +189,8 @@ struct BatteryCard: View {
                 }
             } else {
                 Text("无电池信息（台式机）")
-                    .font(PixelFont.eightBit(size: 16.8))                    .foregroundColor(theme.muted)
+                    .font(.system(size: 16.8))
+                    .foregroundColor(theme.muted)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.vertical, 24)
             }
@@ -244,12 +258,15 @@ struct BatteryMetric: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 2.4) {
             Text(label)
-                .font(PixelFont.eightBit(size: 12))                .foregroundColor(AppTheme.shared.muted)
+                .font(.system(size: 12))
+                .foregroundColor(AppTheme.shared.muted)
             HStack(alignment: .lastTextBaseline, spacing: 1.2) {
                 Text(value)
-                    .font(PixelFont.eightBit(size: 16.8, weight: Font.Weight.bold, design: .rounded))                    .foregroundColor(valueColor)
+                    .font(.system(size: 16.8, weight: .bold, design: .rounded))
+                    .foregroundColor(valueColor)
                 Text(unit)
-                    .font(PixelFont.eightBit(size: 12))                    .foregroundColor(AppTheme.shared.muted)
+                    .font(.system(size: 12))
+                    .foregroundColor(AppTheme.shared.muted)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

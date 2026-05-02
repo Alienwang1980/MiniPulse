@@ -15,7 +15,15 @@ struct DiskCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 9.6) {
-                Image(systemName: "internaldrive")
+                Group {
+                    if theme.isEightBit {
+                        Image("disk")
+                            .resizable()
+                            .scaledToFit().frame(width: 22, height: 22)
+                    } else {
+                        Image(systemName: "internaldrive")
+                    }
+                }
                     .font(PixelFont.eightBit(size: 16.8))                    .foregroundColor(theme.diskAccent)
                     .frame(width: 40.3, height: 40.3)
                     .background(theme.diskAccent.opacity(0.20))
