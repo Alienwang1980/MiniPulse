@@ -288,8 +288,14 @@ enum ThemeType: String, CaseIterable {
 final class AppTheme {
     static let shared = AppTheme()
 
-    // 用户选择的主题类型
-    var themeType: ThemeType = .ocean
+    private let kThemeTypeKey = "AppTheme.themeType"
+
+    // 用户选择的主题类型（持久化）
+    var themeType: ThemeType {
+        didSet {
+            UserDefaults.standard.set(themeType.rawValue, forKey: kThemeTypeKey)
+        }
+    }
 
     // 系统外观（由 ContentView 注入）
     var systemColorScheme: ColorScheme = .dark
@@ -300,6 +306,15 @@ final class AppTheme {
     /// 当前生效的 ColorScheme（强制值 > 系统值）
     var colorScheme: ColorScheme {
         forcedColorScheme ?? systemColorScheme
+    }
+
+    private init() {
+        if let saved = UserDefaults.standard.string(forKey: kThemeTypeKey),
+           let loaded = ThemeType(rawValue: saved) {
+            self.themeType = loaded
+        } else {
+            self.themeType = .ocean
+        }
     }
 
     /// 当前主题（协议存在类型）
@@ -373,6 +388,4 @@ final class AppTheme {
     var diskGrad1: Color { currentTheme.diskGrad1 }
     var diskGrad2: Color { currentTheme.diskGrad2 }
     var diskRed: Color { currentTheme.diskRed }
-
-    private init() {}
 }
