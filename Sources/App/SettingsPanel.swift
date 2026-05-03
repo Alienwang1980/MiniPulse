@@ -54,7 +54,7 @@ struct SettingsPanel: View {
             // Version
             HStack {
                 Spacer()
-                Text("MiniPulse v2.0")
+                Text("► Made with ♥ by Alienwang")
                     .font(PixelFont.eightBit(size: 11))
                     .foregroundColor(AppTheme.shared.muted.opacity(0.5))
                 Spacer()
