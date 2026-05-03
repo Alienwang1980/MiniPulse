@@ -42,7 +42,7 @@ struct SettingsPanel: View {
             // Footer
             HStack {
                 Button(action: {
-                    if let url = URL(string: "mailto:feedback@minipulse.app?subject=MiniPulse%20Feedback") {
+                    if let url = URL(string: "mailto:minipulsemac@gmail.com?subject=MiniPulse%20Feedback") {
                         NSWorkspace.shared.open(url)
                     }
                 }) {
