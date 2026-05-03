@@ -1008,6 +1008,32 @@ class SystemMonitor: ObservableObject {
             return mount == "/System/Volumes/Data"
         }
 
+        // On Macs with a separate Data volume, df -k shows snapshot-relative free space
+        // (APFS snapshots record a frozen state of used/free at snap time), NOT the physical
+        // free space on the underlying container. Finder shows the physical free space via
+        // APFSContainerFree. We call diskutil once to get the real physical free/total.
+        var physicalFreeKB: Double? = nil
+        var physicalTotalKB: Double? = nil
+        if hasDataVolume {
+            let diTask = Process()
+            diTask.executableURL = URL(fileURLWithPath: "/usr/sbin/diskutil")
+            diTask.arguments = ["info", "-plist", "/System/Volumes/Data"]
+            let diPipe = Pipe()
+            diTask.standardOutput = diPipe
+            diTask.standardError = FileHandle.nullDevice
+            try? diTask.run()
+            diTask.waitUntilExit()
+            let diData = diPipe.fileHandleForReading.readDataToEndOfFile()
+            if let diPlist = try? PropertyListSerialization.propertyList(from: diData, format: nil) as? [String: Any] {
+                if let free = diPlist["APFSContainerFree"] as? Double {
+                    physicalFreeKB = free / 1024  // diskutil reports in bytes
+                }
+                if let total = diPlist["APFSContainerTotalSize"] as? Double {
+                    physicalTotalKB = total / 1024  // diskutil reports in bytes
+                }
+            }
+        }
+
         // Build a device->volumeName map ONCE by calling diskutil list -plist.
         // This gives us proper Unicode volume names (Chinese, emoji) even though
         // df -k returns "?" for non-ASCII mount points due to POSIX locale.
@@ -1078,7 +1104,6 @@ class SystemMonitor: ObservableObject {
                 continue
             }
 
-            // df -k always gives sizes in KB: [1]=total, [2]=used, [3]=avail
             let totalKB = Double(parts[1]) ?? 0
             let usedKB = Double(parts[2]) ?? 0
             let freeKB = Double(parts[3]) ?? 0
@@ -1088,9 +1113,25 @@ class SystemMonitor: ObservableObject {
             // Also skip if totalKB < 1 GB — these are auxiliary APFS system volumes, not real storage
             guard totalKB >= MIN_USER_DISK_KB else { continue }
 
-            let totalGB = totalKB / 1024 / 1024
-            let usedGB = usedKB / 1024 / 1024
-            let freeGB = freeKB / 1024 / 1024
+            // Override with physical container values if we have them (Data volume on APFS Macs).
+            // df -k Available reflects the snapshot quota, not the real free space on the container.
+            let effectiveTotalKB: Double
+            let effectiveFreeKB: Double
+            let effectiveUsedKB: Double
+            if mountPoint == "/System/Volumes/Data", let pTotal = physicalTotalKB, let pFree = physicalFreeKB {
+                effectiveTotalKB = pTotal
+                effectiveFreeKB = pFree
+                effectiveUsedKB = pTotal - pFree
+            } else {
+                effectiveTotalKB = totalKB
+                effectiveFreeKB = freeKB
+                effectiveUsedKB = usedKB
+            }
+
+            let totalGB = effectiveTotalKB / 1024 / 1024
+            let usedGB = effectiveUsedKB / 1024 / 1024
+            let freeGB = effectiveFreeKB / 1024 / 1024
+            let effectivePct = effectiveTotalKB > 0 ? (effectiveUsedKB / effectiveTotalKB) * 100 : 0
 
             // Get display name from mount point.
             // NOTE: df -k on macOS outputs mount points with non-ASCII chars (Chinese, emoji)
@@ -1120,7 +1161,7 @@ class SystemMonitor: ObservableObject {
                 totalGB: totalGB,
                 usedGB: usedGB,
                 freeGB: freeGB,
-                percent: usePct,
+                percent: effectivePct,
                 isMounted: true
             ))
         }
