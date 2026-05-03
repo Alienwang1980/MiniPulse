@@ -345,33 +345,36 @@ class SystemMonitor: ObservableObject {
     }
 
     private func sampleDiskIO() {
-        // iostat -d reports per-second throughput (MB/s) per disk for the last sampling interval.
-        // macOS iostat doesn't separate read vs write, so we apply a fixed ratio:
-        //   - When disk is active: 70% read, 30% write (typical consumer SSD workload)
-        //   - When idle (MB/s < 0.1): both read and write are 0
-        let result = run("/usr/sbin/iostat", args: ["-d", "-c", "1"], timeout: 4)
-        var totalMB: Double = 0
-        for line in result.components(separatedBy: "\n") {
+        // iostat -d -c 2 does 2 samples: first = system-wide average since boot (useless),
+        // second = real-time throughput for the most recent 1-second interval (what we want).
+        // We only process the LAST data line to get live throughput.
+        let result = run("/usr/sbin/iostat", args: ["-d", "-c", "2"], timeout: 4)
+
+        // Split into lines and find the last line that has numeric data (KB/t column)
+        let allLines = result.components(separatedBy: "\n")
+        var lastDataLine: [String] = []
+
+        for line in allLines {
             let cols = line.split(separator: " ", omittingEmptySubsequences: true)
-            // iostat -d horizontal format: disk0 KB/t tps MB/s disk4 KB/t tps MB/s ...
-            // First col is KB/t for disk0, second is tps, third is MB/s for disk0
-            // Then disk4 starts at index 3: KB/t, tps, MB/s
-            // So MB/s values are at indices 2, 5, 8, ... (every 3rd col starting from 2)
             guard cols.count >= 3 else { continue }
             let firstCol = String(cols[0])
-            // Skip header rows that start with "disk" or "KB/t"
+            // Skip header rows
             guard !firstCol.hasPrefix("disk") && firstCol != "KB/t" else { continue }
             // Only process rows where first col is numeric (the KB/t column)
             guard Double(firstCol) != nil else { continue }
-            // Accumulate MB/s for each disk (indices 2, 5, 8, ...)
-            for i in stride(from: 2, to: cols.count, by: 3) {
-                if let mbps = Double(cols[i]) {
-                    totalMB += mbps
-                }
+            // Keep updating — last match is the most recent data line
+            lastDataLine = cols.map { String($0) }
+        }
+
+        // Accumulate MB/s for each disk from the last data line (indices 2, 5, 8, ...)
+        var totalMB: Double = 0
+        for i in stride(from: 2, to: lastDataLine.count, by: 3) {
+            if let mbps = Double(lastDataLine[i]) {
+                totalMB += mbps
             }
         }
-        let combinedMBs = totalMB
-        lastDiskIOTotalMB = combinedMBs
+
+        lastDiskIOTotalMB = totalMB
     }
 
     // MARK: - ifconfig Cache (updated by background timer every 60s)
