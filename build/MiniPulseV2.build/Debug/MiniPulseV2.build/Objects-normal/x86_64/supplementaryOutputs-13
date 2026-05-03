@@ -1,0 +1,23 @@
+{
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/PixelFont.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PixelFont.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PixelFont.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PixelFont.dia",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PixelFont.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PixelFont.swiftdeps"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/PowerCard.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PowerCard.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PowerCard.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PowerCard.dia",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PowerCard.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PowerCard.swiftdeps"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/SMC.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SMC.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SMC.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SMC.dia",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SMC.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SMC.swiftdeps"
+  }
+}

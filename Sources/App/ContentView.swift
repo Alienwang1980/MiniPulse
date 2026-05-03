@@ -85,7 +85,7 @@ struct ContentView: View {
                         .onTapGesture { showSettings = false }
                         .ignoresSafeArea()
 
-                    SettingsPanel(isPresented: $showSettings, monitor: monitor)
+                    SettingsPanel(isPresented: $showSettings)
                         .transition(.move(edge: .top).combined(with: .opacity))
                 }
                 .animation(.easeInOut(duration: 0.25), value: showSettings)

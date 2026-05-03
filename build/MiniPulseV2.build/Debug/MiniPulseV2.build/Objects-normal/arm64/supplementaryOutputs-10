@@ -1,0 +1,23 @@
+{
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/IOHIDBridge.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/IOHIDBridge.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/IOHIDBridge.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/IOHIDBridge.dia",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/IOHIDBridge.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/IOHIDBridge.swiftdeps"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/IOReportBridge.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/IOReportBridge.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/IOReportBridge.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/IOReportBridge.dia",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/IOReportBridge.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/IOReportBridge.swiftdeps"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/MachineInfoCard.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/MachineInfoCard.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/MachineInfoCard.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/MachineInfoCard.dia",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/MachineInfoCard.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/MachineInfoCard.swiftdeps"
+  }
+}

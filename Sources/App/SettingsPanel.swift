@@ -4,10 +4,6 @@ import SwiftUI
 
 struct SettingsPanel: View {
     @Binding var isPresented: Bool
-    var monitor: SystemMonitor?
-
-    @State private var debugOutput: String = ""
-    @State private var showDebugSheet = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -17,15 +13,6 @@ struct SettingsPanel: View {
                     .font(PixelFont.eightBit(size: 18, weight: Font.Weight.bold))
                     .foregroundColor(AppTheme.shared.text)
                 Spacer()
-                // Debug button — triggers disk I/O diagnostic
-                Button {
-                    triggerDebugDump()
-                } label: {
-                    Text("调试")
-                        .font(PixelFont.eightBit(size: 12))
-                        .foregroundColor(AppTheme.shared.accent)
-                }
-                .buttonStyle(.plain)
             }
             .padding(24)
 
@@ -52,6 +39,18 @@ struct SettingsPanel: View {
 
             Spacer()
 
+            // Footer
+            HStack {
+                Spacer()
+                Button("完成") {
+                    isPresented = false
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+            }
+            .padding(.horizontal, 24)
+            .padding(.bottom, 20)
+
             // Version
             HStack {
                 Spacer()
@@ -68,81 +67,6 @@ struct SettingsPanel: View {
             RoundedRectangle(cornerRadius: 14.4)
                 .stroke(AppTheme.shared.accent.opacity(0.10), lineWidth: 1)
         )
-        .sheet(isPresented: $showDebugSheet) {
-            DebugOutputSheet(content: $debugOutput, isPresented: $showDebugSheet)
-        }
-    }
-
-    private func triggerDebugDump() {
-        guard let monitor = monitor else {
-            debugOutput = "SystemMonitor not available"
-            showDebugSheet = true
-            return
-        }
-        debugOutput = monitor.dumpDebugInfo()
-        showDebugSheet = true
-    }
-}
-
-// MARK: - Debug Output Sheet
-
-struct DebugOutputSheet: View {
-    @Binding var content: String
-    @Binding var isPresented: Bool
-
-    var body: some View {
-        VStack(spacing: 0) {
-            HStack {
-                Text("调试信息")
-                    .font(PixelFont.eightBit(size: 16, weight: Font.Weight.bold))
-                    .foregroundColor(AppTheme.shared.text)
-                Spacer()
-                Button("复制") {
-                    #if os(macOS)
-                    let pasteboard = NSPasteboard.general
-                    pasteboard.clearContents()
-                    pasteboard.setString(content, forType: .string)
-                    #endif
-                }
-                .font(PixelFont.eightBit(size: 12))
-                Button("保存到桌面") {
-                    saveToDesktop()
-                }
-                .font(PixelFont.eightBit(size: 12))
-                Button("关闭") {
-                    isPresented = false
-                }
-                .font(PixelFont.eightBit(size: 12))
-            }
-            .padding(16)
-            .background(AppTheme.shared.card)
-
-            Divider()
-
-            ScrollView {
-                Text(content)
-                    .font(.system(size: 11, design: .monospaced))
-                    .foregroundColor(AppTheme.shared.text)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(16)
-            }
-            .background(AppTheme.shared.surface)
-        }
-        .frame(width: 700, height: 500)
-    }
-
-    private func saveToDesktop() {
-        let desktopURL = FileManager.default.urls(for: .desktopDirectory, in: .userDomainMask).first!
-        let dirURL = desktopURL.appendingPathComponent("MiniPulse")
-        let fileURL = dirURL.appendingPathComponent("disk_io_debug.txt")
-        do {
-            try FileManager.default.createDirectory(at: dirURL, withIntermediateDirectories: true)
-            try content.write(to: fileURL, atomically: true, encoding: .utf8)
-        } catch {
-            let pasteboard = NSPasteboard.general
-            pasteboard.clearContents()
-            pasteboard.setString("保存失败: \(error.localizedDescription)\n\n内容:\n\(content)", forType: .string)
-        }
     }
 }
 

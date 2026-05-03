@@ -1,0 +1,23 @@
+{
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/SettingsPanel.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/SettingsPanel.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/SettingsPanel.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/SettingsPanel.dia",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/SettingsPanel.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/SettingsPanel.swiftdeps"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/SharedViews.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/SharedViews.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/SharedViews.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/SharedViews.dia",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/SharedViews.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/SharedViews.swiftdeps"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/SplashView.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/SplashView.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/SplashView.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/SplashView.dia",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/SplashView.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/arm64/SplashView.swiftdeps"
+  }
+}

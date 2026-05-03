@@ -1,0 +1,319 @@
+{
+  "" : {
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/MiniPulseV2-primary.dia",
+    "emit-module-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/MiniPulseV2-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/MiniPulseV2-primary-emit-module.dia",
+    "pch" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/MiniPulseV2-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/MiniPulseV2-primary.swiftdeps"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/AppDelegate.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/AppDelegate.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/AppDelegate.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/AppDelegate.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/AppDelegate.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/AppDelegate.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/AppDelegate.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/AppDelegate.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/AppDelegate~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/AppTheme.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/AppTheme.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/AppTheme.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/AppTheme.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/AppTheme.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/AppTheme.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/AppTheme.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/AppTheme.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/AppTheme~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/BatteryCard.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/BatteryCard.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/BatteryCard.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/BatteryCard.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/BatteryCard.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/BatteryCard.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/BatteryCard.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/BatteryCard.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/BatteryCard~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/CardType.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/CardType.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/CardType.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/CardType.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/CardType.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/CardType.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/CardType.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/CardType.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/CardType~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/ContentView.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/ContentView.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/ContentView.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/ContentView.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/ContentView.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/ContentView.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/ContentView.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/ContentView.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/ContentView~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/CpuCard.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/CpuCard.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/CpuCard.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/CpuCard.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/CpuCard.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/CpuCard.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/CpuCard.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/CpuCard.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/CpuCard~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/DevicesCard.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/DevicesCard.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/DevicesCard.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/DevicesCard.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/DevicesCard.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/DevicesCard.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/DevicesCard.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/DevicesCard.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/DevicesCard~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/DiskCard.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/DiskCard.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/DiskCard.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/DiskCard.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/DiskCard.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/DiskCard.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/DiskCard.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/DiskCard.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/DiskCard~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/EditOrderView.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/EditOrderView.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/EditOrderView.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/EditOrderView.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/EditOrderView.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/EditOrderView.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/EditOrderView.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/EditOrderView.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/EditOrderView~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/FooterView.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/FooterView.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/FooterView.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/FooterView.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/FooterView.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/FooterView.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/FooterView.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/FooterView.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/FooterView~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/GpuCard.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/GpuCard.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/GpuCard.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/GpuCard.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/GpuCard.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/GpuCard.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/GpuCard.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/GpuCard.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/GpuCard~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/HeaderView.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/HeaderView.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/HeaderView.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/HeaderView.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/HeaderView.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/HeaderView.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/HeaderView.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/HeaderView.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/HeaderView~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/HeroPatternBackgrounds.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/HeroPatternBackgrounds.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/HeroPatternBackgrounds.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/HeroPatternBackgrounds.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/HeroPatternBackgrounds.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/HeroPatternBackgrounds.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/HeroPatternBackgrounds.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/HeroPatternBackgrounds.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/HeroPatternBackgrounds~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/IOHIDBridge.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/IOHIDBridge.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/IOHIDBridge.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/IOHIDBridge.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/IOHIDBridge.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/IOHIDBridge.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/IOHIDBridge.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/IOHIDBridge.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/IOHIDBridge~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/IOReportBridge.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/IOReportBridge.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/IOReportBridge.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/IOReportBridge.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/IOReportBridge.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/IOReportBridge.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/IOReportBridge.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/IOReportBridge.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/IOReportBridge~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/MachineInfoCard.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/MachineInfoCard.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/MachineInfoCard.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/MachineInfoCard.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/MachineInfoCard.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/MachineInfoCard.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/MachineInfoCard.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/MachineInfoCard.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/MachineInfoCard~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/MemoryCard.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/MemoryCard.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/MemoryCard.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/MemoryCard.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/MemoryCard.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/MemoryCard.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/MemoryCard.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/MemoryCard.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/MemoryCard~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/NetworkCard.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/NetworkCard.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/NetworkCard.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/NetworkCard.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/NetworkCard.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/NetworkCard.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/NetworkCard.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/NetworkCard.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/NetworkCard~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/PixelDotsBackground.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PixelDotsBackground.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PixelDotsBackground.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PixelDotsBackground.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PixelDotsBackground.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PixelDotsBackground.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PixelDotsBackground.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PixelDotsBackground.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PixelDotsBackground~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/PixelFont.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PixelFont.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PixelFont.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PixelFont.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PixelFont.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PixelFont.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PixelFont.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PixelFont.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PixelFont~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/PowerCard.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PowerCard.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PowerCard.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PowerCard.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PowerCard.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PowerCard.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PowerCard.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PowerCard.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/PowerCard~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/SMC.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SMC.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SMC.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SMC.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SMC.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SMC.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SMC.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SMC.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SMC~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/SettingsPanel.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SettingsPanel.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SettingsPanel.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SettingsPanel.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SettingsPanel.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SettingsPanel.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SettingsPanel.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SettingsPanel.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SettingsPanel~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/SharedViews.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SharedViews.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SharedViews.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SharedViews.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SharedViews.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SharedViews.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SharedViews.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SharedViews.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SharedViews~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/SplashView.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SplashView.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SplashView.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SplashView.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SplashView.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SplashView.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SplashView.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SplashView.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SplashView~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/SystemMonitor.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SystemMonitor.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SystemMonitor.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SystemMonitor.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SystemMonitor.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SystemMonitor.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SystemMonitor.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SystemMonitor.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/SystemMonitor~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/TopCPUCard.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/TopCPUCard.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/TopCPUCard.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/TopCPUCard.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/TopCPUCard.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/TopCPUCard.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/TopCPUCard.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/TopCPUCard.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/TopCPUCard~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/TopMemCard.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/TopMemCard.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/TopMemCard.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/TopMemCard.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/TopMemCard.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/TopMemCard.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/TopMemCard.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/TopMemCard.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/TopMemCard~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/WaterfallLayout.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/WaterfallLayout.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/WaterfallLayout.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/WaterfallLayout.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/WaterfallLayout.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/WaterfallLayout.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/WaterfallLayout.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/WaterfallLayout.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/WaterfallLayout~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/Sources/App/main.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/main.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/main.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/main.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/main.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/main.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/main.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/main.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/main~partial.swiftmodule"
+  },
+  "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Users/mini/Documents/Project/MiniPulseV2/build/MiniPulseV2.build/Debug/MiniPulseV2.build/Objects-normal/x86_64/GeneratedAssetSymbols~partial.swiftmodule"
+  }
+}

@@ -18,9 +18,6 @@ struct FooterView: View {
                 .font(PixelFont.eightBit(size: 13.2, design: .monospaced))                .foregroundColor(theme.muted)
 
             Spacer()
-
-            Text("3s refresh")
-                .font(PixelFont.eightBit(size: 12, weight: Font.Weight.medium))                .foregroundColor(theme.muted)
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 12)
