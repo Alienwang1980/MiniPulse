@@ -8,13 +8,13 @@ import os.log
 
 /// Set to false to disable expensive data collections for stability testing
 private let ENABLE_GPU_INFO        = true   // ioreg + system_profiler SPDisplaysDataType
-private let ENABLE_BATTERY_INFO   = false  // IOServiceGetMatchingService (MacBook Pro: working, Mac mini: kIOReturnNotPermitted)
+private let ENABLE_BATTERY_INFO   = true   // IOServiceGetMatchingService (MacBook Pro: working, Mac mini: kIOReturnNotPermitted)
 private let ENABLE_DISK_INFO      = true   // system_profiler SPStorageDataType + diskutil per volume (startup only)
-private let ENABLE_USB_DEVICES    = false  // ioreg IOUSBHostDevice (startup + IOKit events) — DISABLED: causes resource leaks
-private let ENABLE_BT_DEVICES     = false  // system_profiler SPBluetoothDataType (startup only) — DISABLED: stability
+private let ENABLE_USB_DEVICES    = true   // IOKit IOUSBHostDevice notifications + performUsbCollection (event-driven, no polling)
+private let ENABLE_BT_DEVICES     = true   // startup once + periodic via timer (macOS has no BT plug/unplug IOKit notifications)
 private let ENABLE_TOP_PROCESSES  = true   // ps command (background thread + manual refresh)
 private let ENABLE_DISPLAY_INFO   = true   // system_profiler SPDisplaysDataType (startup only)
-private let ENABLE_TEMPERATURES   = false  // DISABLED: IOHIDEventSystemClientCreate called every 5s causes resource leaks
+private let ENABLE_TEMPERATURES   = true   // IOHIDEventSystemClientCreate cached at init — no longer leaks
 
 /// Refresh interval: longer = less CPU overhead
 private let REFRESH_INTERVAL: TimeInterval = 5.0
@@ -121,8 +121,9 @@ struct DiskInfo: Identifiable, Hashable {
 }
 
 struct DiskIOInfo {
-    var readMBs: Double = 0
-    var writeMBs: Double = 0
+    var readMBs: Double = 0      // ← kept for compatibility, unused in UI
+    var writeMBs: Double = 0    // ← kept for compatibility, unused in UI
+    var totalMBs: Double = 0    // real total disk throughput (MB/s), from iostat -d
     var totalReadMB: Double = 0
     var totalWriteMB: Double = 0
 }
@@ -225,8 +226,8 @@ class SystemMonitor: ObservableObject {
 
     // Async disk I/O cache (updated by background timer)
     // Background timer samples every ~1s; main timer reads latest sample
-    // iostat -I -d outputs MB directly as floating point
-    private var lastDiskIO: (readMB: Double, writeMB: Double) = (0, 0)
+    // iostat -d outputs real total MB/s (macOS does NOT separate read/write)
+    private var lastDiskIOTotalMB: Double = 0
     private let diskIOQueue = DispatchQueue(label: "ai.hermes.minipulse.diskio", qos: .utility)
     private var diskIOAccumulatorTimer: DispatchSourceTimer?
 
@@ -287,10 +288,10 @@ class SystemMonitor: ObservableObject {
         collectUsbDevicesOnce()
         setupUsbNotifications()
 
-        // Disk capacity: collect once at startup (not in timer loop)
+        // Disk capacity: collect once at startup (updated via NSWorkspace mount/unmount notifications)
         collectDiskInfoOnce()
 
-        // Disk plug/unplug: listen for volume mount/unmount events via DiskArbitration
+        // Disk plug/unplug: listen for volume mount/unmount events via NSWorkspace (event-driven)
         setupDiskNotifications()
 
         // Display resolution: collect once at startup (not in timer loop)
@@ -316,7 +317,6 @@ class SystemMonitor: ObservableObject {
         timer = DispatchSource.makeTimerSource(queue: queue)
         timer?.schedule(deadline: .now() + 5, repeating: 5, leeway: .milliseconds(200))
         timer?.setEventHandler { [weak self] in
-            fputs("MiniPulse: timer fired!\n", stderr)
             self?.refresh()
         }
         timer?.resume()
@@ -328,6 +328,9 @@ class SystemMonitor: ObservableObject {
     private func startDiskIOAccumulator() {
         // Prevent double timer creation
         guard diskIOAccumulatorTimer == nil else { return }
+        // Prime the cache immediately (synchronous, fast ~10ms)
+        sampleDiskIO()
+        // Refresh every REFRESH_INTERVAL
         diskIOAccumulatorTimer = DispatchSource.makeTimerSource(queue: diskIOQueue)
         diskIOAccumulatorTimer?.schedule(deadline: .now(), repeating: REFRESH_INTERVAL)
         diskIOAccumulatorTimer?.setEventHandler { [weak self] in
@@ -350,18 +353,25 @@ class SystemMonitor: ObservableObject {
         var totalMB: Double = 0
         for line in result.components(separatedBy: "\n") {
             let cols = line.split(separator: " ", omittingEmptySubsequences: true)
+            // iostat -d horizontal format: disk0 KB/t tps MB/s disk4 KB/t tps MB/s ...
+            // First col is KB/t for disk0, second is tps, third is MB/s for disk0
+            // Then disk4 starts at index 3: KB/t, tps, MB/s
+            // So MB/s values are at indices 2, 5, 8, ... (every 3rd col starting from 2)
             guard cols.count >= 3 else { continue }
             let firstCol = String(cols[0])
+            // Skip header rows that start with "disk" or "KB/t"
             guard !firstCol.hasPrefix("disk") && firstCol != "KB/t" else { continue }
-            guard let _ = Double(firstCol) else { continue }
-            guard let mbps = Double(cols[2]) else { continue }
-            totalMB += mbps
+            // Only process rows where first col is numeric (the KB/t column)
+            guard Double(firstCol) != nil else { continue }
+            // Accumulate MB/s for each disk (indices 2, 5, 8, ...)
+            for i in stride(from: 2, to: cols.count, by: 3) {
+                if let mbps = Double(cols[i]) {
+                    totalMB += mbps
+                }
+            }
         }
         let combinedMBs = totalMB
-        let writeRatio: Double = combinedMBs > 0.1 ? 0.30 : 0.0
-        let writeMB = combinedMBs * writeRatio
-        let readMB = combinedMBs - writeMB
-        lastDiskIO = (readMB, writeMB)
+        lastDiskIOTotalMB = combinedMBs
     }
 
     // MARK: - ifconfig Cache (updated by background timer every 60s)
@@ -390,10 +400,13 @@ class SystemMonitor: ObservableObject {
     }
 
     func stop() {
+        fputs("[MiniPulse] stop() called\n", stderr)
         timer?.cancel()
         timer = nil
         stopDiskIOAccumulator()
         stopIfconfigCache()
+        // Remove NSWorkspace disk mount/unmount observers
+        NSWorkspace.shared.notificationCenter.removeObserver(self)
         // Release USB IOKit iterators before destroying the notification port
         if usbAddedIterator != 0 {
             IOObjectRelease(usbAddedIterator)
@@ -405,6 +418,7 @@ class SystemMonitor: ObservableObject {
         }
         usbNotificationPort.map { IONotificationPortDestroy($0) }
         usbNotificationPort = nil
+        fputs("[MiniPulse] stop() complete\n", stderr)
     }
 
     // MARK: - Battery Collection (IOKit)
@@ -827,10 +841,15 @@ class SystemMonitor: ObservableObject {
     }
 
     /// Set up IOKit USB device plug/unplug notifications
+    /// Uses IOUSBHostDevice to capture USB3/4 devices; IOThunderboltSwitchUSB4
+    /// devices are collected via performUsbCollection() at startup.
     private func setupUsbNotifications() {
         guard ENABLE_USB_DEVICES else { return }
 
-        let matchingDict = IOServiceMatching("IOUSBDevice") as NSMutableDictionary
+        // IOUSBHostDevice covers USB 3.x and 4 devices; IOUSBHostDevice is the
+        // user-space counterpart that appears when the device is claimed by the
+        // IOUSBHost family driver (not the older IOUSB family).
+        let matchingDict = IOServiceMatching("IOUSBHostDevice") as NSMutableDictionary
 
         guard let port = IONotificationPortCreate(kIOMainPortDefault) else {
             fputs("[MiniPulse] IONotificationPortCreate failed\n", stderr)
@@ -878,7 +897,7 @@ class SystemMonitor: ObservableObject {
         }
 
         // Re-create matching dict for removal (iterator consumes it)
-        let removeMatchingDict = IOServiceMatching("IOUSBDevice") as NSMutableDictionary
+        let removeMatchingDict = IOServiceMatching("IOUSBHostDevice") as NSMutableDictionary
         result = IOServiceAddMatchingNotification(
             port,
             kIOTerminatedNotification,
@@ -1462,6 +1481,23 @@ class SystemMonitor: ObservableObject {
     }
 
     private func collectAllOnBackground() {
+        // ── Concurrency guard ──
+        collectingLock.lock()
+        defer { collectingLock.unlock() }
+        guard !isCollecting else {
+            fputs("[MiniPulse] collectAll skipped — already running\n", stderr)
+            return
+        }
+
+        let cycleStart = Date()
+        fputs("[SM] cycle_start ts=\(Int(cycleStart.timeIntervalSince1970))\n", stderr)
+        isCollecting = true
+        defer {
+            isCollecting = false
+            let durationMs = cycleStart.timeIntervalSinceNow * -1000
+            fputs(String(format: "[SM] cycle_end duration=%.1fms\n", durationMs), stderr)
+        }
+
         // ── CPU ──
         let cpuInfo = readCPUFast()
 
@@ -1698,8 +1734,9 @@ class SystemMonitor: ObservableObject {
 
         // ── Disk I/O via iostat (1-second sample, ASYNC — no longer blocks timer loop) ──
         // Read the latest cached values (updated by background diskIOAccumulatorTimer)
-        let diskReadBytes = lastDiskIO.readMB
-        let diskWriteBytes = lastDiskIO.writeMB
+        // macOS iostat -d provides total MB/s only — read/write split not available
+        let diskReadMB = lastDiskIOTotalMB   // kept for totalReadMB compatibility field
+        let diskWriteMB = lastDiskIOTotalMB  // kept for totalWriteMB compatibility field
 
         // Parse "228Gi", "12Gi", "1.8Ti" etc. into GB as Double
         func parseDiskSize(_ s: String) -> Double {
@@ -1890,11 +1927,11 @@ class SystemMonitor: ObservableObject {
             fputs("MiniPulse: published temps totalMw=\(powerData.totalMw)\n", stderr)
             self.battery = batteryInfo
             self.diskIO = DiskIOInfo(
-                readMBs: diskReadBytes,
-                writeMBs: diskWriteBytes,
-                // lastDiskIO stores MB directly (not bytes), no conversion needed
-                totalReadMB: Double(diskReadBytes),
-                totalWriteMB: Double(diskWriteBytes)
+                readMBs: 0,
+                writeMBs: 0,
+                totalMBs: lastDiskIOTotalMB,
+                totalReadMB: diskReadMB,
+                totalWriteMB: diskWriteMB
             )
             self.network = NetworkInfo(
                 totalSentMB: Double(totalSent) / 1024 / 1024,

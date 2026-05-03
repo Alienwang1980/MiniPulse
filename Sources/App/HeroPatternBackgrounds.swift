@@ -30,7 +30,7 @@ enum CardHeroPattern {
     static let gpu     = HeroPatternType.polkaDots
     static let network = HeroPatternType.waves
     static let power   = HeroPatternType.piazza
-    static let battery = HeroPatternType.pixelDots
+    static let battery = HeroPatternType.graphPaper
     static let disk    = HeroPatternType.diagonalLines
 }
 
@@ -191,7 +191,6 @@ struct HeroPatternBackground: View {
                     .fill(color)
             case .pixelDots:
                 PixelDotsBackground.cardDots(isEightBit: true, isDark: true)
-                    .opacity(0.3)
             }
         }
         .opacity(opacity)

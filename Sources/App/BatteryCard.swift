@@ -44,17 +44,26 @@ struct BatteryCard: View {
         }
     }
 
-    private var timeRemainingText: String {
-        if displayedTimeRemaining < 0 {
-            return "--"
-        } else if displayedTimeRemaining == -2 {
-            return "交流电"
-        } else if displayedTimeRemaining >= 60 {
-            let h = displayedTimeRemaining / 60
-            let m = displayedTimeRemaining % 60
-            return "\(h)h \(m)m"
-        } else {
-            return "\(displayedTimeRemaining)m"
+    @ViewBuilder
+    private var percentText: some View {
+        Text("\(displayedPercent)")
+            .font(PixelFont.eightBit(size: 52.8, weight: .bold as Font.Weight, design: .rounded))
+            .foregroundColor(percentColor)
+            .contentTransition(.numericText())
+    }
+
+    @ViewBuilder
+    private var temperatureView: some View {
+        if displayedTemp > 0 {
+            HStack(spacing: 4.8) {
+                Image(systemName: "thermometer.medium")
+                    .font(PixelFont.eightBit(size: 19.2))
+                    .foregroundColor(theme.batteryAccent)
+                Text(String(format: "%.0f°C", displayedTemp))
+                    .font(PixelFont.eightBit(size: 26, weight: Font.Weight.bold, design: .rounded))
+                    .foregroundColor(theme.batteryAccent)
+                    .contentTransition(.numericText())
+            }
         }
     }
 
@@ -68,6 +77,20 @@ struct BatteryCard: View {
         if displayedPercent > 50 { return theme.green }
         if displayedPercent > 20 { return theme.yellow }
         return theme.red
+    }
+
+    private var timeRemainingText: String {
+        if displayedTimeRemaining < 0 {
+            return "--"
+        } else if displayedTimeRemaining == -2 {
+            return "交流电"
+        } else if displayedTimeRemaining >= 60 {
+            let h = displayedTimeRemaining / 60
+            let m = displayedTimeRemaining % 60
+            return "\(h)h \(m)m"
+        } else {
+            return "\(displayedTimeRemaining)m"
+        }
     }
 
     /// Formats battery total operating hours into "39486h ≈ 4y 186d" style string.
@@ -114,50 +137,40 @@ struct BatteryCard: View {
                         .foregroundColor(theme.muted)
                 }
                 Spacer()
-                // Temperature in header (same size as CPU card)
-                if displayedTemp > 0 {
-                    HStack(spacing: 4.8) {
-                        Image(systemName: "thermometer.medium")
-                            .font(.system(size: 19.2))
-                            .foregroundColor(theme.batteryAccent)
-                        Text(String(format: "%.0f°C", displayedTemp))
-                            .font(.system(size: 26, weight: .bold, design: .rounded))
-                            .foregroundColor(theme.batteryAccent)
-                            .contentTransition(.numericText())
-                    }
-                }
-
+                temperatureView
             }
 
             if let bat = battery {
-                // Main: large percent + gauge bar
-                HStack(alignment: .lastTextBaseline, spacing: 2.4) {
-                    Text("\(displayedPercent)")
-                        .font(.system(size: 52.8, weight: .bold, design: .rounded))
-                        .foregroundColor(percentColor)
-                        .contentTransition(.numericText())
-                    Text("%")
-                        .font(.system(size: 26.4, weight: .medium))
-                        .foregroundColor(theme.muted)
-                    Spacer()
-                    VStack(alignment: .trailing, spacing: 2.4) {
-                        if displayedCharging {
-                            Text("⚡ 充电中")
-                                .font(.system(size: 13.2, weight: .bold))
-                                .foregroundColor(theme.green)
-                        } else if displayedOnBattery {
-                            Text("🔋 使用中")
-                                .font(.system(size: 13.2, weight: .bold))
-                                .foregroundColor(theme.yellow)
-                        }
-                        if displayedTotalHours > 0 {
-                            Text(formattedBatteryRuntime(displayedTotalHours))
-                                .font(.system(size: 12, weight: .medium, design: .monospaced))
-                                .foregroundColor(theme.muted)
-                        } else {
-                            Text("--")
-                                .font(.system(size: 12, weight: .medium, design: .monospaced))
-                                .foregroundColor(theme.muted)
+                // Big stat: ZStack with hero pattern background + percent number
+                ZStack(alignment: .leading) {
+                    if theme.isEightBit {
+                        HeroPatternBackground(pattern: CardHeroPattern.battery, color: theme.batteryAccent, opacity: 0.12)
+                    }
+                    HStack(alignment: .lastTextBaseline, spacing: 2.4) {
+                        percentText
+                        Text("%")
+                            .font(.system(size: 26.4, weight: .medium))
+                            .foregroundColor(theme.muted)
+                        Spacer()
+                        VStack(alignment: .trailing, spacing: 2.4) {
+                            if displayedCharging {
+                                Text("⚡ 充电中")
+                                    .font(.system(size: 13.2, weight: .bold))
+                                    .foregroundColor(theme.green)
+                            } else if displayedOnBattery {
+                                Text("🔋 使用中")
+                                    .font(.system(size: 13.2, weight: .bold))
+                                    .foregroundColor(theme.yellow)
+                            }
+                            if displayedTotalHours > 0 {
+                                Text(formattedBatteryRuntime(displayedTotalHours))
+                                    .font(.system(size: 12, weight: .medium, design: .monospaced))
+                                    .foregroundColor(theme.muted)
+                            } else {
+                                Text("--")
+                                    .font(.system(size: 12, weight: .medium, design: .monospaced))
+                                    .foregroundColor(theme.muted)
+                            }
                         }
                     }
                 }
@@ -176,7 +189,7 @@ struct BatteryCard: View {
                 }
                 .frame(height: 12)
 
-                // Metric grid: 2 rows x 2 columns, clean and balanced
+                // Metric grid: 2 rows x 2 columns
                 VStack(spacing: 12) {
                     HStack(spacing: 0) {
                         BatteryMetric(label: "循环次数", value: "\(displayedCycleCount)", unit: " 次")

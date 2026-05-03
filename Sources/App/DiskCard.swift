@@ -7,10 +7,8 @@ struct DiskCard: View {
     let disks: [DiskInfo]
     let diskIO: DiskIOInfo
     let ssdTempC: Double?
-    @State private var displayedRead: Double = 0
-    @State private var displayedWrite: Double = 0
+    @State private var displayedTotal: Double = 0
     private var theme: AppTheme { AppTheme.shared }
-
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -31,7 +29,7 @@ struct DiskCard: View {
                 VStack(alignment: .leading, spacing: 1.2) {
                     Text("磁盘存储")
                         .font(PixelFont.eightBit(size: 14.4, weight: Font.Weight.semibold))                        .foregroundColor(theme.text)
-                    Text("实时速度")
+                    Text("实时吞吐量")
                         .font(PixelFont.eightBit(size: 12))                        .foregroundColor(theme.muted)
                 }
                 Spacer()
@@ -48,36 +46,22 @@ struct DiskCard: View {
 
             }
 
-            // Real-time speed
+            // Real-time total disk throughput
             ZStack(alignment: .leading) {
                 if theme.isEightBit {
                     HeroPatternBackground(pattern: CardHeroPattern.disk, color: theme.diskAccent, opacity: 0.12)
                 }
-                HStack(spacing: 19.2) {
-                    VStack(alignment: .leading, spacing: 2.4) {
-                        Text("↓ 读取")
-                            .font(PixelFont.eightBit(size: 10.8))                            .foregroundColor(theme.muted)
-                        HStack(alignment: .lastTextBaseline, spacing: 2.4) {
-                            Text(String(format: "%.1f", displayedRead))
-                                .font(PixelFont.eightBit(size: 36, weight: Font.Weight.bold, design: .monospaced))
-                                .foregroundColor(theme.green)
-                                .contentTransition(.numericText())
-                            Text("MB/s")
-                                .font(PixelFont.eightBit(size: 12))                                .foregroundColor(theme.muted)
-                        }
-                    }
-                    VStack(alignment: .leading, spacing: 2.4) {
-                        Text("↑ 写入")
-                            .font(PixelFont.eightBit(size: 10.8))                            .foregroundColor(theme.muted)
-                        HStack(alignment: .lastTextBaseline, spacing: 2.4) {
-                            Text(String(format: "%.1f", displayedWrite))
-                                .font(PixelFont.eightBit(size: 36, weight: Font.Weight.bold, design: .monospaced))
-                                .foregroundColor(theme.accent)
-                                .contentTransition(.numericText())
-                            Text("MB/s")
-                                .font(PixelFont.eightBit(size: 12))                                .foregroundColor(theme.muted)
-                        }
-                    }
+                HStack(alignment: .lastTextBaseline, spacing: 2.4) {
+                    Image(systemName: "arrow.up.arrow.down")
+                        .font(PixelFont.eightBit(size: 19.2))
+                        .foregroundColor(theme.diskAccent)
+                    Text(String(format: "%.1f", displayedTotal))
+                        .font(PixelFont.eightBit(size: 36, weight: Font.Weight.bold, design: .monospaced))
+                        .foregroundColor(theme.text)
+                        .contentTransition(.numericText())
+                    Text("MB/s")
+                        .font(PixelFont.eightBit(size: 12))
+                        .foregroundColor(theme.muted)
                     Spacer()
                 }
             }
@@ -107,7 +91,7 @@ struct DiskCard: View {
                                     .frame(height: 6)
                                 RoundedRectangle(cornerRadius: 3)
                                     .fill(diskGradient(disk.percent))
-                                    .frame(width: geo.size.width * disk.percent / 120, height: 6)
+                                    .frame(width: max(0, min(geo.size.width, geo.size.width * disk.percent / 100)), height: 6)
                             }
                         }
                         .frame(height: 6)
@@ -130,14 +114,10 @@ struct DiskCard: View {
         .background(theme.isEightBit ? theme.diskCardBg : theme.card)
         .cornerRadius(14.4)
         .onAppear {
-            displayedRead = diskIO.readMBs
-            displayedWrite = diskIO.writeMBs
+            displayedTotal = diskIO.totalMBs
         }
-        .onChange(of: diskIO.readMBs) { _, newVal in
-            withAnimation(.spring(response: 0.5, dampingFraction: 0.75)) { displayedRead = newVal }
-        }
-        .onChange(of: diskIO.writeMBs) { _, newVal in
-            withAnimation(.spring(response: 0.5, dampingFraction: 0.75)) { displayedWrite = newVal }
+        .onChange(of: diskIO.totalMBs) { oldVal, newVal in
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.75)) { displayedTotal = newVal }
         }
     }
 

@@ -77,11 +77,33 @@ struct ContentView: View {
         }
         .frame(minWidth: 720, minHeight: 840)
         .background(Color.clear)
-        .sheet(isPresented: $showSettings) {
-            SettingsPanel(isPresented: $showSettings)
+        .overlay(alignment: .top) {
+            if showSettings {
+                ZStack {
+                    Color.black.opacity(0.6)
+                        .contentShape(Rectangle())
+                        .onTapGesture { showSettings = false }
+                        .ignoresSafeArea()
+
+                    SettingsPanel(isPresented: $showSettings)
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                }
+                .animation(.easeInOut(duration: 0.25), value: showSettings)
+            }
         }
-        .sheet(isPresented: $showEditOrder) {
-            EditOrderView(isPresented: $showEditOrder, isLaptop: monitor.sysInfo.isLaptop)
+        .overlay(alignment: .top) {
+            if showEditOrder {
+                ZStack {
+                    Color.black.opacity(0.6)
+                        .contentShape(Rectangle())
+                        .onTapGesture { showEditOrder = false }
+                        .ignoresSafeArea()
+
+                    EditOrderView(isPresented: $showEditOrder, isLaptop: monitor.sysInfo.isLaptop)
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                }
+                .animation(.easeInOut(duration: 0.25), value: showEditOrder)
+            }
         }
         .onAppear {
             // Inject system colorScheme so theme follows OS preference initially

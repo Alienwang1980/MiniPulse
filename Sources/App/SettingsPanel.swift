@@ -10,13 +10,9 @@ struct SettingsPanel: View {
             // Header
             HStack {
                 Text("设置")
-                    .font(PixelFont.eightBit(size: 18, weight: Font.Weight.bold))                    .foregroundColor(AppTheme.shared.text)
+                    .font(PixelFont.eightBit(size: 18, weight: Font.Weight.bold))
+                    .foregroundColor(AppTheme.shared.text)
                 Spacer()
-                Button(action: { isPresented = false }) {
-                    Image(systemName: "xmark.circle.fill")
-                        .font(PixelFont.eightBit(size: 20))                        .foregroundColor(AppTheme.shared.muted)
-                }
-                .buttonStyle(.plain)
             }
             .padding(24)
 
@@ -51,8 +47,12 @@ struct SettingsPanel: View {
             }
             .padding(.bottom, 20)
         }
-        .frame(width: 360, height: 280)
+        .frame(width: 480, height: 340)
         .background(AppTheme.shared.surface)
+        .overlay(
+            RoundedRectangle(cornerRadius: 14.4)
+                .stroke(AppTheme.shared.accent.opacity(0.10), lineWidth: 1)
+        )
     }
 }
 
@@ -77,13 +77,12 @@ struct ThemeButton: View {
                             AppTheme.shared.themeType == themeType ? AppTheme.shared.accent : Color.clear,
                             lineWidth: AppTheme.shared.themeType == themeType ? 2 : 0
                         )
+
+                    // Theme name
+                    Text(themeType == .ocean ? "Ocean" : "8bit")
+                        .font(themeType == .ocean ? Font.system(size: 14, weight: .bold, design: .default) : PixelFont.eightBit(size: 13, weight: Font.Weight.bold))
+                        .foregroundColor(textOnPreview)
                 }
-                Text(themeType.rawValue)
-                    .font(PixelFont.eightBit(size: 9, weight: Font.Weight.bold))                    .foregroundColor(textOnPreview)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .background(textOnPreview.opacity(0.15))
-                    .cornerRadius(4)
             }
         }
         .buttonStyle(.plain)

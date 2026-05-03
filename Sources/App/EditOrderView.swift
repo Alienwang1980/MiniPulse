@@ -83,8 +83,12 @@ struct EditOrderView: View {
             .padding(.horizontal, 20)
             .padding(.vertical, 16)
         }
-        .frame(width: 360, height: 480)
+        .frame(width: 480, height: 540)
         .background(AppTheme.shared.surface)
+        .overlay(
+            RoundedRectangle(cornerRadius: 14.4)
+                .stroke(AppTheme.shared.accent.opacity(0.10), lineWidth: 1)
+        )
         .alert("恢复默认顺序？", isPresented: $showResetConfirm) {
             Button("取消", role: .cancel) { }
             Button("恢复", role: .destructive) {
