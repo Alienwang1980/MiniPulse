@@ -41,7 +41,22 @@ struct SettingsPanel: View {
 
             // Footer
             HStack {
+                Button(action: {
+                    if let url = URL(string: "mailto:feedback@minipulse.app?subject=MiniPulse%20Feedback") {
+                        NSWorkspace.shared.open(url)
+                    }
+                }) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "envelope")
+                        Text("Feedback")
+                    }
+                    .font(PixelFont.eightBit(size: 11))
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+
                 Spacer()
+
                 Button("完成") {
                     isPresented = false
                 }
