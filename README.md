@@ -1,5 +1,148 @@
 # MiniPulse
 
+A sleek macOS system monitoring dashboard that keeps track of your Mac's health in real time.
+
+![Platform](https://img.shields.io/badge/Platform-macOS%2013+-orange)
+![Swift](https://img.shields.io/badge/Swift-5.9-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
+
+---
+
+## Features
+
+### Real-time System Monitoring
+- **CPU**: cores, usage, frequency, temperature
+- **GPU**: usage, temperature (Apple Silicon)
+- **Memory**: used / available / total
+- **Disk**: capacity, free space, I/O read/write speed
+- **Network**: real-time upload/download speed
+- **Battery**: charge/discharge state, percentage, cycle count
+- **Power**: current wattage (W), plugged in / on battery
+- **Bluetooth / USB**: list of connected devices
+- **Top Processes**: highest CPU / memory consuming processes
+
+### Dual Theme System
+- **Ocean**: modern colorful style, great for daily use
+- **8-bit**: retro pixel-art aesthetic, a nod to classic gaming
+
+Theme preference is saved locally and automatically restored on next launch.
+
+### Drag-to-Reorder Cards
+All monitor cards can be freely reordered via drag-and-drop to match your personal priorities. The layout persists across sessions.
+
+### Light & Fast
+Built entirely with SwiftUI + native Darwin layer — zero third-party dependencies, minimal memory footprint.
+
+---
+
+## Quick Start
+
+### Download & Install
+
+1. Go to [Releases](https://github.com/Alienwang1980/MiniPulse/releases) and download the latest `MiniPulse-vX.X.X.zip`
+2. Unzip and move `MiniPulse.app` to your Applications folder
+3. On first launch: right-click → Open (choose "Open" to bypass Gatekeeper)
+
+### Basic Operations
+
+**Open the dashboard**: just run MiniPulse
+
+**Open Settings**: click the ⚙️ button in the top-right corner
+
+In Settings you can:
+- Switch theme (Ocean / 8-bit)
+- Reorder cards by drag-and-drop
+- Submit feedback
+
+**Quit**: menu bar or `Cmd + Q`
+
+---
+
+## Feature Guide
+
+### Card Ordering
+
+In Settings, click "Edit Order" in the top-right corner to enter reorder mode. Drag cards to your preferred positions and tap "Done" to save.
+
+### Theme Switching
+
+Click any theme preview card under "Theme" to switch instantly:
+- **Ocean**: default, colorful gradient cards
+- **8-bit**: pixel font + dot-matrix background, full retro-game aesthetic
+
+Your current theme is automatically saved and restored on the next launch.
+
+### Feedback
+
+Use the **Feedback** button at the bottom of Settings to open your mail client and send feedback directly to `minipulsemac@gmail.com`.
+
+---
+
+## System Requirements
+
+| Item | Requirement |
+|------|-------------|
+| OS | macOS 13.0 (Ventura) or later |
+| Chip | Apple Silicon (M1/M2/M3) or Intel |
+| RAM | 4GB+ free recommended |
+| Disk | 50MB available |
+
+> **Note**: Some sensor data (e.g. GPU temperature, SMC sensors) may vary across Mac models. Battery cycle count only appears on Macs with a built-in battery (MacBook).
+
+---
+
+## Project Structure
+
+```
+Sources/App/
+├── SystemMonitor.swift      # Core monitoring engine, data collection
+├── AppTheme.swift           # Theme definitions (Ocean / 8-bit)
+├── CardType.swift           # Card type enum
+├── ContentView.swift        # Main layout
+├── SettingsPanel.swift      # Settings panel
+├── EditOrderView.swift      # Card drag-to-reorder view
+├── PixelFont.swift          # Pixel font wrapper
+├── PixelDotsBackground.swift # 8-bit dot-matrix background
+├── SMC.swift                # SMC sensor access
+├── IOHIDBridge.swift        # IOHID temperature sensors
+├── IOReportBridge.swift     # I/O Report disk/network data
+└── Cards/                   # Individual monitor cards
+    ├── CpuCard.swift
+    ├── GpuCard.swift
+    ├── MemoryCard.swift
+    ├── DiskCard.swift
+    ├── NetworkCard.swift
+    ├── BatteryCard.swift
+    ├── PowerCard.swift
+    └── ...
+```
+
+---
+
+## Development
+
+### Build
+
+```bash
+cd MiniPulseV2
+xcodebuild -target MiniPulseV2 -configuration Debug CODE_SIGN_IDENTITY="-"
+```
+
+### Tech Stack
+
+- **UI**: SwiftUI
+- **Data Collection**: Darwin (IOKit, IOHIDEvent, SMC, IORegistry)
+- **Theming**: Custom @Observable Theme protocol
+- **Zero external dependencies**: pure Apple native frameworks
+
+---
+
+**► Made with ♥ by Alienwang**
+
+---
+
+# MiniPulse
+
 macOS 系统监控仪表盘，实时追踪 Mac 的健康状态。
 
 ![Platform](https://img.shields.io/badge/Platform-macOS%2013+-orange)
@@ -95,18 +238,18 @@ macOS 系统监控仪表盘，实时追踪 Mac 的健康状态。
 
 ```
 Sources/App/
-├── SystemMonitor.swift     # 核心监控引擎，数据采集
-├── AppTheme.swift          # 主题定义（Ocean / 8-bit）
-├── CardType.swift          # 卡片类型枚举
-├── ContentView.swift       # 主界面布局
-├── SettingsPanel.swift     # 设置面板
-├── EditOrderView.swift     # 卡片排序视图
-├── PixelFont.swift         # 像素字体包装
-├── PixelDotsBackground.swift  # 8-bit 点阵背景
-├── SMC.swift               # SMC 传感器访问
-├── IOHIDBridge.swift      # IOHID 温度传感器
-├── IOReportBridge.swift    # I/O Report 磁盘/网络数据
-└── Cards/                  # 各监控卡片实现
+├── SystemMonitor.swift      # 核心监控引擎，数据采集
+├── AppTheme.swift           # 主题定义（Ocean / 8-bit）
+├── CardType.swift           # 卡片类型枚举
+├── ContentView.swift        # 主界面布局
+├── SettingsPanel.swift      # 设置面板
+├── EditOrderView.swift      # 卡片排序视图
+├── PixelFont.swift          # 像素字体包装
+├── PixelDotsBackground.swift # 8-bit 点阵背景
+├── SMC.swift                # SMC 传感器访问
+├── IOHIDBridge.swift        # IOHID 温度传感器
+├── IOReportBridge.swift     # I/O Report 磁盘/网络数据
+└── Cards/                   # 各监控卡片实现
     ├── CpuCard.swift
     ├── GpuCard.swift
     ├── MemoryCard.swift
