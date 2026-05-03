@@ -16,8 +16,6 @@ struct FooterView: View {
 
             Text(sysInfo.hostname)
                 .font(PixelFont.eightBit(size: 13.2, design: .monospaced))                .foregroundColor(theme.muted)
-
-            Spacer()
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 12)
