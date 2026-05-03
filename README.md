@@ -83,7 +83,7 @@ Use the **Feedback** button at the bottom of Settings to open your mail client a
 | Item | Requirement |
 |------|-------------|
 | OS | macOS 13.0 (Ventura) or later |
-| Chip | Apple Silicon (M1/M2/M3) or Intel |
+| Chip | Apple Silicon (M1/M2/M3 or later) |
 | RAM | 4GB+ free recommended |
 | Disk | 50MB available |
 
@@ -226,7 +226,7 @@ macOS 系统监控仪表盘，实时追踪 Mac 的健康状态。
 | 项目 | 要求 |
 |------|------|
 | 系统版本 | macOS 13.0 (Ventura) 及以上 |
-| 芯片 | Apple Silicon (M1/M2/M3) 或 Intel |
+| 芯片 | Apple Silicon (M1/M2/M3 或更新) |
 | 内存 | 建议 4GB+ 可用 |
 | 磁盘 | 50MB 可用空间 |
 
