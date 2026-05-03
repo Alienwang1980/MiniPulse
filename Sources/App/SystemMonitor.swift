@@ -2117,6 +2117,50 @@ class SystemMonitor: ObservableObject {
         let data = try encoder.encode(report)
         try data.write(to: url)
     }
+
+    // MARK: - Debug
+
+    func dumpDebugInfo() -> String {
+        var lines: [String] = []
+        lines.append("=== MiniPulse Disk I/O Debug ===")
+        lines.append("Date: \(Date())")
+        lines.append("")
+
+        // 1. Raw iostat -d output
+        lines.append("--- iostat -d raw output ---")
+        let iostatResult = run("/usr/sbin/iostat", args: ["-d", "-c", "1"], timeout: 4)
+        lines.append(iostatResult)
+        lines.append("")
+
+        // 2. iostat -d with 2 samples
+        lines.append("--- iostat -d -c 2 (2 samples) ---")
+        let iostat2 = run("/usr/sbin/iostat", args: ["-d", "-c", "2"], timeout: 6)
+        lines.append(iostat2)
+        lines.append("")
+
+        // 3. diskutil list
+        lines.append("--- diskutil list ---")
+        let diskutil = run("/usr/sbin/diskutil", args: ["list"], timeout: 5)
+        lines.append(diskutil)
+        lines.append("")
+
+        // 4. Current cached values
+        lines.append("--- Current cached values ---")
+        lines.append("lastDiskIOTotalMB = \(lastDiskIOTotalMB)")
+        lines.append("disks count = \(disks.count)")
+        for disk in disks {
+            lines.append("  disk: \(disk.name) mounted=\(disk.isMounted) percent=\(disk.percent) freeGB=\(disk.freeGB)")
+        }
+        lines.append("")
+
+        // 5. Architecture info
+        lines.append("--- System ---")
+        let modelResult = run("/usr/sbin/sysctl", args: ["-n", "hw.model"], timeout: 2)
+        lines.append("model: \(modelResult.trimmingCharacters(in: .whitespacesAndNewlines))")
+
+        return lines.joined(separator: "\n")
+    }
+
 }
 
 // MARK: - Diagnostic Report
