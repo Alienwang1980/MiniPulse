@@ -40,7 +40,10 @@ struct HeaderView: View {
     @Binding var showSettings: Bool
     @Binding var showEditOrder: Bool
 
-    @State private var displayedCpu: Double = 0
+    @State private var pulseBgOpacity: Double = 0.15
+    @State private var pulseScale: CGFloat = 1.0
+    @State private var prevCpuPercent: Double = 0
+    @State private var shrinkTimer: Timer?
 
     private var theme: AppTheme { AppTheme.shared }
 
@@ -48,14 +51,46 @@ struct HeaderView: View {
         sysInfo.isLaptop ? "laptopcomputer" : "desktopcomputer"
     }
 
+    private func triggerPulse() {
+        shrinkTimer?.invalidate()
+        withAnimation(.easeOut(duration: 0.1)) {
+            pulseBgOpacity = 0.35
+            pulseScale = 1.12
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            let duration: TimeInterval = 2.5
+            let fps: Double = 60.0
+            let frames = Int(duration * fps)
+            var frame = 0
+            shrinkTimer = Timer.scheduledTimer(withTimeInterval: 1.0 / fps, repeats: true) { timer in
+                frame += 1
+                let progress = min(1.0, Double(frame) / Double(frames))
+                pulseBgOpacity = 0.35 - (0.35 - 0.10) * progress
+                pulseScale = 1.12 - (1.12 - 1.0) * progress
+                if progress >= 1.0 {
+                    pulseBgOpacity = 0.10
+                    pulseScale = 1.0
+                    timer.invalidate()
+                }
+            }
+        }
+    }
+
     var body: some View {
         HStack(spacing: 16.8) {
-            // Left: device icon (scaled 20% larger)
-            Image(systemName: deviceIcon)
-                .font(PixelFont.eightBit(size: 31.2))                .foregroundColor(theme.accent)
-                .frame(width: 62.4, height: 62.4)
-                .background(theme.accent.opacity(0.15))
-                .cornerRadius(14.4)
+            // Left: device icon with pulsing background (only background scales, icon stays fixed)
+            ZStack {
+                Image(systemName: deviceIcon)
+                    .font(PixelFont.eightBit(size: 31.2))
+                    .foregroundColor(theme.accent)
+                    .frame(width: 62.4, height: 62.4)
+
+                Circle()
+                    .fill(theme.accent.opacity(pulseBgOpacity))
+                    .frame(width: 62.4, height: 62.4)
+                    .scaleEffect(pulseScale)
+            }
+            .frame(width: 62.4, height: 62.4)
 
             // Left-center: user name + machine model (same row), then uptime (scaled 20%)
             VStack(alignment: .leading, spacing: 4.8) {
@@ -105,9 +140,12 @@ struct HeaderView: View {
                 LegacyGlassBackground()
             }
         }
-        .onAppear { displayedCpu = cpu.percent }
+        .onAppear { prevCpuPercent = cpu.percent }
         .onChange(of: cpu.percent) { _, newVal in
-            withAnimation(.spring(response: 0.5, dampingFraction: 0.75)) { displayedCpu = newVal }
+            if newVal != prevCpuPercent {
+                prevCpuPercent = newVal
+                triggerPulse()
+            }
         }
     }
 }

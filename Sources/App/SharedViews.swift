@@ -197,7 +197,7 @@ private struct FillWaveShape: Shape {
 }
 
 // MARK: - Card Icon with Heartbeat
-/// 卡片图标：处理 8-bit / SF Symbol 条件，数据更新时触发心跳动画
+/// 卡片图标：处理 8-bit / SF Symbol 条件，静态显示（无动画）
 struct CardIcon<Trigger: Equatable>: View {
     let isEightBit: Bool
     let imageName: String       // 8-bit 图标资源名
@@ -205,11 +205,6 @@ struct CardIcon<Trigger: Equatable>: View {
     let color: Color
     let trigger: Trigger
     var size: CGFloat = 40.3    // 默认 40.3，部分卡片用 37.4
-
-    @State private var pulseScale: CGFloat = 1.0
-    @State private var pulseOpacity: Double = 1.0
-    @State private var prevTrigger: Trigger?
-    @State private var shrinkTimer: Timer?
 
     var body: some View {
         Group {
@@ -229,40 +224,6 @@ struct CardIcon<Trigger: Equatable>: View {
                     .background(color.opacity(0.20))
                     .cornerRadius(size * 0.24)
             }
-        }
-        .scaleEffect(pulseScale)
-        .opacity(pulseOpacity)
-        .onChange(of: trigger) { newValue in
-            guard newValue != prevTrigger else { return }
-            prevTrigger = newValue
-            // 停止之前的 timer
-            shrinkTimer?.invalidate()
-            // 顺滑跳大到峰值（0.08秒动画）
-            withAnimation(.easeOut(duration: 0.08)) {
-                pulseScale = 1.4
-                pulseOpacity = 0.9
-            }
-            // 峰值稳定 0.08秒后，开始 5 秒线性缩小：1.4 → 0.7
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
-                let duration: TimeInterval = 5.0
-                let fps: Double = 60.0
-                let frames = Int(duration * fps)
-                var frame = 0
-                shrinkTimer = Timer.scheduledTimer(withTimeInterval: 1.0 / fps, repeats: true) { timer in
-                    frame += 1
-                    let progress = min(1.0, Double(frame) / Double(frames))
-                    pulseScale = 1.4 - (1.4 - 0.7) * progress  // 线性 1.4 → 0.7
-                    pulseOpacity = 0.9 - (0.9 - 0.5) * progress  // 线性 0.9 → 0.5
-                    if progress >= 1.0 {
-                        pulseScale = 0.7
-                        pulseOpacity = 0.5
-                        timer.invalidate()
-                    }
-                }
-            }
-        }
-        .onDisappear {
-            shrinkTimer?.invalidate()
         }
     }
 }
