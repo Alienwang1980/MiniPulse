@@ -3,8 +3,15 @@ import SwiftUI
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     var window: NSWindow!
+    private var activity: NSObjectProtocol?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        // Prevent App Nap AND system sleep from pausing our timers on MacBook
+        // .background keeps timers running even when lid is closed on battery
+        activity = ProcessInfo.processInfo.beginActivity(
+            options: .background,
+            reason: "Monitoring system metrics continuously"
+        )
         let contentView = ContentView()
 
         window = NSWindow(
@@ -27,6 +34,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         return true
+    }
+
+    func applicationWillTerminate(_ notification: Notification) {
+        if let activity = activity {
+            ProcessInfo.processInfo.endActivity(activity)
+        }
     }
 
     private func setupMainMenu() {

@@ -376,6 +376,7 @@ SWIFT_CLASS("_TtC9MiniPulse11AppDelegate")
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 - (void)applicationDidFinishLaunching:(NSNotification * _Nonnull)notification;
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication * _Nonnull)sender SWIFT_WARN_UNUSED_RESULT;
+- (void)applicationWillTerminate:(NSNotification * _Nonnull)notification;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -765,6 +766,7 @@ SWIFT_CLASS("_TtC9MiniPulse11AppDelegate")
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 - (void)applicationDidFinishLaunching:(NSNotification * _Nonnull)notification;
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication * _Nonnull)sender SWIFT_WARN_UNUSED_RESULT;
+- (void)applicationWillTerminate:(NSNotification * _Nonnull)notification;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 

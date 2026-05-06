@@ -312,6 +312,14 @@ class SystemMonitor: ObservableObject {
         // Start ifconfig cache (refreshes every 60s, non-blocking)
         startIfconfigCache()
 
+        // Listen for system sleep/wake so we can restart the timer on wake
+        NSWorkspace.shared.notificationCenter.addObserver(
+            self,
+            selector: #selector(handleSystemWake),
+            name: NSWorkspace.didWakeNotification,
+            object: nil
+        )
+
         // Start timer
         let queue = DispatchQueue(label: "ai.hermes.minipulse.timer", qos: .userInitiated)
         timer = DispatchSource.makeTimerSource(queue: queue)
@@ -408,7 +416,7 @@ class SystemMonitor: ObservableObject {
         timer = nil
         stopDiskIOAccumulator()
         stopIfconfigCache()
-        // Remove NSWorkspace disk mount/unmount observers
+        // Remove NSWorkspace disk mount/unmount and sleep/wake observers
         NSWorkspace.shared.notificationCenter.removeObserver(self)
         // Release USB IOKit iterators before destroying the notification port
         if usbAddedIterator != 0 {
@@ -960,6 +968,37 @@ class SystemMonitor: ObservableObject {
     @objc private func handleDiskUnmount(_ notification: Notification) {
         fputs("[MiniPulse] Disk unmounted: \(notification.userInfo ?? [:])\n", stderr)
         refreshDiskCapacity()
+    }
+
+    // MARK: - System Sleep/Wake Handlers
+
+    /// Called when the system wakes from sleep.
+    /// Restart all timers and re-prime the disk I/O accumulator.
+    @objc private func handleSystemWake(_ notification: Notification) {
+        fputs("[MiniPulse] System woke from sleep, reinitializing timers\n", stderr)
+
+        // Restart disk I/O accumulator if it was stopped
+        startDiskIOAccumulator()
+
+        // Re-prime ifconfig cache
+        startIfconfigCache()
+
+        // Restart the main timer if it was somehow nil
+        if timer == nil {
+            let queue = DispatchQueue(label: "ai.hermes.minipulse.timer", qos: .userInitiated)
+            timer = DispatchSource.makeTimerSource(queue: queue)
+            timer?.schedule(deadline: .now() + 5, repeating: 5, leeway: .milliseconds(200))
+            timer?.setEventHandler { [weak self] in
+                self?.refresh()
+            }
+            timer?.resume()
+            fputs("[MiniPulse] Timer restarted after wake\n", stderr)
+        }
+
+        // Immediately refresh data once to ensure UI is up-to-date
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            self?.refresh()
+        }
     }
 
     // MARK: - Disk Capacity Collection (startup only)

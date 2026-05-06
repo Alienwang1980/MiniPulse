@@ -44,32 +44,29 @@ struct NetworkCard: View {
                 if theme.isEightBit {
                     HeroPatternBackground(pattern: CardHeroPattern.network, color: theme.netAccent, opacity: 0.12)
                 }
-                HStack(spacing: 19.2) {
-                    VStack(alignment: .leading, spacing: 2.4) {
-                        Text("↓ 接收")
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack(alignment: .lastTextBaseline, spacing: 2.4) {
+                        Text("↓")
+                            .font(PixelFont.eightBit(size: 14.4))                            .foregroundColor(theme.green)
+                        Text("接收")
                             .font(PixelFont.eightBit(size: 10.8))                            .foregroundColor(theme.muted)
-                        HStack(alignment: .lastTextBaseline, spacing: 2.4) {
-                            Text(formatSpeed(displayedRecv).value)
-                                .font(PixelFont.eightBit(size: 36, weight: Font.Weight.bold, design: .monospaced))
-                                .foregroundColor(theme.green)
-                                .contentTransition(.numericText())
-                            Text(formatSpeed(displayedRecv).unit)
-                                .font(PixelFont.eightBit(size: 12))                                .foregroundColor(theme.muted)
-                        }
+                        Text(formatSpeed(displayedRecv).value)
+                            .font(PixelFont.eightBit(size: 36, weight: Font.Weight.bold, design: .monospaced))                            .foregroundColor(theme.green)
+                            .contentTransition(.numericText())
+                        Text(formatSpeed(displayedRecv).unit)
+                            .font(PixelFont.eightBit(size: 12))                            .foregroundColor(theme.muted)
                     }
-                    VStack(alignment: .leading, spacing: 2.4) {
-                        Text("↑ 发送")
+                    HStack(alignment: .lastTextBaseline, spacing: 2.4) {
+                        Text("↑")
+                            .font(PixelFont.eightBit(size: 14.4))                            .foregroundColor(theme.accent)
+                        Text("发送")
                             .font(PixelFont.eightBit(size: 10.8))                            .foregroundColor(theme.muted)
-                        HStack(alignment: .lastTextBaseline, spacing: 2.4) {
-                            Text(formatSpeed(displayedSent).value)
-                                .font(PixelFont.eightBit(size: 36, weight: Font.Weight.bold, design: .monospaced))
-                                .foregroundColor(theme.accent)
-                                .contentTransition(.numericText())
-                            Text(formatSpeed(displayedSent).unit)
-                                .font(PixelFont.eightBit(size: 12))                                .foregroundColor(theme.muted)
-                        }
+                        Text(formatSpeed(displayedSent).value)
+                            .font(PixelFont.eightBit(size: 36, weight: Font.Weight.bold, design: .monospaced))                            .foregroundColor(theme.accent)
+                            .contentTransition(.numericText())
+                        Text(formatSpeed(displayedSent).unit)
+                            .font(PixelFont.eightBit(size: 12))                            .foregroundColor(theme.muted)
                     }
-                    Spacer()
                 }
             }
 
@@ -80,7 +77,7 @@ struct NetworkCard: View {
                 if let stats = net.perIface[iface] {
                     // Find IP for this interface
                     let ifaceIP = ips.first { $0.iface == iface }?.ip ?? ""
-                    HStack {
+                    HStack(alignment: .top, spacing: 8) {
                         VStack(alignment: .leading, spacing: 2.4) {
                             Text(stats.label)
                                 .font(PixelFont.eightBit(size: 12, weight: Font.Weight.medium))                                .foregroundColor(theme.muted)
@@ -90,10 +87,14 @@ struct NetworkCard: View {
                             }
                         }
                         Spacer()
-                        Text("↓ \(formatSpeed(stats.recvMBs).value) \(formatSpeed(stats.recvMBs).unit)")
-                            .font(PixelFont.eightBit(size: 12, weight: Font.Weight.medium, design: .monospaced))                            .foregroundColor(theme.green)
-                        Text("↑ \(formatSpeed(stats.sentMBs).value) \(formatSpeed(stats.sentMBs).unit)")
-                            .font(PixelFont.eightBit(size: 12, weight: Font.Weight.medium, design: .monospaced))                            .foregroundColor(theme.accent)
+                        VStack(alignment: .trailing, spacing: 2.4) {
+                            Text("↓ \(formatSpeed(stats.recvMBs).value) \(formatSpeed(stats.recvMBs).unit)")
+                                .font(PixelFont.eightBit(size: 12, weight: Font.Weight.medium, design: .monospaced))                                .foregroundColor(theme.green)
+                                .frame(minWidth: 80, alignment: .trailing)
+                            Text("↑ \(formatSpeed(stats.sentMBs).value) \(formatSpeed(stats.sentMBs).unit)")
+                                .font(PixelFont.eightBit(size: 12, weight: Font.Weight.medium, design: .monospaced))                                .foregroundColor(theme.accent)
+                                .frame(minWidth: 80, alignment: .trailing)
+                        }
                     }
                 }
             }

@@ -55,7 +55,7 @@ struct ContentView: View {
                     VStack(spacing: 0) {
                         Color.clear.frame(height: 120)
 
-                        WaterfallLayout(columnCount: max(1, min(4, Int(geo.size.width / 320))), spacing: 16.8) {
+                        WaterfallLayout(columnCount: max(1, min(4, Int(geo.size.width / 300))), spacing: 16.8) {
                             ForEach(CardOrderManager.shared.order, id: \.self) { cardType in
                                 cardView(for: cardType)
                             }
@@ -75,7 +75,7 @@ struct ContentView: View {
 
             HeaderView(sysInfo: monitor.sysInfo, cpu: monitor.cpu, temps: monitor.temps, showSettings: $showSettings, showEditOrder: $showEditOrder)
         }
-        .frame(minWidth: 720, minHeight: 840)
+        .frame(minWidth: 480, minHeight: 540)
         .background(Color.clear)
         .overlay(alignment: .top) {
             if showSettings {
