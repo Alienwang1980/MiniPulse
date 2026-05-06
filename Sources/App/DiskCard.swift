@@ -13,19 +13,7 @@ struct DiskCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 9.6) {
-                Group {
-                    if theme.isEightBit {
-                        Image("disk")
-                            .resizable()
-                            .scaledToFit().frame(width: 22, height: 22)
-                    } else {
-                        Image(systemName: "internaldrive")
-                    }
-                }
-                    .font(PixelFont.eightBit(size: 16.8))                    .foregroundColor(theme.diskAccent)
-                    .frame(width: 40.3, height: 40.3)
-                    .background(theme.diskAccent.opacity(0.20))
-                    .cornerRadius(9.6)
+                CardIcon(isEightBit: theme.isEightBit, imageName: "disk", sfSymbol: "internaldrive", color: theme.diskAccent, trigger: diskIO)
                 VStack(alignment: .leading, spacing: 1.2) {
                     Text("磁盘存储")
                         .font(PixelFont.eightBit(size: 14.4, weight: Font.Weight.semibold))                        .foregroundColor(theme.text)

@@ -29,7 +29,7 @@ extension Comparable {
 
 // MARK: - Data Models
 
-struct SysInfo {
+struct SysInfo: Equatable {
     var userName: String = ""        // e.g. "mini"
     var hostname: String = ""
     var osVersion: String = ""
@@ -43,7 +43,7 @@ struct SysInfo {
     var isLaptop: Bool = false       // true if device has a battery
 }
 
-struct NetworkInterface: Identifiable, Hashable {
+struct NetworkInterface: Identifiable, Hashable, Equatable {
     let id = UUID()
     var iface: String
     var ip: String
@@ -64,7 +64,7 @@ struct CpuInfo: Equatable {
     var timesNice: Double = 0
 }
 
-struct MemoryInfo {
+struct MemoryInfo: Equatable {
     var totalGB: Double = 0
     var usedGB: Double = 0
     var availableGB: Double = 0
@@ -83,7 +83,7 @@ struct GpuInfo: Equatable {
     var utilizationHistory: [Int] = []
 }
 
-struct TempInfo {
+struct TempInfo: Equatable {
     var cpuPowerMw: Int = 0
     var gpuPowerMw: Int = 0
     var boardPowerMw: Int = 0   // RAM + ANE + PCI baseline (~2.8W)
@@ -95,7 +95,7 @@ struct TempInfo {
     var thermalLevel: Int = 0
 }
 
-struct BatteryInfo {
+struct BatteryInfo: Equatable {
     var percent: Int = 0
     var charging: Bool = false
     var onBattery: Bool = false       // 是否使用电池供电
@@ -109,7 +109,7 @@ struct BatteryInfo {
     var totalOperatingHours: Int = 0   // 电池累计运行时间（小时），从 LifetimeData.TotalOperatingTime 读取
 }
 
-struct DiskInfo: Identifiable, Hashable {
+struct DiskInfo: Identifiable, Hashable, Equatable {
     let id = UUID()
     var name: String = ""
     var mountpoint: String = ""
@@ -120,7 +120,7 @@ struct DiskInfo: Identifiable, Hashable {
     var isMounted: Bool = true
 }
 
-struct DiskIOInfo {
+struct DiskIOInfo: Equatable {
     var readMBs: Double = 0      // ← kept for compatibility, unused in UI
     var writeMBs: Double = 0    // ← kept for compatibility, unused in UI
     var totalMBs: Double = 0    // real total disk throughput (MB/s), from iostat -d
@@ -128,7 +128,7 @@ struct DiskIOInfo {
     var totalWriteMB: Double = 0
 }
 
-struct NetworkInfo {
+struct NetworkInfo: Equatable {
     var totalSentMB: Double = 0
     var totalRecvMB: Double = 0
     var sentMBs: Double = 0
@@ -146,7 +146,7 @@ struct IfaceStats: Hashable {
     var recvMBs: Double = 0
 }
 
-struct ProcessEntry: Identifiable, Hashable {
+struct ProcessEntry: Identifiable, Hashable, Equatable {
     let id = UUID()
     var pid: Int
     var name: String
@@ -155,14 +155,14 @@ struct ProcessEntry: Identifiable, Hashable {
     var memMB: Double = 0
 }
 
-struct BluetoothDevice: Identifiable, Hashable {
+struct BluetoothDevice: Identifiable, Hashable, Equatable {
     let id = UUID()
     var name: String
     var status: String
     var type: String
 }
 
-struct UsbDevice: Identifiable, Hashable {
+struct UsbDevice: Identifiable, Hashable, Equatable {
     let id = UUID()
     var name: String
     var speed: String       // Display string: "USB4", "USB 3.2 Gen2", "USB 2.0", etc.
@@ -186,7 +186,7 @@ struct UsbDevice: Identifiable, Hashable {
     }
 }
 
-struct DeviceInfo {
+struct DeviceInfo: Equatable {
     var bluetooth: [BluetoothDevice] = []
     var usb: [UsbDevice] = []
 }

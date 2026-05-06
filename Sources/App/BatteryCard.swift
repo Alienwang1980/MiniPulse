@@ -114,20 +114,7 @@ struct BatteryCard: View {
         VStack(alignment: .leading, spacing: 14.4) {
             // Card header
             HStack(spacing: 9.6) {
-                Group {
-                    if theme.isEightBit {
-                        Image("battery")
-                            .resizable()
-                            .scaledToFit().frame(width: 22, height: 22)
-                    } else {
-                        Image(systemName: batteryIcon)
-                    }
-                }
-                    .font(.system(size: 16.8))
-                    .foregroundColor(theme.green)
-                    .frame(width: 40.3, height: 40.3)
-                    .background(theme.green.opacity(0.20))
-                    .cornerRadius(9.6)
+                CardIcon(isEightBit: theme.isEightBit, imageName: "battery", sfSymbol: batteryIcon, color: theme.green, trigger: battery)
                 VStack(alignment: .leading, spacing: 1.2) {
                     Text("电池")
                         .font(.system(size: 14.4, weight: .semibold))

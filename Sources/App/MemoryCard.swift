@@ -11,19 +11,7 @@ struct MemoryCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 9.6) {
-                Group {
-                    if theme.isEightBit {
-                        Image("memory")
-                            .resizable()
-                            .scaledToFit().frame(width: 22, height: 22)
-                    } else {
-                        Image(systemName: "memorychip")
-                    }
-                }
-                    .font(PixelFont.eightBit(size: 16.8))                    .foregroundColor(theme.memAccent)
-                    .frame(width: 40.3, height: 40.3)
-                    .background(theme.memAccent.opacity(0.20))
-                    .cornerRadius(9.6)
+                CardIcon(isEightBit: theme.isEightBit, imageName: "memory", sfSymbol: "memorychip", color: theme.memAccent, trigger: mem)
                 VStack(alignment: .leading, spacing: 1.2) {
                     Text("内存 (RAM)")
                         .font(PixelFont.eightBit(size: 14.4, weight: Font.Weight.semibold))                        .foregroundColor(theme.text)
