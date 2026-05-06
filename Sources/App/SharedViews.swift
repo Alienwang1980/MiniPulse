@@ -209,6 +209,7 @@ struct CardIcon<Trigger: Equatable>: View {
     @State private var pulseScale: CGFloat = 1.0
     @State private var pulseOpacity: Double = 1.0
     @State private var prevTrigger: Trigger?
+    @State private var shrinkTimer: Timer?
 
     var body: some View {
         Group {
@@ -234,16 +235,34 @@ struct CardIcon<Trigger: Equatable>: View {
         .onChange(of: trigger) { newValue in
             guard newValue != prevTrigger else { return }
             prevTrigger = newValue
-            withAnimation(.easeInOut(duration: 0.15)) {
-                pulseScale = 1.3
-                pulseOpacity = 0.7
+            // 停止之前的 timer
+            shrinkTimer?.invalidate()
+            // 顺滑跳大到峰值（0.08秒动画）
+            withAnimation(.easeOut(duration: 0.08)) {
+                pulseScale = 1.4
+                pulseOpacity = 0.9
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                withAnimation(.easeInOut(duration: 0.15)) {
-                    pulseScale = 1.0
-                    pulseOpacity = 1.0
+            // 峰值稳定 0.08秒后，开始 5 秒线性缩小：1.4 → 0.7
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
+                let duration: TimeInterval = 5.0
+                let fps: Double = 60.0
+                let frames = Int(duration * fps)
+                var frame = 0
+                shrinkTimer = Timer.scheduledTimer(withTimeInterval: 1.0 / fps, repeats: true) { timer in
+                    frame += 1
+                    let progress = min(1.0, Double(frame) / Double(frames))
+                    pulseScale = 1.4 - (1.4 - 0.7) * progress  // 线性 1.4 → 0.7
+                    pulseOpacity = 0.9 - (0.9 - 0.5) * progress  // 线性 0.9 → 0.5
+                    if progress >= 1.0 {
+                        pulseScale = 0.7
+                        pulseOpacity = 0.5
+                        timer.invalidate()
+                    }
                 }
             }
+        }
+        .onDisappear {
+            shrinkTimer?.invalidate()
         }
     }
 }
