@@ -186,6 +186,10 @@ public class SMCReader {
         isConnected = false
     }
 
+    deinit {
+        close()
+    }
+
     // Low-level SMC call
     private func call(_ index: UInt8, input: inout SMCKeyData_t, output: inout SMCKeyData_t) -> kern_return_t {
         var inputSize = MemoryLayout<SMCKeyData_t>.size
@@ -315,7 +319,7 @@ public class SMCReader {
     }
 
     public func getGpuTemperature() -> Double? {
-        let keys = ["TG0P", "TG0D", "TG0H", "TG0D", "TG0T", "TGXP", "Tg07", "Tg08", "Tg09"]
+        let keys = ["TG0P", "TG0D", "TG0H", "TG0T", "TGXP", "Tg07", "Tg08", "Tg09"]
         for key in keys {
             if let temp = getValue(key), temp > 0, temp < 150 {
                 print("SMC: \(key) = \(temp)")

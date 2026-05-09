@@ -1315,7 +1315,7 @@ class SystemMonitor: ObservableObject {
             let pid = Int(cols[0]) ?? 0
             let cpu = Double(cols[1]) ?? 0
             let memKB = Double(cols[2]) ?? 0
-            let name = cols[3...].joined(separator: " ")
+            let name = cols.count > 3 ? cols[3...].joined(separator: " ") : ""
             guard pid > 0, memKB >= 0 else { return nil }
             return ProcessEntry(pid: pid, name: name, cpuPercent: cpu, memPercent: 0, memMB: memKB / 1024)
         }
@@ -1984,8 +1984,7 @@ class SystemMonitor: ObservableObject {
                 let hidData = IOHIDReader.shared.readTemperatures()
                 cpuTemp = hidData.cpuDieTemp
                 gpuTemp = hidData.gpuDieTemp
-                // SSD temperature is stored in gpuDieTemp on Mac mini M4 (NAND sensor)
-                ssdTemp = hidData.gpuDieTemp
+                ssdTemp = hidData.ssdTempC
 
                 // MacBook Pro (isLaptop): IOHID sensors run ~20°C lower than actual
                 // Apply offset only to CPU temp, SSD temp stays as-is

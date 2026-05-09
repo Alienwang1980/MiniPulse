@@ -14,6 +14,7 @@ import IOKit
 struct TemperatureData {
     var cpuDieTemp: Double? = nil
     var gpuDieTemp: Double? = nil
+    var ssdTempC: Double? = nil
     var systemTemp: Double? = nil
     var allSensors: [String: Double] = [:]
 }
@@ -96,7 +97,7 @@ final class IOHIDReader {
                 result.gpuDieTemp = max(result.gpuDieTemp ?? 0, value)
             } else if lowerName.contains("nand") || lowerName.contains("disk") || lowerName.contains("ssd") {
                 // NAND/disk = SSD temperature on Mac mini M4
-                result.gpuDieTemp = max(result.gpuDieTemp ?? 0, value)
+                result.ssdTempC = max(result.ssdTempC ?? 0, value)
             } else if lowerName.contains("soc") || lowerName.contains("memory") {
                 result.systemTemp = max(result.systemTemp ?? 0, value)
             }
