@@ -19,6 +19,28 @@ private let ENABLE_TEMPERATURES   = true   // IOHIDEventSystemClientCreate cache
 /// Refresh interval: longer = less CPU overhead
 private let REFRESH_INTERVAL: TimeInterval = 5.0
 
+// MARK: - Diagnostic Log (app-bundle-relative path)
+
+private let diagLogFile: URL = {
+    let bundlePath = Bundle.main.bundlePath
+    let appDir = (bundlePath as NSString).deletingLastPathComponent
+    let logPath = (appDir as NSString).appendingPathComponent("minipulse-diagnostic.log")
+    return URL(fileURLWithPath: logPath)
+}()
+
+private func diagLog(_ msg: String) {
+    let line = "[\(Date().timeIntervalSince1970.formatted(.number.precision(.fractionLength(3))))] \(msg)\n"
+    if let data = line.data(using: .utf8) {
+        if let handle = try? FileHandle(forWritingTo: diagLogFile) {
+            try? handle.seekToEnd()
+            try? handle.write(contentsOf: data)
+            try? handle.close()
+        } else {
+            try? data.write(to: diagLogFile)
+        }
+    }
+}
+
 // MARK: - Extensions
 
 extension Comparable {
@@ -265,7 +287,7 @@ class SystemMonitor: ObservableObject {
     private let BT_USB_REFRESH_INTERVAL = 6  // refresh bluetooth/USB every 6 cycles (~30s)
 
     init() {
-        fputs("MiniPulse: init() called\n", stderr)
+        diagLog("MiniPulse: init() called\n")
         // DO NOT call refresh() or any data collection here!
         // All startup data collection happens in start()
     }
@@ -273,12 +295,12 @@ class SystemMonitor: ObservableObject {
     func start() {
         // Prevent double timer creation
         guard timer == nil else { return }
-        fputs("MiniPulse: start() called\n", stderr)
+        diagLog("MiniPulse: start() called\n")
 
         // Initial refresh after a longer delay to let SwiftUI finish its first render
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
             guard let self = self else { return }
-            fputs("MiniPulse: running startup collection\n", stderr)
+            diagLog("MiniPulse: running startup collection\n")
             self.refreshBaseInfo()
             self.refresh()
             self.dataReady = true
@@ -328,7 +350,7 @@ class SystemMonitor: ObservableObject {
             self?.refresh()
         }
         timer?.resume()
-        fputs("MiniPulse: timer started\n", stderr)
+        diagLog("MiniPulse: timer started\n")
     }
 
     // MARK: - Async Disk I/O Accumulator (runs in background, non-blocking)
@@ -411,7 +433,7 @@ class SystemMonitor: ObservableObject {
     }
 
     func stop() {
-        fputs("[MiniPulse] stop() called\n", stderr)
+        diagLog("[MiniPulse] stop() called\n")
         timer?.cancel()
         timer = nil
         stopDiskIOAccumulator()
@@ -429,7 +451,7 @@ class SystemMonitor: ObservableObject {
         }
         usbNotificationPort.map { IONotificationPortDestroy($0) }
         usbNotificationPort = nil
-        fputs("[MiniPulse] stop() complete\n", stderr)
+        diagLog("[MiniPulse] stop() complete\n")
     }
 
     // MARK: - Battery Collection (IOKit)
@@ -863,7 +885,7 @@ class SystemMonitor: ObservableObject {
         let matchingDict = IOServiceMatching("IOUSBHostDevice") as NSMutableDictionary
 
         guard let port = IONotificationPortCreate(kIOMainPortDefault) else {
-            fputs("[MiniPulse] IONotificationPortCreate failed\n", stderr)
+            diagLog("[MiniPulse] IONotificationPortCreate failed\n")
             return
         }
         usbNotificationPort = port
@@ -875,7 +897,7 @@ class SystemMonitor: ObservableObject {
         let selfPtr = Unmanaged.passUnretained(self).toOpaque()
         let addCallback: IOServiceMatchingCallback = { (refcon, iterator) in
             let monitor = Unmanaged<SystemMonitor>.fromOpaque(refcon!).takeUnretainedValue()
-            fputs("[MiniPulse] USB device added\n", stderr)
+            diagLog("[MiniPulse] USB device added\n")
             monitor.handleUsbDeviceChange()
         }
 
@@ -888,7 +910,7 @@ class SystemMonitor: ObservableObject {
             &usbAddedIterator
         )
         if result != KERN_SUCCESS {
-            fputs("[MiniPulse] IOServiceAddMatchingNotification (add) failed: \(result)\n", stderr)
+            diagLog("[MiniPulse] IOServiceAddMatchingNotification (add) failed: \(result)\n")
         }
 
         // Drain initial iterator to arm the notification
@@ -899,7 +921,7 @@ class SystemMonitor: ObservableObject {
         // USB device removed
         let removeCallback: IOServiceMatchingCallback = { (refcon, iterator) in
             let monitor = Unmanaged<SystemMonitor>.fromOpaque(refcon!).takeUnretainedValue()
-            fputs("[MiniPulse] USB device removed\n", stderr)
+            diagLog("[MiniPulse] USB device removed\n")
             // Drain the iterator
             while case let device = IOIteratorNext(iterator), device != 0 {
                 IOObjectRelease(device)
@@ -918,7 +940,7 @@ class SystemMonitor: ObservableObject {
             &usbRemovedIterator
         )
         if result != KERN_SUCCESS {
-            fputs("[MiniPulse] IOServiceAddMatchingNotification (remove) failed: \(result)\n", stderr)
+            diagLog("[MiniPulse] IOServiceAddMatchingNotification (remove) failed: \(result)\n")
         }
 
         // Drain initial iterator
@@ -926,7 +948,7 @@ class SystemMonitor: ObservableObject {
             IOObjectRelease(device)
         }
 
-        fputs("[MiniPulse] USB notifications setup complete\n", stderr)
+        diagLog("[MiniPulse] USB notifications setup complete\n")
     }
 
     private func handleUsbDeviceChange() {
@@ -957,16 +979,16 @@ class SystemMonitor: ObservableObject {
             object: nil
         )
 
-        fputs("[MiniPulse] Disk notifications setup complete\n", stderr)
+        diagLog("[MiniPulse] Disk notifications setup complete\n")
     }
 
     @objc private func handleDiskMount(_ notification: Notification) {
-        fputs("[MiniPulse] Disk mounted: \(notification.userInfo ?? [:])\n", stderr)
+        diagLog("[MiniPulse] Disk mounted: \(notification.userInfo ?? [:])\n")
         refreshDiskCapacity()
     }
 
     @objc private func handleDiskUnmount(_ notification: Notification) {
-        fputs("[MiniPulse] Disk unmounted: \(notification.userInfo ?? [:])\n", stderr)
+        diagLog("[MiniPulse] Disk unmounted: \(notification.userInfo ?? [:])\n")
         refreshDiskCapacity()
     }
 
@@ -975,7 +997,7 @@ class SystemMonitor: ObservableObject {
     /// Called when the system wakes from sleep.
     /// Restart all timers and re-prime the disk I/O accumulator.
     @objc private func handleSystemWake(_ notification: Notification) {
-        fputs("[MiniPulse] System woke from sleep, reinitializing timers\n", stderr)
+        diagLog("[MiniPulse] System woke from sleep, reinitializing timers\n")
 
         // Restart disk I/O accumulator if it was stopped
         startDiskIOAccumulator()
@@ -992,7 +1014,7 @@ class SystemMonitor: ObservableObject {
                 self?.refresh()
             }
             timer?.resume()
-            fputs("[MiniPulse] Timer restarted after wake\n", stderr)
+            diagLog("[MiniPulse] Timer restarted after wake\n")
         }
 
         // Immediately refresh data once to ensure UI is up-to-date
@@ -1566,23 +1588,26 @@ class SystemMonitor: ObservableObject {
     private func collectAllOnBackground() {
         // ── Concurrency guard ──
         collectingLock.lock()
+        diagLog("[SM] lock_acquired")
         defer { collectingLock.unlock() }
         guard !isCollecting else {
-            fputs("[MiniPulse] collectAll skipped — already running\n", stderr)
+            diagLog("[SM] lock_acquired_skip")
             return
         }
 
         let cycleStart = Date()
-        fputs("[SM] cycle_start ts=\(Int(cycleStart.timeIntervalSince1970))\n", stderr)
+        diagLog("[SM] cycle_start ts=\(Int(cycleStart.timeIntervalSince1970))")
         isCollecting = true
         defer {
             isCollecting = false
             let durationMs = cycleStart.timeIntervalSinceNow * -1000
-            fputs(String(format: "[SM] cycle_end duration=%.1fms\n", durationMs), stderr)
+            diagLog(String(format: "[SM] cycle_end duration=%.1fms", durationMs))
         }
 
         // ── CPU ──
+        diagLog("[SM] step_cpu_start\n")
         let cpuInfo = readCPUFast()
+        diagLog("[SM] step_cpu_end cpu_pct=\(cpuInfo.percent)\n")
 
         let uptime = Date().timeIntervalSince(self.bootTime)
         let hours = Int(uptime) / 3600
@@ -1591,6 +1616,7 @@ class SystemMonitor: ObservableObject {
         _ = hours; _ = minutes; _ = seconds  // unused but keep uptime calc
 
         // ── Memory ──
+        diagLog("[SM] step_mem_start\n")
         // Single sysctl call for memory topology
         let memOut = run("/usr/sbin/sysctl", args: ["-n", "hw.memsize", "hw.pagesize"])
         let memParts = memOut.split(whereSeparator: { $0.isWhitespace || $0.isNewline })
@@ -1663,8 +1689,10 @@ class SystemMonitor: ObservableObject {
             swapUsed = parseMB(swapParts[0])
         }
         let swapPct = swapTotal > 0 ? Double(swapUsed) / Double(swapTotal) * 100 : 0
+        diagLog("[SM] step_mem_end\n")
 
         // ── IP Addresses — auto-detect interfaces that actually have IPs via ifconfig ──
+        diagLog("[SM] step_network_start\n")
         let ifconfigOut = lastIfconfig
         var ips: [NetworkInterface] = []
         // Skip virtual/Apple-internal interface prefixes
@@ -1814,8 +1842,10 @@ class SystemMonitor: ObservableObject {
         }
         // Persist for next cycle
         ifacBytes = prevIfaceBytes
+        diagLog("[SM] step_network_end\n")
 
         // ── Disk I/O via iostat (1-second sample, ASYNC — no longer blocks timer loop) ──
+        diagLog("[SM] step_diskio_start\n")
         // Read the latest cached values (updated by background diskIOAccumulatorTimer)
         // macOS iostat -d provides total MB/s only — read/write split not available
         let diskReadMB = lastDiskIOTotalMB   // kept for totalReadMB compatibility field
@@ -1833,8 +1863,10 @@ class SystemMonitor: ObservableObject {
             else { return 0 }
             return (Double(numStr) ?? 0) * multiplier
         }
+        diagLog("[SM] step_diskio_end\n")
 
         // ── GPU info (conditionally enabled) ──
+        diagLog("[SM] step_gpu_start\n")
         var gpuUtil: Int? = nil
         var gpuName = "Apple Silicon GPU"
         var gpuVRAM = 0
@@ -1878,8 +1910,12 @@ class SystemMonitor: ObservableObject {
             histSlice = Array(gpuHistory[head..<20]) + Array(gpuHistory[0..<head])
         }
 
+        diagLog("[SM] step_gpu_end\n")
+
         // ── Battery via IOKit (AppleSmartBattery) ──
+        diagLog("[SM] step_battery_start\n")
         let batteryInfo: BatteryInfo? = ENABLE_BATTERY_INFO ? collectBatteryInfoViaIOKit() : nil
+        diagLog("[SM] step_battery_end\n")
 
         // NOTE: Display resolution is collected at startup via collectDisplayInfoOnce(), not in the timer loop.
         // We keep using self.sysInfo.displayResolutions to avoid re-collecting.
@@ -1903,7 +1939,9 @@ class SystemMonitor: ObservableObject {
         self.topRefreshCounter += 1
         if ENABLE_TOP_PROCESSES && self.topRefreshCounter >= self.TOP_REFRESH_INTERVAL {
             self.topRefreshCounter = 0
+            diagLog("[SM] step_top_start\n")
             let (cpu, mem) = self.performTopProcessesCollection()
+            diagLog("[SM] step_top_end\n")
             topCpuOut = cpu
             topMemOut = mem
         }
@@ -1942,7 +1980,9 @@ class SystemMonitor: ObservableObject {
         // Keep existing values to avoid re-collection on every tick.
 
         // ── Update published properties ──
+        diagLog("[SM] step_dispatch_start\n")
         DispatchQueue.main.async { [weak self] in
+            diagLog("[SM] step_dispatch_execute\n")
             guard let self = self else { return }
             self.cpu = cpuInfo
             self.sysInfo.uptime = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
@@ -2006,7 +2046,7 @@ class SystemMonitor: ObservableObject {
                 thermalPressure: "Nominal",
                 thermalLevel: 0
             )
-            fputs("MiniPulse: published temps totalMw=\(powerData.totalMw)\n", stderr)
+            diagLog("MiniPulse: published temps totalMw=\(powerData.totalMw)\n")
             self.battery = batteryInfo
             self.diskIO = DiskIOInfo(
                 readMBs: 0,
@@ -2029,7 +2069,9 @@ class SystemMonitor: ObservableObject {
             self.topMem = Array(topMemOut)
             // USB & Bluetooth are updated separately via their own startup/event handlers
             self.devices = DeviceInfo(bluetooth: btDevices, usb: self.devices.usb)
+            diagLog("[SM] step_dispatch_execute_end\n")
         }
+        diagLog("[SM] step_dispatch_end\n")
     }
 
     // MARK: - Per-core CPU via mach API
@@ -2074,10 +2116,25 @@ class SystemMonitor: ObservableObject {
 
         do {
             try task.run()
-            task.waitUntilExit()
+            // Use RunLoop-based timeout instead of unbounded wait
+            let runLoop = RunLoop.current
+            let deadline = Date(timeIntervalSinceNow: timeout)
+            var taskFinished = false
+            task.terminationHandler = { _ in
+                taskFinished = true
+            }
+            while !taskFinished && Date() < deadline {
+                runLoop.run(mode: .default, before: Date(timeIntervalSinceNow: 0.05))
+            }
+            if task.isRunning {
+                task.terminate()
+                diagLog("[SM] run TIMEOUT: \(cmd) args=\(args) after \(timeout)s\n")
+                return ""
+            }
             let data = outputPipe.fileHandleForReading.readDataToEndOfFile()
             return String(data: data, encoding: .utf8) ?? ""
         } catch {
+            diagLog("[SM] run ERROR: \(cmd) args=\(args) error=\(error)\n")
             return ""
         }
     }
