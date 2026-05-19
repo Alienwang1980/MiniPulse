@@ -17,7 +17,6 @@
 		274593211FEA62B34B22A90F /* PowerCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66FD6174A741506E683CC2A7 /* PowerCard.swift */; };
 		2933A996ADB4AC5B4E27E930 /* SMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD32622D2C70FC1D6F8D123A /* SMC.swift */; };
 		3473F5C3527220CCDDFA914F /* EditOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A972F1AB7061C26682F799 /* EditOrderView.swift */; };
-		3840D63BD611FCE9B6681DC2 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1EFD3DDC38FD3C26834DE195 /* Info.plist */; };
 		53BA35D1E15DA98528CFA856 /* TopCPUCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C044C38E46F87B144A54C /* TopCPUCard.swift */; };
 		5E25F76DF71A38432DDA4A64 /* MemoryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892F5A28113C10C82FCD142B /* MemoryCard.swift */; };
 		6528540C938DBA7C68F29246 /* PressStart2P-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 82E8769DF1AF2C54630BC6FF /* PressStart2P-Regular.ttf */; };
@@ -55,7 +54,6 @@
 		0C72ABD349308A4C8AC3579B /* PixelDotsBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelDotsBackground.swift; sourceTree = "<group>"; };
 		14537A84FCB1AB2A130B3622 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		1AAF107E4E706FC1E1DF5C23 /* MiniPulse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MiniPulse.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		1EFD3DDC38FD3C26834DE195 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		32F5091DC5B109B00B6E2E91 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		38FBDBCCC84753070E49BF3D /* PixelFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelFont.swift; sourceTree = "<group>"; };
 		39ED9B6D05E2CF17BF621762 /* WaterfallLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterfallLayout.swift; sourceTree = "<group>"; };
@@ -123,7 +121,6 @@
 			isa = PBXGroup;
 			children = (
 				8452D5BB9B36BAE1C4A37809 /* Assets.xcassets */,
-				1EFD3DDC38FD3C26834DE195 /* Info.plist */,
 				D67DAA1F332D9708985DAABF /* Fonts */,
 			);
 			path = Resources;
