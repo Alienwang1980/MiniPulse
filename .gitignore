@@ -1,0 +1,10 @@
+build/
+DerivedData/
+*.xcuserstate
+*.user
+*.xcworkspace
+xcuserdata/
+*.lock
+.DS_Store
+Memory/
+OceanDark-Design.html

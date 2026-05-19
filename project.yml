@@ -18,8 +18,8 @@ settings:
     INFOPLIST_KEY_NSHumanReadableCopyright: "Copyright 2024"
     INFOPLIST_KEY_CFBundleDisplayName: MiniPulse
     CODE_SIGN_IDENTITY: "-"
-    CODE_SIGN_STYLE: Manual
-    ENABLE_HARDENED_RUNTIME: NO
+    CODE_SIGN_STYLE: Automatic
+    ENABLE_HARDENED_RUNTIME: YES
 
 targets:
   MiniPulseV2:

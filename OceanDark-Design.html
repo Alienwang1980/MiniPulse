@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniPulse V2 - Ocean Dark</title>
+    <style>
+        :root {
+            /* 颜色定义 - 16进制 */
+            --bg-dark: #080c14;
+            --surface-dark: #0d1525;
+            --card-dark: #111c32;
+            --text-dark: #e2e8f0;
+            --muted-dark: #64748b;
+            --border-dark: #1e3054;
+
+            /* Accent 颜色 */
+            --accent-cyan: #00d4ff;
+            --accent-cyan-light: #0077b6;
+            --accent-green: #34d399;
+            --accent-green-light: #16a34a;
+            --accent-yellow: #fbbf24;
+            --accent-yellow-light: #ca8a04;
+            --accent-red: #f87171;
+            --accent-red-light: #dc2626;
+            --accent-orange: #fb923c;
+            --accent-purple: #a78bfa;
+            --accent-purple-light: #6d28d9;
+        }
+
+        body.dark {
+            --bg: var(--bg-dark);
+            --surface: var(--surface-dark);
+            --card: var(--card-dark);
+            --text: var(--text-dark);
+            --muted: var(--muted-dark);
+            --border: var(--border-dark);
+            --accent-cyan: var(--accent-cyan);
+            --accent-green: var(--accent-green);
+            --accent-yellow: var(--accent-yellow);
+            --accent-red: var(--accent-red);
+            --accent-purple: var(--accent-purple);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', 'SF Pro Display', 'SF Mono', 'Inter', system-ui, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* 主容器 */
+        .app-container {
+            width: 1280px;
+            min-height: 100vh;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            height: 120px;
+            background: var(--surface);
+            display: flex;
+            align-items: center;
+            padding: 0 28.8px;
+            gap: 16.8px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16.8px;
+        }
+
+        .device-icon {
+            width: 62.4px;
+            height: 62.4px;
+            background: var(--accent-cyan);
+            border-radius: 9.67px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 31.2px;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4.8px;
+            align-items: flex-start;
+        }
+
+        .user-name {
+            font-size: 28.8px;
+            font-weight: bold;
+            color: var(--text);
+        }
+
+        .machine-model {
+            font-size: 28.8px;
+            color: var(--muted);
+        }
+
+        .uptime {
+            font-size: 16.8px;
+            color: var(--muted);
+            margin-top: 4.8px;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 12px;
+        }
+
+        .header-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
+            font-size: 16.8px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--accent-cyan);
+        }
+
+        /* 主内容区域 */
+        .main-content {
+            flex: 1;
+            padding: 24px;
+            gap: 16.8px;
+            overflow-y: auto;
+        }
+
+        /* 卡片通用样式 */
+        .card {
+            background: var(--card);
+            border-radius: 14.4px;
+            padding: 19.2px;
+            min-width: 280px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 9.6px;
+            margin-bottom: 12px;
+        }
+
+        .card-icon {
+            width: 40.3px;
+            height: 40.3px;
+            background: var(--accent-cyan);
+            border-radius: 9.67px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16.8px;
+            color: white;
+        }
+
+        .card-title {
+            font-size: 14.4px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .card-subtitle {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        /* CPU 卡片 */
+        .cpu-card {
+            background: var(--card);
+            --card-accent: var(--accent-cyan);
+            --cpu-grad-1: var(--accent-cyan);
+            --cpu-grad-2: #0099ff;
+        }
+
+        .big-stat {
+            display: flex;
+            align-items: baseline;
+            gap: 2.4px;
+            margin: 0 120px;
+        }
+
+        .big-stat-percent {
+            font-size: 70px;
+            font-weight: bold;
+            color: var(--accent-cyan);
+            line-height: 1;
+        }
+
+        .big-stat-unit {
+            font-size: 28.8px;
+            color: var(--muted);
+        }
+
+        .big-stat-label {
+            font-size: 13.2px;
+            color: var(--muted);
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--accent-cyan);
+            opacity: 0.2;
+            border-radius: 3px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--cpu-grad-1), var(--cpu-grad-2));
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        .core-bars {
+            display: flex;
+            gap: 4.8px;
+            padding: 8px 0;
+            flex-wrap: wrap;
+        }
+
+        .core-bar {
+            width: 48px;
+            height: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2.4px;
+        }
+
+        .core-bar-bg {
+            width: 100%;
+            height: 30px;
+            background: var(--card);
+            border-radius: 3px;
+            position: absolute;
+            bottom: 0;
+        }
+
+        .core-bar-fill {
+            height: 100%;
+            background: var(--accent-cyan);
+            opacity: 0.2;
+            border-radius: 3px;
+        }
+
+        .core-num {
+            font-size: 9.6px;
+            font-weight: bold;
+            color: var(--muted);
+        }
+
+        .time-breakdown {
+            margin-top: 12px;
+        }
+
+        .time-label {
+            font-size: 10.8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 4.8px;
+        }
+
+        .time-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4.8px;
+        }
+
+        .time-item {
+            display: flex;
+            gap: 4.8px;
+            align-items: center;
+        }
+
+        .time-label {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .time-value {
+            font-size: 12px;
+            font-weight: bold;
+            font-family: 'SF Mono', monospace;
+            color: var(--accent-cyan);
+        }
+
+        .time-value.user { color: var(--accent-cyan); }
+        .time-value.system { color: var(--accent-yellow); }
+        .time-value.freq { color: var(--accent-cyan); }
+        .time-value.idle { color: var(--accent-green); }
+
+        /* Memory 卡片 */
+        .mem-card {
+            background: var(--card);
+            --card-accent: var(--accent-purple);
+            --mem-grad-1: var(--accent-purple);
+            --mem-grad-2: #7c3aed;
+        }
+
+        /* GPU 卡片 */
+        .gpu-card {
+            background: var(--card);
+            --card-accent: var(--accent-green);
+            --gpu-grad-1: var(--accent-green);
+            --gpu-grad-2: #4ADE80;
+        }
+
+        /* Network 卡片 */
+        .net-card {
+            background: var(--card);
+            --card-accent: var(--accent-cyan);
+        }
+
+        .net-row {
+            display: flex;
+            align-items: baseline;
+            gap: 2.4px;
+            margin-bottom: 8px;
+        }
+
+        .net-icon {
+            font-size: 14.4px;
+        }
+
+        .net-value {
+            font-size: 36px;
+            font-weight: bold;
+            font-family: 'SF Mono', monospace;
+            line-height: 1;
+        }
+
+        .net-value.recv { color: var(--accent-green); }
+        .net-value.sent { color: var(--accent-cyan); }
+        .net-unit {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .net-label {
+            font-size: 10.8px;
+            color: var(--muted);
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 12px 0;
+        }
+
+        /* Disk 卡片 */
+        .disk-card {
+            background: var(--card);
+            --card-accent: var(--accent-green);
+            --disk-grad-1: var(--accent-green);
+            --disk-grad-2: #34d399;
+        }
+
+        .disk-value-large {
+            font-size: 36px;
+            font-weight: bold;
+            font-family: 'SF Mono', monospace;
+            color: var(--text);
+        }
+
+        .disk-progress {
+            margin-top: 4.8px;
+        }
+
+        /* Power 卡片 */
+        .power-card {
+            background: var(--card);
+            --card-accent: var(--accent-red);
+        }
+
+        .power-value {
+            font-size: 48px;
+            font-weight: bold;
+            color: var(--accent-red);
+        }
+
+        .power-unit {
+            font-size: 24px;
+            color: var(--muted);
+        }
+
+        .power-detail {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13.2px;
+            padding: 7.2px 0;
+            border-radius: 6px;
+            background: var(--card);
+        }
+
+        /* Battery 卡片 */
+        .battery-card {
+            background: var(--card);
+            --card-accent: var(--accent-yellow);
+        }
+
+        .battery-percent {
+            font-size: 52.8px;
+            font-weight: bold;
+            color: var(--accent-green);
+            line-height: 1;
+        }
+
+        .battery-progress {
+            height: 12px;
+            background: var(--card);
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .battery-progress-fill {
+            height: 100%;
+            background: var(--accent-green);
+            border-radius: 6px;
+        }
+
+        .battery-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .battery-metric {
+            text-align: left;
+        }
+
+        .battery-metric-label {
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 2.4px;
+        }
+
+        .battery-metric-value {
+            font-size: 16.8px;
+            font-weight: bold;
+            color: var(--text);
+        }
+
+        .battery-metric-unit {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        /* Machine Info 卡片 */
+        .machine-card {
+            background: var(--card);
+            --card-accent: var(--muted);
+        }
+
+        .machine-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9.6px 28.8px;
+        }
+
+        .info-cell {
+            text-align: left;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 2.4px;
+        }
+
+        .info-value {
+            font-size: 14.4px;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .info-value.accent {
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        /* Top Processes 卡片 */
+        .top-card {
+            background: var(--card);
+            --card-accent: var(--accent-cyan);
+        }
+
+        .top-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .top-item:last-child {
+            border-bottom: none;
+        }
+
+        .top-name {
+            font-size: 13.2px;
+            color: var(--text);
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .top-value {
+            font-size: 13.2px;
+            font-weight: bold;
+            font-family: 'SF Mono', monospace;
+            color: var(--accent-cyan);
+        }
+
+        /* Footer */
+        .footer {
+            height: 72px;
+            background: var(--surface);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .footer-brand {
+            font-size: 13.2px;
+            font-weight: 600;
+            color: var(--muted);
+        }
+
+        .footer-hostname {
+            font-size: 13.2px;
+            color: var(--muted);
+            font-family: 'SF Mono', monospace;
+        }
+
+        /* 响应式 */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16.8px;
+            padding-top: 24px;
+            padding-bottom: 72px;
+        }
+
+        @media (max-width: 768px) {
+            .card-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body class="dark">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <div class="device-icon">💻</div>
+            <div class="user-info">
+                <div class="user-name">用户</div>
+                <div class="machine-model">MacBook Pro</div>
+                <div class="uptime">运行时长: 2h 34m</div>
+            </div>
+            <div class="header-right">
+                <div class="header-icon">⚙</div>
+                <div class="header-icon">⇵</div>
+            </div>
+            <div class="logo">MiniPulse</div>
+        </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="card-grid">
+
+            <!-- CPU Card -->
+            <div class="card cpu-card">
+                <div class="card-header">
+                    <div class="card-icon">⚙</div>
+                    <div>
+                        <div class="card-title">CPU</div>
+                        <div class="card-subtitle">12 核 / 24 线程</div>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 4.8px; margin-left: auto;">
+                    <div class="card-icon">🌡</div>
+                    <div class="big-stat-percent">42</div>
+                    <div class="big-stat-unit">%</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 35%;"></div>
+                </div>
+                <div class="core-bars">
+                    <div class="core-bar">
+                        <div class="core-bar-bg"></div>
+                        <div class="core-num">0</div>
+                    </div>
+                    <div class="core-bar">
+                        <div class="core-bar-bg"></div>
+                        <div class="core-num">1</div>
+                    </div>
+                    <div class="core-bar">
+                        <div class="core-bar-bg"></div>
+                        <div class="core-num">2</div>
+                    </div>
+                    <div class="core-bar">
+                        <div class="core-bar-bg"></div>
+                        <div class="core-num">3</div>
+                    </div>
+                </div>
+                <div class="time-breakdown">
+                    <div class="time-label">时间分解</div>
+                    <div class="time-row">
+                        <div class="time-item">
+                            <span class="time-label">User</span>
+                            <span class="time-value user">25.4%</span>
+                        </div>
+                        <div class="time-item">
+                            <span class="time-label">System</span>
+                            <span class="time-value system">12.1%</span>
+                        </div>
+                        <div class="time-item">
+                            <span class="time-label">频率</span>
+                            <span class="time-value freq">3.45 GHz</span>
+                        </div>
+                        <div class="time-item">
+                            <span class="time-label">空闲</span>
+                            <span class="time-value idle">62.5%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Memory Card -->
+            <div class="card mem-card">
+                <div class="card-header">
+                    <div class="card-icon">💾</div>
+                    <div>
+                        <div class="card-title">内存 (RAM)</div>
+                        <div class="card-subtitle">32.0 GB</div>
+                    </div>
+                </div>
+                <div class="big-stat">
+                    <div class="big-stat-percent">42</div>
+                    <div class="big-stat-unit">%</div>
+                    <div class="big-stat-label">RAM 占用</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 42%; --card-accent: var(--accent-purple); --mem-grad-1: var(--accent-purple); --mem-grad-2: var(--mem-grad-2);"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 4.8px; padding: 7.2px 0; background: var(--card); border-radius: 6px;">
+                    <div>
+                        <span class="time-label">已用</span>
+                        <span class="time-value">12.5 GB</span>
+                    </div>
+                    <div>
+                        <span class="time-label">可用</span>
+                        <span class="time-value">19.5 GB</span>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 4.8px; padding: 7.2px 0; background: var(--card); border-radius: 6px;">
+                    <div>
+                        <span class="time-label">Swap</span>
+                        <span class="time-value">2.0 / 4.0 GB</span>
+                    </div>
+                    <div>
+                        <span class="time-value" style="color: var(--accent-red);">16.7%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GPU Card -->
+            <div class="card gpu-card">
+                <div class="card-header">
+                    <div class="card-icon">🎮</div>
+                    <div>
+                        <div class="card-title">GPU</div>
+                        <div class="card-subtitle">Apple Silicon</div>
+                    </div>
+                </div>
+                <div class="big-stat">
+                    <div class="big-stat-percent">35</div>
+                    <div class="big-stat-unit">%</div>
+                    <div class="big-stat-label">GPU 占用</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 35%; --card-accent: var(--accent-green); --gpu-grad-1: var(--accent-green); --gpu-grad-2: var(--gpu-grad-2);"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 4.8px; padding: 7.2px 0; background: var(--card); border-radius: 6px;">
+                    <div>
+                        <span class="time-label">名称</span>
+                        <span class="time-value">Apple M3 Max</span>
+                    </div>
+                    <div>
+                        <span class="time-label">VRAM</span>
+                        <span class="time-value">8.0 GB</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Network Card -->
+            <div class="card net-card">
+                <div class="card-header">
+                    <div class="card-icon">🌐</div>
+                    <div>
+                        <div class="card-title">网络 I/O</div>
+                        <div class="card-subtitle">实时速度</div>
+                    </div>
+                </div>
+                <div class="net-row">
+                    <span class="net-icon">↓</span>
+                    <span class="net-label">接收</span>
+                    <span class="net-value recv">2.5</span>
+                    <span class="net-unit">MB/s</span>
+                </div>
+                <div class="net-row">
+                    <span class="net-icon">↑</span>
+                    <span class="net-label">发送</span>
+                    <span class="net-value sent">0.8</span>
+                    <span class="net-unit">MB/s</span>
+                </div>
+                <div class="divider"></div>
+                <div class="time-row">
+                    <div class="time-item">
+                        <span class="time-label">en0</span>
+                        <span class="time-value">192.168.1.4</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Disk Card -->
+            <div class="card disk-card">
+                <div class="card-header">
+                    <div class="card-icon">💽</div>
+                    <div>
+                        <div class="card-title">磁盘存储</div>
+                        <div class="card-subtitle">实时吞吐量</div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 4.8px;">
+                        <div class="card-icon">🌡</div>
+                        <div class="disk-value-large">12.3</div>
+                        <span class="net-unit">MB/s</span>
+                    </div>
+                </div>
+                <div class="disk-progress">
+                    <div class="progress-fill" style="width: 65%; --card-accent: var(--accent-green); --disk-grad-1: var(--accent-green); --disk-grad-2: var(--disk-grad-2);"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 4.8px; padding: 7.2px 0; background: var(--card); border-radius: 6px;">
+                    <div>
+                        <span class="time-label">Macintosh HD</span>
+                        <span class="time-value" style="color: var(--accent-yellow);">72.0%</span>
+                        <span class="time-value">128 GB free</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Power Card -->
+            <div class="card power-card">
+                <div class="card-header">
+                    <div class="card-icon">⚡</div>
+                    <div>
+                        <div class="card-title">功率</div>
+                        <div class="card-subtitle">电池供电</div>
+                    </div>
+                </div>
+                <div class="big-stat">
+                    <div class="power-value">18.5</div>
+                    <div class="power-unit">W</div>
+                    <div class="big-stat-label">总功耗</div>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 4.8px; padding: 7.2px 0; background: var(--card); border-radius: 6px;">
+                    <div>
+                        <span class="time-label">CPU 功耗</span>
+                        <span class="time-value">8.5 W</span>
+                    </div>
+                    <div>
+                        <span class="time-label">GPU 功耗</span>
+                        <span class="time-value">6.2 W</span>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 4.8px; padding: 7.2px 0; background: var(--card); border-radius: 6px;">
+                    <div>
+                        <span class="time-label">板载功耗</span>
+                        <span class="time-value">3.8 W</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Battery Card -->
+            <div class="card battery-card">
+                <div class="card-header">
+                    <div class="card-icon">🔋</div>
+                    <div>
+                        <div class="card-title">电池</div>
+                        <div class="card-subtitle">电源已接通</div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 4.8px;">
+                        <div class="card-icon">⚡</div>
+                        <div class="battery-percent">85</div>
+                        <span class="big-stat-unit">%</span>
+                        <div class="big-stat-label">⚡ 充电中</div>
+                    </div>
+                </div>
+                <div class="battery-progress">
+                    <div class="battery-progress-fill" style="width: 85%; --card-accent: var(--accent-green);"></div>
+                </div>
+                <div class="battery-metrics">
+                    <div class="battery-metric">
+                        <div class="battery-metric-label">循环次数</div>
+                        <div class="battery-metric-value">42</div>
+                        <div class="battery-metric-unit"> 次</div>
+                    </div>
+                    <div class="battery-metric">
+                        <div class="battery-metric-label">健康度</div>
+                        <div class="battery-metric-value" style="color: var(--accent-green);">92%</div>
+                    </div>
+                    <div class="battery-metric">
+                        <div class="battery-metric-label">当前容量</div>
+                        <div class="battery-metric-value">4,920 mAh</div>
+                        <div class="battery-metric-unit"> mAh</div>
+                    </div>
+                    <div class="battery-metric">
+                        <div class="battery-metric-label">电压</div>
+                        <div class="battery-metric-value">12.6 V</div>
+                        <div class="battery-metric-unit"> V</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Machine Info Card -->
+            <div class="card machine-card">
+                <div class="card-header">
+                    <div class="card-icon">🖥️</div>
+                    <div>
+                        <div class="card-title">本机信息</div>
+                        <div class="card-subtitle">系统信息</div>
+                    </div>
+                </div>
+                <div class="machine-info">
+                    <div class="info-cell">
+                        <div class="info-label">型号</div>
+                        <div class="info-value">MacBook Pro 14"</div>
+                    </div>
+                    <div class="info-cell">
+                        <div class="info-label">主机名</div>
+                        <div class="info-value accent">mini-mac.local</div>
+                    </div>
+                    <div class="info-cell">
+                        <div class="info-label">系统版本</div>
+                        <div class="info-value">macOS Sonoma 15.2</div>
+                    </div>
+                    <div class="info-cell">
+                        <div class="info-label">显示器</div>
+                        <div class="info-value">3456 × 2234 Retina</div>
+                    </div>
+                    <div class="info-cell">
+                        <div class="info-label">GPU</div>
+                        <div class="info-value accent">Apple M3 Max</div>
+                    </div>
+                    <div class="info-cell">
+                        <div class="info-label">VRAM</div>
+                        <div class="info-value accent">8.0 GB</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top CPU Card -->
+            <div class="card top-card">
+                <div class="card-header">
+                    <div class="card-icon">📊</div>
+                    <div class="card-title">Top CPU 进程</div>
+                    <div class="card-subtitle">按 CPU 使用率排序</div>
+                </div>
+                <div class="top-item">
+                    <span class="top-name">com.kernel_task</span>
+                    <span class="top-value">32.5%</span>
+                </div>
+                <div class="top-item">
+                    <span class="top-name">WindowServer</span>
+                    <span class="top-value">24.1%</span>
+                </div>
+                <div class="top-item">
+                    <span class="top-name">kernel_task</span>
+                    <span class="top-value">18.7%</span>
+                </div>
+                <div class="top-item">
+                    <span class="top-name">fig</span>
+                    <span class="top-value">15.2%</span>
+                </div>
+                <div class="top-item">
+                    <span class="top-name">com.apple.Safari</span>
+                    <span class="top-value">12.3%</span>
+                </div>
+                <div class="top-item">
+                    <span class="top-name">mdworker_shared</span>
+                    <span class="top-value">10.8%</span>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-brand">mini pulse</div>
+        <div class="footer-hostname">mini-mac.local</div>
+    </footer>
+</body>
+</html>
