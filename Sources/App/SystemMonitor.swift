@@ -32,7 +32,7 @@ private func diagLog(_ msg: String) {
     let line = "[\(Date().timeIntervalSince1970.formatted(.number.precision(.fractionLength(3))))] \(msg)\n"
     if let data = line.data(using: .utf8) {
         if let handle = try? FileHandle(forWritingTo: diagLogFile) {
-            try? handle.seekToEnd()
+            _ = try? handle.seekToEnd()
             try? handle.write(contentsOf: data)
             try? handle.close()
         } else {
@@ -476,7 +476,7 @@ class SystemMonitor: ObservableObject {
         }
 
         let currentCapacity = dict["CurrentCapacity"] as? Int ?? 0
-        let maxCapacity = dict["MaxCapacity"] as? Int ?? 0
+        let _ = dict["MaxCapacity"] as? Int ?? 0
         let designCapacity = dict["DesignCapacity"] as? Int ?? 0
         let cycleCount = dict["CycleCount"] as? Int ?? 0
         let voltage = dict["Voltage"] as? Int ?? 0
@@ -1168,7 +1168,7 @@ class SystemMonitor: ObservableObject {
             let totalKB = Double(parts[1]) ?? 0
             let usedKB = Double(parts[2]) ?? 0
             let freeKB = Double(parts[3]) ?? 0
-            let usePct = Double(parts[4].trimmingCharacters(in: CharacterSet(charactersIn: "%"))) ?? 0
+            let _ = Double(parts[4].trimmingCharacters(in: CharacterSet(charactersIn: "%"))) ?? 0
 
             // Skip pseudo-filesystems: devfs (<1MB), map auto_home (0KB), etc.
             // Also skip if totalKB < 1 GB — these are auxiliary APFS system volumes, not real storage
@@ -1270,7 +1270,7 @@ class SystemMonitor: ObservableObject {
                let displays = (spData["SPDisplaysDataType"] as? [[String: Any]])?.first {
                 if let name = displays["spdisplays_name"] as? String { gpuName = name }
                 if let vram = displays["spdisplays_vram"] as? Int { gpuVRAM = vram }
-                if let chip = displays["sppci_cores"] as? String {
+                if let _ = displays["sppci_cores"] as? String {
                     // Chip info available but we primarily use name/VRAM
                 }
             }
@@ -2005,16 +2005,10 @@ class SystemMonitor: ObservableObject {
                 chip: nil,
                 utilizationHistory: histSlice
             )
-            // ── Power via IOReport (with PowerEstimator fallback) ──
-            let powerData: PowerData
-            if IOReportReader.shared.isEnergyModelAvailable {
-                powerData = IOReportReader.shared.readPower(cpuUsagePercent: cpuInfo.percent, gpuUsagePercent: Double(self.gpu.utilization ?? 0))
-            } else {
-                // Fallback: estimate from CPU/GPU utilization
-                let cpuUsage = cpuInfo.percent
-                let gpuUsage = Double(self.gpu.utilization ?? 0)
-                powerData = PowerEstimator.shared.estimate(cpuUsagePercent: cpuUsage, gpuUsagePercent: gpuUsage)
-            }
+            // ── Power via PowerEstimator (CPU/GPU utilization-based estimation) ──
+            let cpuUsage = cpuInfo.percent
+            let gpuUsage = Double(self.gpu.utilization ?? 0)
+            let powerData = PowerEstimator.shared.estimate(cpuUsagePercent: cpuUsage, gpuUsagePercent: gpuUsage)
 
             // ── Temperature via IOHIDEventSystemClient (Apple Silicon, no root required) ──
             var cpuTemp: Double? = nil

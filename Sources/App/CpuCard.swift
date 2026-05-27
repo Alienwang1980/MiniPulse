@@ -23,7 +23,7 @@ struct CpuCard: View {
                 }
                 Spacer()
                 // Temperature in header (same size as utilization %)
-                if let temp = cpuTempC {
+                if let _ = cpuTempC {
                     HStack(spacing: 4.8) {
                         Image(systemName: "thermometer.medium")
                             .font(PixelFont.eightBit(size: 19.2))                            .foregroundColor(theme.cpuAccent)

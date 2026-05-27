@@ -115,7 +115,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func showDiagnosticResult(path: String) {
         DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
+            guard let _ = self else { return }
 
             let alert = NSAlert()
             alert.messageText = "Diagnostic Report Generated"
@@ -126,7 +126,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
             let response = alert.runModal()
             if response == .alertFirstButtonReturn {
-                let url = URL(fileURLWithPath: path)
+                _ = URL(fileURLWithPath: path)
                 let desktop = FileManager.default.urls(for: .desktopDirectory, in: .userDomainMask).first!
                 NSWorkspace.shared.selectFile(path, inFileViewerRootedAtPath: desktop.path)
             }

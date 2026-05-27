@@ -127,7 +127,7 @@ struct BatteryCard: View {
                 temperatureView
             }
 
-            if let bat = battery {
+            if let _ = battery {
                 // Big stat: ZStack with hero pattern background + percent number
                 ZStack(alignment: .leading) {
                     if theme.isEightBit {

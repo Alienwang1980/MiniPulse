@@ -102,8 +102,8 @@ struct EditOrderView: View {
     // MARK: - Move
 
     private func moveItems(from source: IndexSet, to destination: Int) {
-        var fullOrder = orderManager.order
-        var adjustedDest = destination
+        let fullOrder = orderManager.order
+        let _ = destination
 
         guard let sourceIndex = source.first else { return }
         let filtered = fullOrder.filter(isVisible)

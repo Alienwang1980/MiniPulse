@@ -11,15 +11,16 @@ settings:
     PRODUCT_NAME: MiniPulse
     PRODUCT_BUNDLE_IDENTIFIER: ai.hermes.minipulse
     MARKETING_VERSION: "2.0.0"
-    CURRENT_PROJECT_VERSION: "1"
+    CURRENT_PROJECT_VERSION: "3"
     SWIFT_VERSION: "5.9"
     MACOSX_DEPLOYMENT_TARGET: "14.0"
     INFOPLIST_KEY_LSApplicationCategoryType: "public.app-category.utilities"
     INFOPLIST_KEY_NSHumanReadableCopyright: "Copyright 2024"
     INFOPLIST_KEY_CFBundleDisplayName: MiniPulse
-    CODE_SIGN_IDENTITY: "-"
+    CODE_SIGN_IDENTITY: "Mac Developer: wang xinlei (3PZ5GB6NV9)"
     CODE_SIGN_STYLE: Automatic
     ENABLE_HARDENED_RUNTIME: YES
+    CODE_SIGN_ENTITLEMENTS: Sources/App/MiniPulseV2.entitlements
 
 targets:
   MiniPulseV2:
@@ -34,7 +35,6 @@ targets:
         excludes:
           - "**/.DS_Store"
     dependencies:
-      - sdk: libIOReport.tbd
       - sdk: IOKit.framework
       - sdk: CoreFoundation.framework
     settings:
@@ -51,7 +51,7 @@ targets:
         CFBundleName: MiniPulse
         CFBundleDisplayName: MiniPulse
         CFBundleIdentifier: ai.hermes.minipulse
-        CFBundleVersion: "1"
+        CFBundleVersion: "3"
         CFBundleShortVersionString: "2.0.0"
         CFBundlePackageType: APPL
         CFBundleExecutable: MiniPulse
