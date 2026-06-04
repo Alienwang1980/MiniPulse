@@ -50,7 +50,7 @@ extension Comparable {
 
 // MARK: - Data Models
 
-struct SysInfo: Equatable {
+struct SysInfo: Equatable, Codable {
     var userName: String = ""        // e.g. "mini"
     var hostname: String = ""
     var osVersion: String = ""
@@ -64,14 +64,14 @@ struct SysInfo: Equatable {
     var isLaptop: Bool = false       // true if device has a battery
 }
 
-struct NetworkInterface: Identifiable, Hashable, Equatable {
+struct NetworkInterface: Identifiable, Hashable, Equatable, Codable {
     let id = UUID()
     var iface: String
     var ip: String
     var label: String
 }
 
-struct CpuInfo: Equatable {
+struct CpuInfo: Equatable, Codable {
     var percent: Double = 0
     var perCore: [Double] = []
     var physical: Int = 0
@@ -85,7 +85,7 @@ struct CpuInfo: Equatable {
     var timesNice: Double = 0
 }
 
-struct MemoryInfo: Equatable {
+struct MemoryInfo: Equatable, Codable {
     var totalGB: Double = 0
     var usedGB: Double = 0
     var availableGB: Double = 0
@@ -96,7 +96,7 @@ struct MemoryInfo: Equatable {
     var swapPercent: Double = 0
 }
 
-struct GpuInfo: Equatable {
+struct GpuInfo: Equatable, Codable {
     var name: String = "Apple Silicon GPU"
     var vramMB: Int = 0
     var utilization: Int? = nil
@@ -104,7 +104,7 @@ struct GpuInfo: Equatable {
     var utilizationHistory: [Int] = []
 }
 
-struct TempInfo: Equatable {
+struct TempInfo: Equatable, Codable {
     var cpuPowerMw: Int = 0
     var gpuPowerMw: Int = 0
     var boardPowerMw: Int = 0   // RAM + ANE + PCI baseline (~2.8W)
@@ -116,7 +116,7 @@ struct TempInfo: Equatable {
     var thermalLevel: Int = 0
 }
 
-struct BatteryInfo: Equatable {
+struct BatteryInfo: Equatable, Codable {
     var percent: Int = 0
     var charging: Bool = false
     var onBattery: Bool = false       // 是否使用电池供电
@@ -130,7 +130,7 @@ struct BatteryInfo: Equatable {
     var totalOperatingHours: Int = 0   // 电池累计运行时间（小时），从 LifetimeData.TotalOperatingTime 读取
 }
 
-struct DiskInfo: Identifiable, Hashable, Equatable {
+struct DiskInfo: Identifiable, Hashable, Equatable, Codable {
     let id = UUID()
     var name: String = ""
     var mountpoint: String = ""
@@ -141,7 +141,7 @@ struct DiskInfo: Identifiable, Hashable, Equatable {
     var isMounted: Bool = true
 }
 
-struct DiskIOInfo: Equatable {
+struct DiskIOInfo: Equatable, Codable {
     var readMBs: Double = 0      // ← kept for compatibility, unused in UI
     var writeMBs: Double = 0    // ← kept for compatibility, unused in UI
     var totalMBs: Double = 0    // real total disk throughput (MB/s), from iostat -d
@@ -149,7 +149,7 @@ struct DiskIOInfo: Equatable {
     var totalWriteMB: Double = 0
 }
 
-struct NetworkInfo: Equatable {
+struct NetworkInfo: Equatable, Codable {
     var totalSentMB: Double = 0
     var totalRecvMB: Double = 0
     var sentMBs: Double = 0
@@ -161,13 +161,13 @@ struct NetworkInfo: Equatable {
     var netstatRaw: String = ""
 }
 
-struct IfaceStats: Hashable {
+struct IfaceStats: Hashable, Codable {
     var label: String = ""
     var sentMBs: Double = 0
     var recvMBs: Double = 0
 }
 
-struct ProcessEntry: Identifiable, Hashable, Equatable {
+struct ProcessEntry: Identifiable, Hashable, Equatable, Codable {
     let id = UUID()
     var pid: Int
     var name: String
@@ -188,14 +188,14 @@ struct ProcessEntry: Identifiable, Hashable, Equatable {
     }
 }
 
-struct BluetoothDevice: Identifiable, Hashable, Equatable {
+struct BluetoothDevice: Identifiable, Hashable, Equatable, Codable {
     let id = UUID()
     var name: String
     var status: String
     var type: String
 }
 
-struct UsbDevice: Identifiable, Hashable, Equatable {
+struct UsbDevice: Identifiable, Hashable, Equatable, Codable {
     let id = UUID()
     var name: String
     var speed: String       // Display string: "USB4", "USB 3.2 Gen2", "USB 2.0", etc.
@@ -219,7 +219,7 @@ struct UsbDevice: Identifiable, Hashable, Equatable {
     }
 }
 
-struct DeviceInfo: Equatable {
+struct DeviceInfo: Equatable, Codable {
     var bluetooth: [BluetoothDevice] = []
     var usb: [UsbDevice] = []
 }
