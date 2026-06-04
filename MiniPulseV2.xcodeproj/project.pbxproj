@@ -24,6 +24,7 @@
 		6CD545B54F41FB5FA7522E58 /* WaterfallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39ED9B6D05E2CF17BF621762 /* WaterfallLayout.swift */; };
 		7BDFBE45FA6D6B6FE6C2BA17 /* SettingsPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE54DBE8242EB6D68A85A0DA /* SettingsPanel.swift */; };
 		7C5BA54F2386F5D117C9D731 /* SystemMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0520D420D771D89A3514F7 /* SystemMonitor.swift */; };
+		C9CB4C539E8D4783BACA4FAA /* RemoteSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87C815274C9647B194D7EB89 /* RemoteSnapshot.swift */; };
 		8CC2FF1720450302F9547259 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14537A84FCB1AB2A130B3622 /* CoreFoundation.framework */; };
 		934763A7222F2053CE6313C9 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32F5091DC5B109B00B6E2E91 /* IOKit.framework */; };
 		957865B4AD2BB1C2C66396DD /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A8C65B64680D24437FF1AC /* main.swift */; };
@@ -79,6 +80,7 @@
 		9500A70035669AE0C42C38EE /* Entitlements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Entitlements.plist; sourceTree = "<group>"; };
 		A8876D1A6FFC2654FEB18E73 /* FooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterView.swift; sourceTree = "<group>"; };
 		AD32622D2C70FC1D6F8D123A /* SMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMC.swift; sourceTree = "<group>"; };
+		87C815274C9647B194D7EB89 /* RemoteSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteSnapshot.swift; sourceTree = "<group>"; };
 		AE19017249C78141656143EF /* DevicesCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesCard.swift; sourceTree = "<group>"; };
 		B36B339E37C84F17A02BD683 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		BF0520D420D771D89A3514F7 /* SystemMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemMonitor.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 				EE54DBE8242EB6D68A85A0DA /* SettingsPanel.swift */,
 				82D1AD04D1F074B267327E4B /* SharedViews.swift */,
 				AD32622D2C70FC1D6F8D123A /* SMC.swift */,
+				87C815274C9647B194D7EB89 /* RemoteSnapshot.swift */,
 				6B65D362C8727C8AF71E90FD /* SplashView.swift */,
 				BF0520D420D771D89A3514F7 /* SystemMonitor.swift */,
 				448C044C38E46F87B144A54C /* TopCPUCard.swift */,
@@ -308,6 +311,7 @@
 				7BDFBE45FA6D6B6FE6C2BA17 /* SettingsPanel.swift in Sources */,
 				0143E49BD5D718104E2B74BD /* SharedViews.swift in Sources */,
 				C2BEF99C48E6D3AACCB1ABE9 /* SplashView.swift in Sources */,
+				C9CB4C539E8D4783BACA4FAA /* RemoteSnapshot.swift in Sources */,
 				7C5BA54F2386F5D117C9D731 /* SystemMonitor.swift in Sources */,
 				53BA35D1E15DA98528CFA856 /* TopCPUCard.swift in Sources */,
 				E93B29B48B24305094268FBF /* TopMemCard.swift in Sources */,
