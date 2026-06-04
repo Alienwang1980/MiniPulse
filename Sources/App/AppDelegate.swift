@@ -21,7 +21,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             defer: false
         )
         window.center()
-        window.title = "MiniPulse"
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "?"
+        let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "?"
+        window.title = "MiniPulse v\(version) (b\(build))"
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
         window.minSize = NSSize(width: 800, height: 700)
