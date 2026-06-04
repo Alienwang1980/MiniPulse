@@ -1625,7 +1625,7 @@ class SystemMonitor: ObservableObject {
 
     private func refreshBaseInfo() {
         sysInfo.userName = NSFullUserName()
-        sysInfo.hostname = Host.current().localizedName ?? ProcessInfo.processInfo.hostName
+        sysInfo.hostname = AppKit.Host.current().localizedName ?? ProcessInfo.processInfo.hostName
 
         let r = run("/usr/sbin/sysctl", args: ["-n", "kern.osproductversion"])
         sysInfo.osVersion = "macOS \(r.trimmingCharacters(in: .whitespacesAndNewlines))"
