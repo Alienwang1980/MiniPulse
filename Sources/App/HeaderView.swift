@@ -106,8 +106,16 @@ struct HeaderView: View {
 
             Spacer()
 
-            // Right: settings + edit buttons
+            // Right: broadcast indicator + settings + edit buttons
             HStack(spacing: 12) {
+                // Broadcast status icon
+                Image(systemName: HostManager.shared.broadcastingEnabled
+                    ? "antenna.radiowaves.left.and.right"
+                    : "antenna.radiowaves.left.and.right.slash")
+                    .font(PixelFont.eightBit(size: 16.8))
+                    .foregroundColor(HostManager.shared.broadcastingEnabled ? theme.green : theme.muted)
+                    .help(HostManager.shared.broadcastingEnabled ? "广播中" : "广播已关闭")
+
                 Button(action: { showSettings = true }) {
                     Image(systemName: "gearshape.fill")
                         .font(PixelFont.eightBit(size: 16.8))                        .foregroundColor(theme.muted)
