@@ -80,6 +80,35 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         windowMenu.addItem(withTitle: "Minimize", action: #selector(NSWindow.performMiniaturize(_:)), keyEquivalent: "m")
         windowMenu.addItem(withTitle: "Zoom", action: #selector(NSWindow.performZoom(_:)), keyEquivalent: "")
 
+        // MiniPulse menu (settings)
+        let mpMenuItem = NSMenuItem()
+        mainMenu.addItem(mpMenuItem)
+        let mpMenu = NSMenu(title: "MiniPulse")
+        mpMenuItem.submenu = mpMenu
+
+        mpMenu.addItem(withTitle: "主题切换", action: #selector(toggleThemeMenuAction), keyEquivalent: "t")
+        mpMenu.addItem(NSMenuItem.separator())
+        mpMenu.addItem(withTitle: "编辑卡片排序", action: #selector(openEditOrderMenuAction), keyEquivalent: "o")
+        mpMenu.addItem(NSMenuItem.separator())
+        mpMenu.addItem(withTitle: "局域网管理", action: #selector(openHostSettingsMenuAction), keyEquivalent: "l")
+        mpMenu.addItem(NSMenuItem.separator())
+        mpMenu.addItem(withTitle: "关于 MiniPulse", action: #selector(NSApplication.orderFrontStandardAboutPanel(_:)), keyEquivalent: "")
+        mpMenu.addItem(NSMenuItem.separator())
+        mpMenu.addItem(withTitle: "退出 MiniPulse", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+
+        // View menu (theme + edit order)
+        let viewMenuItem = NSMenuItem()
+        mainMenu.addItem(viewMenuItem)
+        let viewMenu = NSMenu(title: "View")
+        viewMenuItem.submenu = viewMenu
+
+        let themeOcean = NSMenuItem(title: "Ocean 主题", action: #selector(setThemeOceanMenuAction), keyEquivalent: "1")
+        themeOcean.target = self
+        viewMenu.addItem(themeOcean)
+        let theme8bit = NSMenuItem(title: "8-bit 主题", action: #selector(setTheme8bitMenuAction), keyEquivalent: "2")
+        theme8bit.target = self
+        viewMenu.addItem(theme8bit)
+
         // Help menu
         let helpMenuItem = NSMenuItem()
         mainMenu.addItem(helpMenuItem)
@@ -96,6 +125,33 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         helpMenu.addItem(diagnosticItem)
 
         NSApplication.shared.mainMenu = mainMenu
+    }
+
+    @objc private func toggleThemeMenuAction() {
+        let current = AppTheme.shared.themeType
+        AppTheme.shared.themeType = current == .ocean ? .eightBit : .ocean
+    }
+
+    @objc private func setThemeOceanMenuAction() {
+        AppTheme.shared.themeType = .ocean
+    }
+
+    @objc private func setTheme8bitMenuAction() {
+        AppTheme.shared.themeType = .eightBit
+    }
+
+    @objc private func openEditOrderMenuAction() {
+        NotificationCenter.default.post(
+            name: Notification.Name("com.hermes.minipulse.openEditOrder"),
+            object: nil
+        )
+    }
+
+    @objc private func openHostSettingsMenuAction() {
+        NotificationCenter.default.post(
+            name: Notification.Name("com.hermes.minipulse.openHostSettings"),
+            object: nil
+        )
     }
 
     @objc private func generateDiagnosticReportMenuAction() {

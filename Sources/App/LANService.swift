@@ -1,8 +1,11 @@
 import Foundation
 import Network
 import AppKit
+import Darwin
 
 // MARK: - LAN Service (HTTP server + Bonjour broadcast + discovery)
+//
+// Logging: uses logToFile() from DiagnosticLog.swift → minipulse.log
 
 /// Manages all LAN networking for MiniPulse:
 /// - HTTP server that serves the local `RemoteSnapshot` as JSON
@@ -29,11 +32,13 @@ final class LANService: NSObject {
     var snapshotProvider: (() -> RemoteSnapshot?)?
 
     // ── Internal state ────────────────────────────────────────────────────────
+    private(set) var isRunning = false
     private var isBroadcasting = false
     // Per-remote-host polling tasks (keyed by hostId)
     private var pollTasks: [String: Task<Void, Never>] = [:]
-    // Services we've already resolved (keyed by NetService hash)
-    private var resolvingServices = Set<String>()
+    // Services we've already resolved (keyed by NetService hash) — also serves as
+    // strong reference to keep the NetService alive during resolution
+    private var resolvingServices: [String: NetService] = [:]
 
     // ── Public API ────────────────────────────────────────────────────────────
 
@@ -46,14 +51,18 @@ final class LANService: NSObject {
     }
 
     private func _start() {
+        logToFile("_start() called")
         guard let port = findAvailablePort(from: defaultPorts) else {
+            logToFile("No available port, disabling broadcast")
             print("[LANService] No available port, disabling broadcast")
             return
         }
         activePort = port
+        logToFile("activePort=\(port), isRunning=true")
         startListener(port: port)
         startBroadcasting(port: port)
         startDiscovery()
+        logToFile("_start() complete")
     }
 
     /// Stop HTTP server + Bonjour publishing (but keep browsing).
@@ -254,12 +263,11 @@ final class LANService: NSObject {
 
     private func startBroadcasting(port: UInt16) {
         let serviceName = "\(ProcessInfo.processInfo.hostName)-\(port)"
-        let bigEndianPort = CFSwapInt16HostToBig(port)
 
         netService = NetService(domain: "local.",
                                 type: "_minipulse._tcp",
                                 name: serviceName,
-                                port: Int32(bigEndianPort))
+                                port: Int32(port))
         netService?.delegate = self
         netService?.publish()
         print("[LANService] Bonjour publishing as \(serviceName) on port \(port)")
@@ -329,17 +337,40 @@ extension LANService: NetServiceDelegate {
     func netService(_ sender: NetService, didNotPublish errorDict: [String: NSNumber]) {
         print("[LANService] Bonjour publish failed: \(errorDict)")
     }
-}
 
-// MARK: - NetServiceBrowserDelegate
+    // MARK: Resolve callbacks
+
+    func netServiceDidResolveAddress(_ sender: NetService) {
+        logToFile("didResolve: \(sender.name)")
+        guard let hostname = sender.hostName else {
+            logToFile("Resolved but no hostname for \(sender.name)")
+            print("[LANService] Resolved but no hostname for \(sender.name)")
+            return
+        }
+        let port = sender.port
+        let hostId = "resolved-\(sender.name)"
+
+        logToFile("Resolved \(sender.name) → \(hostname):\(port)")
+        print("[LANService] Resolved \(sender.name) → \(hostname):\(port)")
+        startPolling(hostname: hostname, port: Int(port), hostId: hostId)
+    }
+
+    func netService(_ sender: NetService, didNotResolve errorDict: [String: NSNumber]) {
+        logToFile("didNotResolve \(sender.name): \(errorDict)")
+        print("[LANService] Resolve failed for \(sender.name): \(errorDict)")
+        let serviceHash = "\(sender.name)-\(sender.type)-\(sender.domain)"
+        resolvingServices.removeValue(forKey: serviceHash)
+    }
+}
 
 extension LANService: NetServiceBrowserDelegate {
     func netServiceBrowser(_ browser: NetServiceBrowser,
                            didFind service: NetService,
                            moreComing: Bool) {
+        logToFile("didFind: \(service.name) type=\(service.type) domain=\(service.domain)")
         let serviceHash = "\(service.name)-\(service.type)-\(service.domain)"
-        guard !resolvingServices.contains(serviceHash) else { return }
-        resolvingServices.insert(serviceHash)
+        guard !resolvingServices.keys.contains(serviceHash) else { return }
+        resolvingServices[serviceHash] = service
 
         service.delegate = self
 
@@ -352,7 +383,7 @@ extension LANService: NetServiceBrowserDelegate {
                            didRemove service: NetService,
                            moreComing: Bool) {
         let serviceHash = "\(service.name)-\(service.type)-\(service.domain)"
-        resolvingServices.remove(serviceHash)
+        resolvingServices.removeValue(forKey: serviceHash)
         // The host will be marked offline by the 15-second timeout in HostManager.
         // We don't remove it immediately because the user may still want to see
         // stale data while the host is temporarily unreachable.
@@ -360,27 +391,5 @@ extension LANService: NetServiceBrowserDelegate {
 
     func netServiceBrowser(_ browser: NetServiceBrowser, didNotSearch errorDict: [String: NSNumber]) {
         print("[LANService] Bonjour search failed: \(errorDict)")
-    }
-}
-
-// MARK: - NetServiceDelegate (resolve callback)
-
-extension LANService {
-    func netServiceDidResolveAddress(_ sender: NetService) {
-        guard let hostname = sender.hostName else {
-            print("[LANService] Resolved but no hostname for \(sender.name)")
-            return
-        }
-        let port = sender.port  // already in host byte order (converted by NetService)
-        let hostId = "resolved-\(sender.name)"  // temporary; real hostId comes from snapshot
-
-        print("[LANService] Resolved \(sender.name) → \(hostname):\(port)")
-        startPolling(hostname: hostname, port: Int(port), hostId: hostId)
-    }
-
-    func netService(_ sender: NetService, didNotResolve errorDict: [String: NSNumber]) {
-        print("[LANService] Resolve failed for \(sender.name): \(errorDict)")
-        let serviceHash = "\(sender.name)-\(sender.type)-\(sender.domain)"
-        resolvingServices.remove(serviceHash)
     }
 }

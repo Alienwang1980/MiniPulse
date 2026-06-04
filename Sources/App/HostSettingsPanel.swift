@@ -5,6 +5,7 @@ import SwiftUI
 struct HostSettingsPanel: View {
     @Binding var isPresented: Bool
     @State private var hostManager = HostManager.shared
+    @State private var refreshCount = 0
 
     private var theme: AppTheme { AppTheme.shared }
 
@@ -44,11 +45,23 @@ struct HostSettingsPanel: View {
                         .padding(.vertical, 30)
                     }
                 }
+                .id(refreshCount)
                 .padding(24)
             }
 
             // Footer
             HStack {
+                Button(action: refreshHosts) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "arrow.clockwise")
+                            .font(.system(size: 11))
+                        Text("刷新")
+                            .font(PixelFont.eightBit(size: 11))
+                    }
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+
                 Spacer()
                 Button("完成") {
                     isPresented = false
@@ -186,5 +199,12 @@ struct HostSettingsPanel: View {
                 .foregroundColor(theme.text)
                 .lineLimit(1)
         }
+    }
+
+    // MARK: - Refresh
+
+    private func refreshHosts() {
+        refreshCount += 1
+        NotificationCenter.default.post(name: Notification.Name("com.hermes.minipulse.hostListChanged"), object: nil)
     }
 }

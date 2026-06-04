@@ -10,7 +10,6 @@ struct ContentView: View {
     @State private var showSplash = true
     @State private var cardsAppeared = false
     @State private var cpuVisible = false
-    @State private var showSettings = false
     @State private var showEditOrder = false
     @State private var memVisible = false
     @State private var gpuVisible = false
@@ -26,6 +25,8 @@ struct ContentView: View {
 
     @State private var hostManager = HostManager.shared
     @State private var showHostSettings = false
+    @State private var hostListChangeCount = 0
+    @State private var hostRefreshTimer: Timer?
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -59,9 +60,12 @@ struct ContentView: View {
                         Color.clear.frame(height: 120)
 
                         WaterfallLayout(columnCount: max(1, min(4, Int(geo.size.width / 300))), spacing: 16.8) {
-                            if hostManager.hosts.count > 1 {
-                                hostTabBar
+                            Group {
+                                if hostManager.hosts.count > 1 {
+                                    hostTabBar
+                                }
                             }
+                            .id(hostListChangeCount)
                             if activeTypes.isEmpty, selectedHostId != nil {
                                 emptyCardPlaceholder
                             } else {
@@ -83,24 +87,10 @@ struct ContentView: View {
                 }
             }
 
-            HeaderView(sysInfo: monitor.sysInfo, cpu: monitor.cpu, temps: monitor.temps, showSettings: $showSettings, showEditOrder: $showEditOrder)
+            HeaderView(sysInfo: monitor.sysInfo, cpu: monitor.cpu, temps: monitor.temps, showEditOrder: $showEditOrder)
         }
         .frame(minWidth: 480, minHeight: 540)
         .background(Color.clear)
-        .overlay(alignment: .top) {
-            if showSettings {
-                ZStack {
-                    Color.black.opacity(0.6)
-                        .contentShape(Rectangle())
-                        .onTapGesture { showSettings = false }
-                        .ignoresSafeArea()
-
-                    SettingsPanel(isPresented: $showSettings)
-                        .transition(.move(edge: .top).combined(with: .opacity))
-                }
-                .animation(.easeInOut(duration: 0.25), value: showSettings)
-            }
-        }
         .overlay(alignment: .top) {
             if showEditOrder {
                 ZStack {
@@ -149,6 +139,36 @@ struct ContentView: View {
             ) { [self] _ in
                 showHostSettings = true
             }
+            // Listen for EditOrder open request
+            NotificationCenter.default.addObserver(
+                forName: Notification.Name("com.hermes.minipulse.openEditOrder"),
+                object: nil,
+                queue: .main
+            ) { [self] _ in
+                showEditOrder = true
+            }
+            // Listen for host list changes (force UI refresh)
+            NotificationCenter.default.addObserver(
+                forName: Notification.Name("com.hermes.minipulse.hostListChanged"),
+                object: nil,
+                queue: .main
+            ) { [self] _ in
+                // Toggle a @State property to force SwiftUI view refresh
+                hostListChangeCount += 1
+            }
+
+            // Periodic UI refresh timer (every 3 seconds) to catch Observable updates
+            hostRefreshTimer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { [self] _ in
+                hostListChangeCount += 1
+            }
+
+            // ── Fallback: if dataReady was already true before onChange was set up ──
+            if monitor.dataReady {
+                startLANIfNeeded()
+            }
+        }
+        .onDisappear {
+            hostRefreshTimer?.invalidate()
         }
         .onChange(of: colorScheme) { _, newScheme in
             AppTheme.shared.systemColorScheme = newScheme
@@ -169,6 +189,21 @@ struct ContentView: View {
                     LANService.shared.start()
                 }
             }
+        }
+    }
+
+    /// Start LAN services if not already started (safe to call multiple times).
+    private func startLANIfNeeded() {
+        guard !LANService.shared.isRunning else { return }
+        hostManager.setLocalHost(
+            name: monitor.sysInfo.hostname,
+            machine: monitor.sysInfo.machineModelName
+        )
+        LANService.shared.snapshotProvider = { [weak monitor] in
+            monitor?.toSnapshot()
+        }
+        DispatchQueue.main.async {
+            LANService.shared.start()
         }
     }
 
@@ -270,8 +305,21 @@ struct ContentView: View {
                 }
             }
             .padding(.horizontal, 4)
+            Spacer(minLength: 0)
+            Button(action: forceRefreshHosts) {
+                Image(systemName: "arrow.clockwise")
+                    .font(.system(size: 12))
+                    .foregroundColor(AppTheme.shared.muted)
+            }
+            .buttonStyle(.plain)
+            .help("刷新远程主机")
+            .padding(.trailing, 4)
         }
         .padding(.bottom, 8)
+    }
+
+    private func forceRefreshHosts() {
+        hostListChangeCount += 1
     }
 
     /// Switch to the given host, skipping card fade-in animations.

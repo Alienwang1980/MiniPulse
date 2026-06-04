@@ -11,6 +11,9 @@ final class HostManager {
     // ── Host list ────────────────────────────────────────────────────────────
     private(set) var hosts: [Host] = []
 
+    /// Toggled each time the host list is modified, to force UI refresh.
+    var hostListChanged = false
+
     /// `nil` = local machine; otherwise the `hostId` of the currently-selected host.
     var selectedHostId: String? = nil
 
@@ -71,6 +74,8 @@ final class HostManager {
             )
             hosts.append(host)
         }
+        hostListChanged = true
+        NotificationCenter.default.post(name: Notification.Name("com.hermes.minipulse.hostListChanged"), object: nil)
     }
 
     /// Mark hosts that haven't been seen in >15 seconds as offline.

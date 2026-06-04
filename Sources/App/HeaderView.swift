@@ -37,7 +37,6 @@ struct HeaderView: View {
     let sysInfo: SysInfo
     let cpu: CpuInfo
     let temps: TempInfo
-    @Binding var showSettings: Bool
     @Binding var showEditOrder: Bool
 
     @State private var pulseBgOpacity: Double = 0.15
@@ -106,7 +105,7 @@ struct HeaderView: View {
 
             Spacer()
 
-            // Right: broadcast indicator + settings + edit buttons
+            // Right: broadcast indicator + edit button
             HStack(spacing: 12) {
                 // Broadcast status icon
                 Image(systemName: HostManager.shared.broadcastingEnabled
@@ -115,12 +114,6 @@ struct HeaderView: View {
                     .font(PixelFont.eightBit(size: 16.8))
                     .foregroundColor(HostManager.shared.broadcastingEnabled ? theme.green : theme.muted)
                     .help(HostManager.shared.broadcastingEnabled ? "广播中" : "广播已关闭")
-
-                Button(action: { showSettings = true }) {
-                    Image(systemName: "gearshape.fill")
-                        .font(PixelFont.eightBit(size: 16.8))                        .foregroundColor(theme.muted)
-                }
-                .buttonStyle(.plain)
 
                 Button(action: { showEditOrder = true }) {
                     Image(systemName: "arrow.up.arrow.down")
