@@ -228,6 +228,43 @@ struct DeviceInfo: Equatable, Codable {
 
 private let logger = Logger(subsystem: "ai.hermes.minipulse", category: "monitor")
 
+extension SystemMonitor {
+    /// A stable, persistent host identifier used for LAN discovery.
+    /// Generated once on first launch, stored in UserDefaults.
+    static let localHostId: String = {
+        if let stored = UserDefaults.standard.string(forKey: "localHostId") {
+            return stored
+        }
+        let newId = UUID().uuidString
+        UserDefaults.standard.set(newId, forKey: "localHostId")
+        return newId
+    }()
+
+    /// Captures the current state of all published properties into a
+    /// Codable `RemoteSnapshot` suitable for LAN broadcasting.
+    func toSnapshot() -> RemoteSnapshot {
+        RemoteSnapshot(
+            hostId: Self.localHostId,
+            hostname: sysInfo.hostname,
+            machineModel: sysInfo.machineModelName,
+            osVersion: sysInfo.osVersion,
+            timestamp: Date().timeIntervalSince1970,
+            cpu: cpu,
+            memory: memory,
+            gpu: gpu,
+            temps: temps,
+            battery: battery,
+            disks: disks,
+            diskIO: diskIO,
+            network: network,
+            topCPU: topCPU,
+            topMem: topMem,
+            devices: devices,
+            sysInfo: sysInfo
+        )
+    }
+}
+
 class SystemMonitor: ObservableObject {
     @Published var sysInfo = SysInfo()
     @Published var cpu = CpuInfo()
