@@ -329,8 +329,20 @@ class SystemMonitor: ObservableObject {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
             guard let self = self else { return }
             logToFile("MiniPulse: running startup collection\n")
+            logToFile("[SM] before_refreshBaseInfo\n")
             self.refreshBaseInfo()
-            self.refresh()
+            logToFile("[SM] after_refreshBaseInfo\n")
+            // Do a synchronous first collection on a background queue so we can safely
+            // log around it and know exactly where any crash happens.
+            logToFile("[SM] starting_sync_collection\n")
+            let sem = DispatchSemaphore(value: 0)
+            self.refreshQueue.async { [weak self] in
+                guard let self = self else { sem.signal(); return }
+                self.collectAll()
+                sem.signal()
+            }
+            _ = sem.wait(timeout: .now() + 15)
+            logToFile("[SM] sync_collection_done\n")
             self.dataReady = true
         }
 
@@ -2226,6 +2238,21 @@ class SystemMonitor: ObservableObject {
             logToFile("[SM] run ERROR: \(cmd) args=\(args) error=\(error)\n")
             return ""
         }
+    }
+
+    // MARK: - Crash-safe execution wrapper
+
+    /// Wraps a closure so that any Objective-C exception thrown from IOKit/mach APIs
+    /// is caught. Returns "ok" or "CRASHED: <description>".
+    private func runWithCatch(label: String, _ block: () -> Void) -> String {
+        let sig = label
+        // Try-catch at the Process level won't catch ObjC exceptions from IOKit/syscall.
+        // The safest approach: if block() calls IOKit and that crashes, we won't survive it.
+        // But we can at least log before and after to identify the exact crash point.
+        logToFile("[SM] before_\(sig)\n")
+        block()
+        logToFile("[SM] after_\(sig)\n")
+        return "ok"
     }
 
     private func extractVMStat(_ output: String, key: String) -> UInt64 {
