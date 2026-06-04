@@ -115,6 +115,20 @@ struct ContentView: View {
                 .animation(.easeInOut(duration: 0.25), value: showEditOrder)
             }
         }
+        .overlay(alignment: .top) {
+            if showHostSettings {
+                ZStack {
+                    Color.black.opacity(0.6)
+                        .contentShape(Rectangle())
+                        .onTapGesture { showHostSettings = false }
+                        .ignoresSafeArea()
+
+                    HostSettingsPanel(isPresented: $showHostSettings)
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                }
+                .animation(.easeInOut(duration: 0.25), value: showHostSettings)
+            }
+        }
         .onAppear {
             // Inject system colorScheme so theme follows OS preference initially
             AppTheme.shared.systemColorScheme = colorScheme
@@ -127,6 +141,14 @@ struct ContentView: View {
             ) { [self] _ in
                 generateAndSaveDiagnosticReport()
             }
+            // Listen for HostSettingsPanel open request
+            NotificationCenter.default.addObserver(
+                forName: Notification.Name("com.hermes.minipulse.openHostSettings"),
+                object: nil,
+                queue: .main
+            ) { [self] _ in
+                showHostSettings = true
+            }
         }
         .onChange(of: colorScheme) { _, newScheme in
             AppTheme.shared.systemColorScheme = newScheme
@@ -134,6 +156,18 @@ struct ContentView: View {
         .onChange(of: monitor.dataReady) { _, ready in
             if ready {
                 dismissSplashAndShowCards()
+
+                // Set local host and start LAN services
+                hostManager.setLocalHost(
+                    name: monitor.sysInfo.hostname,
+                    machine: monitor.sysInfo.machineModelName
+                )
+                LANService.shared.snapshotProvider = { [weak monitor] in
+                    monitor?.toSnapshot()
+                }
+                DispatchQueue.main.async {
+                    LANService.shared.start()
+                }
             }
         }
     }

@@ -37,6 +37,22 @@ struct SettingsPanel: View {
             }
             .padding(24)
 
+            // LAN management button
+            Button(action: {
+                isPresented = false
+                NotificationCenter.default.post(name: NSNotification.Name("com.hermes.minipulse.openHostSettings"), object: nil)
+            }) {
+                HStack(spacing: 8) {
+                    Image(systemName: "antenna.radiowaves.left.and.right")
+                    Text("局域网管理")
+                }
+                .font(PixelFont.eightBit(size: 13))
+                .foregroundColor(AppTheme.shared.accent)
+            }
+            .buttonStyle(.plain)
+            .padding(.horizontal, 24)
+            .padding(.bottom, 8)
+
             Spacer()
 
             // Footer
