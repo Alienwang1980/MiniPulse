@@ -10,3 +10,5 @@ Memory/
 OceanDark-Design.html
 
 mp_clean_archive.xcarchive/
+*.log
+*.app/

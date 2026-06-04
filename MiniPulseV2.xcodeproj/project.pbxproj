@@ -15,7 +15,6 @@
 		22F467C626238A3CA6DE7861 /* PowerEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F48CCABC26E7F27B6B74B5 /* PowerEstimator.swift */; };
 		2433A314F48C170F9C880DEE /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016898DB5B8068EEA7ACCFB9 /* AppTheme.swift */; };
 		274593211FEA62B34B22A90F /* PowerCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66FD6174A741506E683CC2A7 /* PowerCard.swift */; };
-		2933A996ADB4AC5B4E27E930 /* SMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD32622D2C70FC1D6F8D123A /* SMC.swift */; };
 		3473F5C3527220CCDDFA914F /* EditOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A972F1AB7061C26682F799 /* EditOrderView.swift */; };
 		53BA35D1E15DA98528CFA856 /* TopCPUCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C044C38E46F87B144A54C /* TopCPUCard.swift */; };
 		5E25F76DF71A38432DDA4A64 /* MemoryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892F5A28113C10C82FCD142B /* MemoryCard.swift */; };
@@ -23,7 +22,6 @@
 		6B40944CF51E6D072100629F /* VT323-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 662A08BCAFB8B7174524AB14 /* VT323-Regular.ttf */; };
 		6C76F9EE4DD62892E08A9BD0 /* FooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8876D1A6FFC2654FEB18E73 /* FooterView.swift */; };
 		6CD545B54F41FB5FA7522E58 /* WaterfallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39ED9B6D05E2CF17BF621762 /* WaterfallLayout.swift */; };
-		75FAD43B957DC3C1A1BB7779 /* IOHIDBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2AC5D1CA4653271F7261734 /* IOHIDBridge.swift */; };
 		7BDFBE45FA6D6B6FE6C2BA17 /* SettingsPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE54DBE8242EB6D68A85A0DA /* SettingsPanel.swift */; };
 		7C5BA54F2386F5D117C9D731 /* SystemMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0520D420D771D89A3514F7 /* SystemMonitor.swift */; };
 		8CC2FF1720450302F9547259 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14537A84FCB1AB2A130B3622 /* CoreFoundation.framework */; };
@@ -300,7 +298,6 @@
 				02DA7F945508CC6F8E08C47E /* GpuCard.swift in Sources */,
 				F6A33F78E743391A3E0BA1DC /* HeaderView.swift in Sources */,
 				9A91621636A12BA7E0469D77 /* HeroPatternBackgrounds.swift in Sources */,
-				75FAD43B957DC3C1A1BB7779 /* IOHIDBridge.swift in Sources */,
 				CD8E0505D881517DAD2D414F /* MachineInfoCard.swift in Sources */,
 				5E25F76DF71A38432DDA4A64 /* MemoryCard.swift in Sources */,
 				F4218C68E7A8EB9F35F1D996 /* NetworkCard.swift in Sources */,
@@ -308,7 +305,6 @@
 				BA8A271EE3B87AA85ED39251 /* PixelFont.swift in Sources */,
 				274593211FEA62B34B22A90F /* PowerCard.swift in Sources */,
 				22F467C626238A3CA6DE7861 /* PowerEstimator.swift in Sources */,
-				2933A996ADB4AC5B4E27E930 /* SMC.swift in Sources */,
 				7BDFBE45FA6D6B6FE6C2BA17 /* SettingsPanel.swift in Sources */,
 				0143E49BD5D718104E2B74BD /* SharedViews.swift in Sources */,
 				C2BEF99C48E6D3AACCB1ABE9 /* SplashView.swift in Sources */,

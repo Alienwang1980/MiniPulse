@@ -8,6 +8,7 @@
 #ifndef MiniPulse_Bridging_Header_h
 #define MiniPulse_Bridging_Header_h
 
-#import "IOHIDBridge.h"
+#import <libproc.h>
+#import <sys/sysctl.h>
 
 #endif /* MiniPulse_Bridging_Header_h */

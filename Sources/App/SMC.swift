@@ -234,8 +234,11 @@ public class SMCReader {
         return val
     }
 
-    // Get a numeric value from SMC
+    // Get a numeric value from SMC (auto-connects if needed)
     public func getValue(_ key: String) -> Double? {
+        if !isConnected {
+            _ = connect()
+        }
         guard let val = read(key) else { return nil }
 
         if val.dataSize == 0 {

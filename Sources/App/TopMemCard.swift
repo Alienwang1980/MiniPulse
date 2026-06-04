@@ -19,7 +19,7 @@ struct TopMemCard: View {
             VStack(spacing: 4.8) {
                 ForEach(topMem.prefix(6)) { proc in
                     HStack(spacing: 9.6) {
-                        Text(proc.name)
+                        Text(proc.shortName)
                             .font(PixelFont.eightBit(size: 13.2))
                             .foregroundColor(theme.text)
                             .lineLimit(1)

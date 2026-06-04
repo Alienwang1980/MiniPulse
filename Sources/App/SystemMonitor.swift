@@ -14,7 +14,6 @@ private let ENABLE_USB_DEVICES    = true   // IOKit IOUSBHostDevice notification
 private let ENABLE_BT_DEVICES     = true   // startup once + periodic via timer (macOS has no BT plug/unplug IOKit notifications)
 private let ENABLE_TOP_PROCESSES  = true   // ps command (background thread + manual refresh)
 private let ENABLE_DISPLAY_INFO   = true   // system_profiler SPDisplaysDataType (startup only)
-private let ENABLE_TEMPERATURES   = true   // IOHIDEventSystemClientCreate cached at init — no longer leaks
 
 /// Refresh interval: longer = less CPU overhead
 private let REFRESH_INTERVAL: TimeInterval = 5.0
@@ -175,6 +174,18 @@ struct ProcessEntry: Identifiable, Hashable, Equatable {
     var cpuPercent: Double = 0
     var memPercent: Double = 0
     var memMB: Double = 0
+
+    var shortName: String {
+        // ps returns full path like "/Applications/Lark.app/.../Lark Helper (Renderer)"
+        // Extract just the app name or last path component
+        let url = URL(fileURLWithPath: name)
+        let lastComp = url.lastPathComponent
+        // If it's an .app bundle, strip the extension
+        if lastComp.hasSuffix(".app") {
+            return String(lastComp.dropLast(4))
+        }
+        return lastComp
+    }
 }
 
 struct BluetoothDevice: Identifiable, Hashable, Equatable {
@@ -1039,6 +1050,7 @@ class SystemMonitor: ObservableObject {
             "/System/Volumes/VM",
             "/System/Volumes/Preboot",
             "/System/Volumes/Update",
+            "/System/Volumes/Update/mnt1",
             "/System/Volumes/Hardware",
             "/System/Volumes/xarts",
             "/System/Volumes/iSCPreboot"
@@ -1329,17 +1341,54 @@ class SystemMonitor: ObservableObject {
     }
 
     private func performTopProcessesCollection() -> ([ProcessEntry], [ProcessEntry]) {
-        // Single ps call — collect all columns at once
-        let psOut = run("/bin/ps", args: ["-aceo", "pid,pcpu,rss,comm"])
-        let allProcesses: [ProcessEntry] = psOut.components(separatedBy: "\n").dropFirst().compactMap { line in
-            let cols = line.split(separator: " ", omittingEmptySubsequences: true)
-            guard cols.count >= 4 else { return nil }
+        // Use NSTask + /bin/ps (works in sandbox with temporary exception)
+        // ps: -eo pid,pcpu,rss,comm (numeric pid, cpu%, resident set size in KB, command)
+        let ps = Process()
+        ps.executableURL = URL(fileURLWithPath: "/bin/ps")
+        ps.arguments = ["-eo", "pid,%cpu,rss,comm", "-r"]
+
+        let stdoutPipe = Pipe()
+        ps.standardOutput = stdoutPipe
+
+        let stderrPipe = Pipe()
+        ps.standardError = stderrPipe
+
+        do {
+            try ps.run()
+            ps.waitUntilExit()
+        } catch {
+            diagLog("[SM] ps task failed: \(error.localizedDescription)\n")
+            return ([], [])
+        }
+
+        let outputData = stdoutPipe.fileHandleForReading.readDataToEndOfFile()
+        guard let output = String(data: outputData, encoding: .utf8) else {
+            return ([], [])
+        }
+
+        var allProcesses: [ProcessEntry] = []
+        let lines = output.components(separatedBy: .newlines)
+
+        for line in lines.dropFirst() { // skip header line
+            let trimmed = line.trimmingCharacters(in: .whitespaces)
+            guard !trimmed.isEmpty else { continue }
+
+            let cols = trimmed.components(separatedBy: .whitespaces).filter { !$0.isEmpty }
+            guard cols.count >= 4 else { continue }
+
             let pid = Int(cols[0]) ?? 0
-            let cpu = Double(cols[1]) ?? 0
-            let memKB = Double(cols[2]) ?? 0
-            let name = cols.count > 3 ? cols[3...].joined(separator: " ") : ""
-            guard pid > 0, memKB >= 0 else { return nil }
-            return ProcessEntry(pid: pid, name: name, cpuPercent: cpu, memPercent: 0, memMB: memKB / 1024)
+            let cpu = Double(cols[1]) ?? 0.0
+            let rssKB = Double(cols[2]) ?? 0.0
+            let memMB = rssKB / 1024.0
+            let name = cols.dropFirst(3).joined(separator: " ")
+
+            allProcesses.append(ProcessEntry(
+                pid: pid,
+                name: name,
+                cpuPercent: cpu,
+                memPercent: 0,
+                memMB: memMB
+            ))
         }
 
         let topCPU = allProcesses
@@ -1347,6 +1396,7 @@ class SystemMonitor: ObservableObject {
             .prefix(10)
             .map { $0 }
 
+        // Re-sort by memory for top memory list
         let topMem = allProcesses
             .sorted { $0.memMB > $1.memMB }
             .prefix(10)
@@ -2010,24 +2060,46 @@ class SystemMonitor: ObservableObject {
             let gpuUsage = Double(self.gpu.utilization ?? 0)
             let powerData = PowerEstimator.shared.estimate(cpuUsagePercent: cpuUsage, gpuUsagePercent: gpuUsage)
 
-            // ── Temperature via IOHIDEventSystemClient (Apple Silicon, no root required) ──
-            var cpuTemp: Double? = nil
-            var gpuTemp: Double? = nil
-            var ssdTemp: Double? = nil
-            if ENABLE_TEMPERATURES {
-                let hidData = IOHIDReader.shared.readTemperatures()
-                cpuTemp = hidData.cpuDieTemp
-                gpuTemp = hidData.gpuDieTemp
-                ssdTemp = hidData.ssdTempC
-
-                // MacBook Pro (isLaptop): IOHID sensors run ~20°C lower than actual
-                // Apply offset only to CPU temp, SSD temp stays as-is
-                if self.sysInfo.isLaptop, let hidCpu = cpuTemp {
-                    cpuTemp = hidCpu + 20.0
-                }
-
-
+            // ── Temperature via thermalState + load-based estimate ──
+            // Uses only public APIs: ProcessInfo.thermalState + host_cpu_load_info
+            // thermalState gives 4 levels; we interpolate between known idle/load temps
+            // for the user's hardware to produce a visual temperature reading.
+            let state = ProcessInfo.processInfo.thermalState
+            let thermalPressure: String
+            let thermalLevel: Int
+            switch state {
+            case .nominal:
+                thermalPressure = "Nominal"
+                thermalLevel = 0
+            case .fair:
+                thermalPressure = "Fair"
+                thermalLevel = 1
+            case .serious:
+                thermalPressure = "Serious"
+                thermalLevel = 2
+            case .critical:
+                thermalPressure = "Critical"
+                thermalLevel = 3
+            @unknown default:
+                thermalPressure = "Nominal"
+                thermalLevel = 0
             }
+
+            // Estimate component temperatures based on thermalState + load
+            // M4 Mac mini baseline: idle ~32°C CPU, loaded ~80°C+ under sustained load
+            let cpuLoad = cpuUsage / 100.0
+            let gpuLoad = gpuUsage / 100.0
+            func estimatedTemp(load: Double, thermalLevel: Int, idleTemp: Double, maxTemp: Double) -> Double {
+                // Combine thermalState (0-3) with load (0-1) to interpolate
+                let thermalBias = Double(thermalLevel) / 3.0
+                let effectiveLoad = min(1.0, max(0.0, load * 0.6 + thermalBias * 0.4))
+                let temp = idleTemp + (maxTemp - idleTemp) * effectiveLoad
+                return min(maxTemp, max(idleTemp, temp))
+            }
+            let cpuTemp: Double? = estimatedTemp(load: cpuLoad, thermalLevel: thermalLevel, idleTemp: 32, maxTemp: 90)
+            let gpuTemp: Double? = estimatedTemp(load: gpuLoad, thermalLevel: thermalLevel, idleTemp: 30, maxTemp: 85)
+            // SSD temp: roughly based on CPU temp (correlated under load)
+            let ssdTemp: Double? = cpuTemp! * 0.7 + 8 // ~30-70°C range
 
             self.temps = TempInfo(
                 cpuPowerMw: powerData.cpuMw,
@@ -2037,10 +2109,10 @@ class SystemMonitor: ObservableObject {
                 cpuTempC: cpuTemp,
                 gpuTempC: gpuTemp,
                 ssdTempC: ssdTemp,
-                thermalPressure: "Nominal",
-                thermalLevel: 0
+                thermalPressure: thermalPressure,
+                thermalLevel: thermalLevel
             )
-            diagLog("MiniPulse: published temps totalMw=\(powerData.totalMw)\n")
+            diagLog("MiniPulse: temps cpuTempC=\(cpuTemp ?? -1) gpuTempC=\(gpuTemp ?? -1) ssdTempC=\(ssdTemp ?? -1) thermalState=\(thermalLevel)\n")
             self.battery = batteryInfo
             self.diskIO = DiskIOInfo(
                 readMBs: 0,
