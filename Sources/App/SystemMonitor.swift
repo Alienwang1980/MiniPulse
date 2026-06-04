@@ -2085,21 +2085,27 @@ class SystemMonitor: ObservableObject {
                 thermalLevel = 0
             }
 
-            // Estimate component temperatures based on thermalState + load
-            // M4 Mac mini baseline: idle ~32°C CPU, loaded ~80°C+ under sustained load
+            // Read real temperatures via SMC (AppleSilicon), fallback to estimation
+            // SMC temperature keys:
+            // TC0P/TC0D/TC0H = CPU Die proximity
+            // TG0P/TG0D/TG0H = GPU Die proximity
+            // Ts0P/Ts0H = SSD/NAND temperature
             let cpuLoad = cpuUsage / 100.0
             let gpuLoad = gpuUsage / 100.0
+            let smc = SMCReader.shared
+            let smcCpuTemp = smc.getCpuTemperature()
+            let smcGpuTemp = smc.getGpuTemperature()
+            let smcSsdTemp = smc.getValue("Ts0P") ?? smc.getValue("Ts0H")
+
             func estimatedTemp(load: Double, thermalLevel: Int, idleTemp: Double, maxTemp: Double) -> Double {
-                // Combine thermalState (0-3) with load (0-1) to interpolate
                 let thermalBias = Double(thermalLevel) / 3.0
                 let effectiveLoad = min(1.0, max(0.0, load * 0.6 + thermalBias * 0.4))
                 let temp = idleTemp + (maxTemp - idleTemp) * effectiveLoad
                 return min(maxTemp, max(idleTemp, temp))
             }
-            let cpuTemp: Double? = estimatedTemp(load: cpuLoad, thermalLevel: thermalLevel, idleTemp: 32, maxTemp: 90)
-            let gpuTemp: Double? = estimatedTemp(load: gpuLoad, thermalLevel: thermalLevel, idleTemp: 30, maxTemp: 85)
-            // SSD temp: roughly based on CPU temp (correlated under load)
-            let ssdTemp: Double? = cpuTemp! * 0.7 + 8 // ~30-70°C range
+            let cpuTemp: Double? = smcCpuTemp ?? estimatedTemp(load: cpuLoad, thermalLevel: thermalLevel, idleTemp: 32, maxTemp: 90)
+            let gpuTemp: Double? = smcGpuTemp ?? estimatedTemp(load: gpuLoad, thermalLevel: thermalLevel, idleTemp: 30, maxTemp: 85)
+            let ssdTemp: Double? = smcSsdTemp ?? (cpuTemp! * 0.7 + 8)
 
             self.temps = TempInfo(
                 cpuPowerMw: powerData.cpuMw,
@@ -2415,5 +2421,143 @@ struct DiagnosticReport: Codable {
         var sysctlCpuInfo: String = ""
         var sysctlMemInfo: String = ""
     }
+}
+
+// MARK: - SMC Temperature Reader (standalone, no external dependencies)
+
+private class SMCReader {
+    static let shared = SMCReader()
+    private var conn: io_connect_t = 0
+    private var isConnected = false
+    private let keys = Set(["TC0P", "TC0D", "TC0H", "TC0C", "TCMP",
+                            "TG0P", "TG0D", "TG0H",
+                            "Ts0P", "Ts0H", "Tp01", "Tp02", "Tp03",
+                            "Tg07", "Tg08", "Tg09"])
+    private var cache: [String: Double] = [:]
+    private var lastFetch: Date = .distantPast
+
+    func connect() {
+        guard !isConnected else { return }
+        var iterator: io_iterator_t = 0
+        if IOServiceGetMatchingServices(kIOMainPortDefault, IOServiceMatching("AppleSMCKeysEndpoint"), &iterator) == kIOReturnSuccess {
+            let device = IOIteratorNext(iterator)
+            IOObjectRelease(iterator)
+            if device != 0 {
+                isConnected = IOServiceOpen(device, mach_task_self_, 0, &conn) == kIOReturnSuccess
+                IOObjectRelease(device)
+            }
+        }
+    }
+
+    private func readKey(_ key: String) -> Double? {
+        let keyStr = key.padding(toLength: 4, withPad: " ", startingAt: 0)
+        guard keyStr.count == 4 else { return nil }
+        let keyCode = keyStr.utf8.reduce(UInt32(0)) { $0 << 8 | UInt32($1) }
+
+        var input = SMCParamStruct()
+        var output = SMCParamStruct()
+        input.key = keyCode
+        input.data8 = SMCKernelIndex
+        input.keyInfo.dataSize = UInt32(MemoryLayout<UInt32>.size)
+        var outSize = MemoryLayout<SMCParamStruct>.size
+
+        let ret = IOConnectCallStructMethod(conn, UInt32(SMCHandleYPCEvent), &input, MemoryLayout<SMCParamStruct>.size, &output, &outSize)
+        guard ret == kIOReturnSuccess else { return nil }
+
+        input = SMCParamStruct()
+        input.key = keyCode
+        input.data8 = SMCReadBytes
+        input.keyInfo.dataSize = output.keyInfo.dataSize
+
+        let ret2 = IOConnectCallStructMethod(conn, UInt32(SMCHandleYPCEvent), &input, MemoryLayout<SMCParamStruct>.size, &output, &outSize)
+        guard ret2 == kIOReturnSuccess else { return nil }
+
+        let typeStr = withUnsafeBytes(of: output.keyInfo.dataType) { bytes -> String in
+            String(bytes.prefix(4).map { Character(UnicodeScalar($0)) })
+        }
+
+        switch typeStr {
+        case "sp78", "sp87":
+            let intVal = Int16(output.bytes.b0) << 8 | Int16(output.bytes.b1)
+            return Double(intVal) / 256.0
+        case "fpe2":
+            return Double((Int(output.bytes.b0) << 6) + (Int(output.bytes.b1) >> 2))
+        case "flt ":
+            let bits = UInt32(output.bytes.b0) << 24 | UInt32(output.bytes.b1) << 16 | UInt32(output.bytes.b2) << 8 | UInt32(output.bytes.b3)
+            return Double(Float(bitPattern: bits))
+        case "ui8 ":
+            return Double(output.bytes.b0)
+        case "ui16":
+            return Double(UInt16(output.bytes.b0) << 8 | UInt16(output.bytes.b1))
+        default:
+            return nil
+        }
+    }
+
+    func getValue(_ key: String) -> Double? {
+        if !isConnected { connect() }
+        guard isConnected else { return nil }
+        if Date().timeIntervalSince(lastFetch) > 2 {
+            cache = [:]
+            lastFetch = Date()
+        }
+        if let cached = cache[key] { return cached }
+        if let val = readKey(key), val > 0, val < 150 {
+            cache[key] = val
+            return val
+        }
+        return nil
+    }
+
+    func getCpuTemperature() -> Double? {
+        for key in ["TC0P", "TC0D", "TC0H", "TC0C", "TCMP", "Tp01", "Tp02", "Tp03"] {
+            if let val = getValue(key) { return val }
+        }
+        return nil
+    }
+
+    func getGpuTemperature() -> Double? {
+        for key in ["TG0P", "TG0D", "TG0H", "Tg07", "Tg08", "Tg09"] {
+            if let val = getValue(key) { return val }
+        }
+        return nil
+    }
+}
+
+private let SMCHandleYPCEvent: UInt8 = 2
+private let SMCKernelIndex: UInt8 = 2
+private let SMCReadBytes: UInt8 = 5
+
+private struct SMCParamStruct {
+    var key: UInt32 = 0
+    var vers = SMCOpaqueData()
+    var pLimitData = SMCOpaqueData()
+    var keyInfo = SMCKeyInfoData()
+    var result: UInt8 = 0
+    var status: UInt8 = 0
+    var data8: UInt8 = 0
+    var data32: UInt32 = 0
+    var bytes = SMCBytes()
+}
+
+private struct SMCOpaqueData {
+    var data: (UInt16, UInt16, UInt16, UInt16, UInt16, UInt16) = (0,0,0,0,0,0)
+}
+
+private struct SMCKeyInfoData {
+    var dataSize: UInt32 = 0
+    var dataType: UInt32 = 0
+    var dataAttributes: UInt8 = 0
+}
+
+private struct SMCBytes {
+    var b0: UInt8 = 0; var b1: UInt8 = 0; var b2: UInt8 = 0; var b3: UInt8 = 0
+    var b4: UInt8 = 0; var b5: UInt8 = 0; var b6: UInt8 = 0; var b7: UInt8 = 0
+    var b8: UInt8 = 0; var b9: UInt8 = 0; var b10: UInt8 = 0; var b11: UInt8 = 0
+    var b12: UInt8 = 0; var b13: UInt8 = 0; var b14: UInt8 = 0; var b15: UInt8 = 0
+    var b16: UInt8 = 0; var b17: UInt8 = 0; var b18: UInt8 = 0; var b19: UInt8 = 0
+    var b20: UInt8 = 0; var b21: UInt8 = 0; var b22: UInt8 = 0; var b23: UInt8 = 0
+    var b24: UInt8 = 0; var b25: UInt8 = 0; var b26: UInt8 = 0; var b27: UInt8 = 0
+    var b28: UInt8 = 0; var b29: UInt8 = 0; var b30: UInt8 = 0; var b31: UInt8 = 0
 }
 

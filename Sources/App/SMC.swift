@@ -150,18 +150,28 @@ public class SMCReader {
         var result: kern_return_t
         var iterator: io_iterator_t = 0
 
-        let matchingDictionary: CFMutableDictionary = IOServiceMatching("AppleSMC")
+        let matchingDictionary: CFMutableDictionary = IOServiceMatching("AppleSMCKeysEndpoint")
         result = IOServiceGetMatchingServices(kIOMainPortDefault, matchingDictionary, &iterator)
         if result != kIOReturnSuccess {
             print("SMC: IOServiceGetMatchingServices failed: \(String(cString: mach_error_string(result), encoding: .ascii) ?? "unknown")")
             return false
         }
 
-        let device = IOIteratorNext(iterator)
+        var device = IOIteratorNext(iterator)
         IOObjectRelease(iterator)
 
         if device == 0 {
-            print("SMC: no AppleSMC device found")
+            // Fallback: try AppleSMC (Intel Macs)
+            let fallbackMatching = IOServiceMatching("AppleSMC")
+            let fbResult = IOServiceGetMatchingServices(kIOMainPortDefault, fallbackMatching, &iterator)
+            if fbResult == kIOReturnSuccess {
+                device = IOIteratorNext(iterator)
+                IOObjectRelease(iterator)
+            }
+        }
+
+        if device == 0 {
+            print("SMC: no AppleSMCKeysEndpoint or AppleSMC device found")
             return false
         }
 
