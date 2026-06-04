@@ -2,6 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>MiniPulse 需要访问本地网络以发现局域网内的其他电脑并共享系统监控数据。</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_minipulse._tcp</string>
+	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
