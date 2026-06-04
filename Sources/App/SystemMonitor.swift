@@ -332,17 +332,10 @@ class SystemMonitor: ObservableObject {
             logToFile("[SM] before_refreshBaseInfo\n")
             self.refreshBaseInfo()
             logToFile("[SM] after_refreshBaseInfo\n")
-            // Do a synchronous first collection on a background queue so we can safely
-            // log around it and know exactly where any crash happens.
-            logToFile("[SM] starting_sync_collection\n")
-            let sem = DispatchSemaphore(value: 0)
-            self.refreshQueue.async { [weak self] in
-                guard let self = self else { sem.signal(); return }
-                self.collectAll()
-                sem.signal()
-            }
-            _ = sem.wait(timeout: .now() + 15)
-            logToFile("[SM] sync_collection_done\n")
+            // Trigger first collection asynchronously on refreshQueue
+            logToFile("[SM] starting_async_refresh\n")
+            self.refresh()
+            logToFile("[SM] async_refresh_dispatched\n")
             self.dataReady = true
         }
 
@@ -1275,7 +1268,7 @@ class SystemMonitor: ObservableObject {
     private func collectDiskInfoOnce() {
         guard ENABLE_DISK_INFO else { return }
 
-        refreshQueue.async { [weak self] in
+        DispatchQueue.global(qos: .utility).async { [weak self] in
             guard let self = self else { return }
             let disks = self.performDiskCollection()
             DispatchQueue.main.async {
@@ -1302,7 +1295,7 @@ class SystemMonitor: ObservableObject {
     private func collectGpuInfoOnce() {
         guard ENABLE_GPU_INFO else { return }
 
-        refreshQueue.async { [weak self] in
+        DispatchQueue.global(qos: .utility).async { [weak self] in
             guard let self = self else { return }
             var gpuName = "Apple Silicon GPU"
             var gpuVRAM = 0
@@ -1332,7 +1325,7 @@ class SystemMonitor: ObservableObject {
     private func collectDisplayInfoOnce() {
         guard ENABLE_DISPLAY_INFO else { return }
 
-        refreshQueue.async { [weak self] in
+        DispatchQueue.global(qos: .utility).async { [weak self] in
             guard let self = self else { return }
             let resolutions = self.performDisplayCollection()
             DispatchQueue.main.async {
@@ -1346,7 +1339,7 @@ class SystemMonitor: ObservableObject {
     private func collectTopProcessesOnce() {
         guard ENABLE_TOP_PROCESSES else { return }
 
-        refreshQueue.async { [weak self] in
+        DispatchQueue.global(qos: .utility).async { [weak self] in
             guard let self = self else { return }
             let (cpu, mem) = self.performTopProcessesCollection()
             DispatchQueue.main.async {
@@ -1438,7 +1431,7 @@ class SystemMonitor: ObservableObject {
     private func collectBluetoothDevicesOnce() {
         guard ENABLE_BT_DEVICES else { return }
 
-        refreshQueue.async { [weak self] in
+        DispatchQueue.global(qos: .utility).async { [weak self] in
             guard let self = self else { return }
             let devices = self.performBluetoothCollection()
             DispatchQueue.main.async {
@@ -1655,8 +1648,9 @@ class SystemMonitor: ObservableObject {
     }
 
     private func refresh() {
-        refreshQueue.async { [weak self] in
-            self?.collectAll()
+        refreshQueue.async { [self] in
+            logToFile("[SM] refresh_block_entered\n")
+            self.collectAll()
         }
     }
 
@@ -2217,21 +2211,7 @@ class SystemMonitor: ObservableObject {
 
         do {
             try task.run()
-            // Use RunLoop-based timeout instead of unbounded wait
-            let runLoop = RunLoop.current
-            let deadline = Date(timeIntervalSinceNow: timeout)
-            var taskFinished = false
-            task.terminationHandler = { _ in
-                taskFinished = true
-            }
-            while !taskFinished && Date() < deadline {
-                runLoop.run(mode: .default, before: Date(timeIntervalSinceNow: 0.05))
-            }
-            if task.isRunning {
-                task.terminate()
-                logToFile("[SM] run TIMEOUT: \(cmd) args=\(args) after \(timeout)s\n")
-                return ""
-            }
+            task.waitUntilExit()
             let data = outputPipe.fileHandleForReading.readDataToEndOfFile()
             return String(data: data, encoding: .utf8) ?? ""
         } catch {
